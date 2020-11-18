@@ -14,8 +14,6 @@ module knn_core
     );
 
     `SIGNAL2OUT(KNN_DATA_OUT, KNN_DATA_IN)
-
-
       
 endmodule
 
