@@ -13,7 +13,7 @@ module knn_core
     `OUTPUT(KNN_DATA_OUT, DATA_W)
     );
 
-
+    `SIGNAL2OUT(KNN_DATA_OUT, KNN_DATA_IN)
       
 endmodule
 
