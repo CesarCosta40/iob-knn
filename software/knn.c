@@ -8,18 +8,18 @@
 //uncomment to use rand from C lib 
 //#define cmwc_rand rand
 
-#ifdef DEBUG //type make DEBUG=1 to print debug info
+#ifndef DEBUG //type make DEBUG=1 to print debug info
 #define S 12  //random seed
 #define N 8  //data set size
 #define K 4   //number of neighbours (K)
 #define C 4   //number data classes
 #define M 2   //number samples to be classified
 #else
-#define S 12   
-#define N 1000
+#define S 1   
+#define N 100
 #define K 10  
 #define C 4  
-#define M 100 
+#define M 20 
 #endif
 
 #define INFINITE ~0
@@ -232,11 +232,22 @@ int main() {
   uart_printf("\nDistance cycles: %d\n\nInsert cycles: %d\n", (unsigned int)t_distance_total, (unsigned int)t_insert_total);
 #endif
 
+#ifndef DEBUG
+  elapsed = timer_get_count();
+  elapsedu = timer_time_us();
+  uart_printf("\nExecution time: %dus (%d cycles @%dMHz)\n\n", elapsedu, (unsigned int)elapsed, FREQ/1000000);
+#endif
+
+
   //print classification distribution to check for statistical bias
   for (int l=0; l<C; l++)
     uart_printf("%d ", votes_acc[l]);
   uart_printf("\n");
 
+  for(int i = 0; i < M; i++){
+    uart_printf("X:%d\tY:%d\tLabel:%d\n", x[i].x, x[i].y, x[i].label);
+
+  }
 }
 
 
