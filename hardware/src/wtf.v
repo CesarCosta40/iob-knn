@@ -6,10 +6,10 @@ module dist_calc
     parameter W=32
     )
   (
-   `INPUT(x_a,W),
-   `INPUT(x_b,W),
-   `INPUT(y_a,W),
-   `INPUT(y_b,W),
+   `INPUT(x_a,W/2),
+   `INPUT(x_b,W/2),
+   `INPUT(y_a,W/2),
+   `INPUT(y_b,W/2),
    `OUTPUT(d,W)
    );
 

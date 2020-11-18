@@ -11,10 +11,10 @@ module knn_tb;
    `SIGNAL(KNN_ENABLE, 1)
    `SIGNAL(KNN_DATA_IN, 32)
 
-   `SIGNAL(x_a, 32)
-   `SIGNAL(x_b, 32)
-   `SIGNAL(y_a, 32)
-   `SIGNAL(y_b, 32)
+   `SIGNAL(x_a, 16)
+   `SIGNAL(x_b, 16)
+   `SIGNAL(y_a, 16)
+   `SIGNAL(y_b, 16)
    
    `SIGNAL_OUT(KNN_DATA_OUT, 32)
    
@@ -28,7 +28,11 @@ module knn_tb;
       $dumpvars();
 `endif
       KNN_ENABLE = 0;
-      KNN_DATA_IN = 0;      
+      KNN_DATA_IN = 0;  
+      x_a=0;
+      x_b=0;
+      y_a=0;
+      y_b=0;    
 
       @(posedge rst);
       @(negedge rst);
@@ -41,13 +45,14 @@ module knn_tb;
         $display("Test failed: expecting knn value 69 but got %d", KNN_DATA_OUT);
         
         
-      for (i=1; i<10; i=i+1) begin
+      for (i=1; i<=10; i=i+1) begin
          @(posedge clk) #1 
+         $display("%d -> x_a: %d , x_b: %d , Dist: %d",i-1, x_a, x_b, d);
+         #1
          x_a=i;
          x_b=i*2;
          y_a=i;
          y_b=i*2;
-         $display("%d -> x_a: %d , x_b: %d , Dist: %d",i, x_a, x_b, d);
       end
         
       @(posedge clk) #100
