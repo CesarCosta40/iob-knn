@@ -3,7 +3,7 @@
 `include "interconnect.vh"
 `include "iob_knn.vh"
 
-module iob_knn 
+module iob_knn
   #(
     parameter ADDR_W = `KNN_ADDR_W, //NODOC Address width
     parameter DATA_W = `DATA_W, //NODOC Data word width
@@ -18,29 +18,29 @@ module iob_knn
 `include "KNNsw_reg.v"
 `include "KNNsw_reg_gen.v"
 
-    //combined hard/soft reset 
+    //combined hard/soft reset
    `SIGNAL(rst_int, 1)
    `COMB rst_int = rst | KNN_RESET;
 
    //write signal
-   `SIGNAL(write, 1) 
+   `SIGNAL(write, 1)
    `COMB write = | wstrb;
 
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
    `SIGNAL_OUT(KNN_VALUE, 2*DATA_W)
-   knn_core knn0
-     (
-      .KNN_ENABLE(KNN_ENABLE),
-      .KNN_DATA_IN(KNN_DATA_IN),
-      .clk(clk),
-      .rst(rst_int),
-      .KNN_DATA_OUT(KNN_DATA_OUT)
-      );
-   
-   
-   //ready signal   
+   dist_calc d0
+   (
+    .DATA_X1(DATA_X1),
+    .DATA_X2(DATA_X2),
+    .DATA_Y1(DATA_Y1),
+    .DATA_Y2(DATA_Y2),
+    .DATA_OUT(DATA_OUT)
+   );
+
+
+   //ready signal
    `SIGNAL(ready_int, 1)
    `REG_AR(clk, rst, 0, ready_int, valid)
 
@@ -49,6 +49,5 @@ module iob_knn
    //rdata signal
    //`COMB begin
    //end
-      
-endmodule
 
+endmodule
