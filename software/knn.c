@@ -8,7 +8,7 @@
 //uncomment to use rand from C lib 
 //#define cmwc_rand rand
 
-#ifndef DEBUG //type make DEBUG=1 to print debug info
+#ifdef DEBUG //type make DEBUG=1 to print debug info
 #define S 12  //random seed
 #define N 8  //data set size
 #define K 4   //number of neighbours (K)
@@ -16,7 +16,7 @@
 #define M 2   //number samples to be classified
 #else
 #define S 1   
-#define N 100
+#define N 60
 #define K 10  
 #define C 4  
 #define M 20 
@@ -245,7 +245,7 @@ int main() {
   uart_printf("\n");
 
   for(int i = 0; i < M; i++){
-    uart_printf("X:%d\tY:%d\tLabel:%d\n", x[i].x, x[i].y, x[i].label);
+    uart_printf("X:%d\t\tY:%d\t\tLabel:%d\n", x[i].x, x[i].y, x[i].label);
 
   }
 }
