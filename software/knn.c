@@ -165,7 +165,7 @@ int main() {
       timer_reset();
 #endif
       //unsigned int d = sq_dist(x[k], data[i]);
-     unsigned int d = knn_get_distance(data[i].x, data[i].y)
+     unsigned int d = knn_get_distance(data[i].x, data[i].y);
 #ifdef DEBUG
       t_distance[i]=timer_get_count();   
       t_distance_total+=t_distance[i];
