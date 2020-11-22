@@ -2,6 +2,8 @@
 
 //register address mapping
 #define KNN_RESET 0
-#define KNN_ENABLE 1
-#define KNN_DATA_IN 2
-#define KNN_DATA_OUT 3
+#define DATA_X1 1
+#define DATA_X2 2
+#define DATA_Y1 3
+#define DATA_Y2 4
+#define DATA_OUT 5
