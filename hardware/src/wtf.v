@@ -16,8 +16,8 @@ module dist_calc
 
    `SIGNAL_SIGNED(sub1, W)
    `SIGNAL_SIGNED(sub2, W)
-   `SIGNAL_(sqr1, W)
-   `SIGNAL_(sqr2, W)
+   `SIGNAL(sqr1, W)
+   `SIGNAL(sqr2, W)
    `SIGNAL(result, W)
    `SIGNAL2OUT(DATA_OUT, result) //connect internal result to output
 
