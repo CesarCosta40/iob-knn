@@ -156,12 +156,16 @@ int main() {
 #ifdef DEBUG
     uart_printf("Datum \tX \tY \tLabel \tDistance \tDistanceClks \tInsertClks\n");
 #endif
+    
+    knn_set_point(x[k].x, x[k].y);
+    
     for (int i=0; i<N; i++) { //for all dataset points
       //compute distance to x[k]
 #ifdef DEBUG
       timer_reset();
 #endif
-      unsigned int d = sq_dist(x[k], data[i]);
+      //unsigned int d = sq_dist(x[k], data[i]);
+     unsigned int d = knn_get_distance(data[i].x, data[i].y)
 #ifdef DEBUG
       t_distance[i]=timer_get_count();   
       t_distance_total+=t_distance[i];
