@@ -56,9 +56,9 @@ unsigned long long t_vote;
 
 //square distance between 2 points a and b
 unsigned int sq_dist( struct datum a, struct datum b) {
-  short X = a.x-b.x;
+  int X = a.x-b.x;
   unsigned int X2=X*X;
-  short Y = a.y-b.y;
+  int Y = a.y-b.y;
   unsigned int Y2=Y*Y;
   return (X2 + Y2);
 }
