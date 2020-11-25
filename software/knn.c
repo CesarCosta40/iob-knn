@@ -29,17 +29,15 @@
 //
 
 //labeled dataset
-struct datum {
-  short x;
-  short y;
-  unsigned char label;
-} data[N], x[M];
+datum data[N], x[M];
 
 //neighbor info
 struct neighbor {
   unsigned int idx; //index in dataset array
   unsigned int dist; //distance to test point
 } neighbor[K];
+
+unsigned int d[N];
 
 #ifdef DEBUG
 unsigned long long t_distance[N];
@@ -55,14 +53,14 @@ unsigned long long t_vote;
 //
 
 //square distance between 2 points a and b
-unsigned int sq_dist( struct datum a, struct datum b) {
+/*unsigned int sq_dist( struct datum a, struct datum b) {
   short X = a.x-b.x;
   unsigned int X2=X*X;
   short Y = a.y-b.y;
   unsigned int Y2=Y*Y;
   return (X2 + Y2);
 }
-
+*/
 //insert element in ordered array of neighbours
 void insert (struct neighbor element, unsigned int position) {
   for (int j=K-1; j>position; j--)
@@ -149,7 +147,9 @@ int main() {
     uart_printf("\n\nProcessing x[%d]:\n", k);
 #endif
 
-    //init all k neighbors infinite distance
+    knn_calculate_distances(N, &x[k], data, d);
+    
+    //init all k neighbors infinite distance 
     for (int j=0; j<K; j++)
       neighbor[j].dist = INFINITE;
 
@@ -157,7 +157,6 @@ int main() {
     uart_printf("Datum \tX \tY \tLabel \tDistance \tDistanceClks \tInsertClks\n");
 #endif
     
-    knn_set_point(x[k].x, x[k].y);
     
     for (int i=0; i<N; i++) { //for all dataset points
       //compute distance to x[k]
@@ -165,7 +164,7 @@ int main() {
       timer_reset();
 #endif
       //unsigned int d = sq_dist(x[k], data[i]);
-     unsigned int d = knn_get_distance(data[i].x, data[i].y);
+      //unsigned int d = knn_get_distance(data[i].x, data[i].y);
 #ifdef DEBUG
       t_distance[i]=timer_get_count();   
       t_distance_total+=t_distance[i];
@@ -173,8 +172,8 @@ int main() {
 #endif
       //insert in ordered list
       for (int j=0; j<K; j++)
-        if ( d < neighbor[j].dist ) {
-          insert( (struct neighbor){i,d}, j);
+        if ( d[i] < neighbor[j].dist ) {
+          insert( (struct neighbor){i,d[i]}, j);
           break;
         }
 
@@ -183,7 +182,7 @@ int main() {
       t_insert_total+=t_insert[i];
       timer_reset();
       //dataset
-      uart_printf("%d \t%d \t%d \t%d \t%d \t%d \t\t%d\n", i, data[i].x, data[i].y, data[i].label, d,  (unsigned int)t_distance[i], (unsigned int)t_insert[i]);
+      uart_printf("%d \t%d \t%d \t%d \t%d \t%d \t\t%d\n", i, data[i].x, data[i].y, data[i].label, d[i],  (unsigned int)t_distance[i], (unsigned int)t_insert[i]);
 #endif
 
     }
