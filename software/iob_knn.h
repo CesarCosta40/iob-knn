@@ -3,8 +3,7 @@
 //Structures
 
 typedef struct datum{
-  short x;
-  short y;
+  short p[2];
   unsigned char label;
 }datum;
 

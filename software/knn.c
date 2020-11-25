@@ -94,8 +94,8 @@ int main() {
   for (int i=0; i<N; i++) {
 
     //init coordinates
-    data[i].x = (short) cmwc_rand();
-    data[i].y = (short) cmwc_rand();
+    data[i].p[0] = (short) cmwc_rand();
+    data[i].p[1] = (short) cmwc_rand();
 
     //init label
     data[i].label = (unsigned char) (cmwc_rand()%C);
@@ -110,8 +110,8 @@ int main() {
 */
   //init test points
   for (int k=0; k<M; k++) {
-    x[k].x  = (short) cmwc_rand();
-    x[k].y  = (short) cmwc_rand();
+    x[k].p[0]  = (short) cmwc_rand();
+    x[k].p[1]  = (short) cmwc_rand();
     //x[k].label will be calculated by the algorithm
   }
 /*
@@ -182,7 +182,7 @@ int main() {
       t_insert_total+=t_insert[i];
       timer_reset();
       //dataset
-      uart_printf("%d \t%d \t%d \t%d \t%d \t%d \t\t%d\n", i, data[i].x, data[i].y, data[i].label, d[i],  (unsigned int)t_distance[i], (unsigned int)t_insert[i]);
+      uart_printf("%d \t%d \t%d \t%d \t%d \t%d \t\t%d\n", i, data[i].p[0], data[i].p[1], data[i].label, d[i],  (unsigned int)t_distance[i], (unsigned int)t_insert[i]);
 #endif
 
     }
@@ -212,14 +212,14 @@ int main() {
 
 #ifdef DEBUG
     t_vote = timer_get_count();   
-    uart_printf("\n\nNEIGHBORS of x[%d]=(%d, %d):\n", k, x[k].x, x[k].y);
+    uart_printf("\n\nNEIGHBORS of x[%d]=(%d, %d):\n", k, x[k].p[0], x[k].p[1]);
     uart_printf("K \tIdx \tX \tY \tDist \t\tLabel\n");
     for (int j=0; j<K; j++)
-      uart_printf("%d \t%d \t%d \t%d \t%d \t%d\n", j+1, neighbor[j].idx, data[neighbor[j].idx].x,  data[neighbor[j].idx].y, neighbor[j].dist,  data[neighbor[j].idx].label);
+      uart_printf("%d \t%d \t%d \t%d \t%d \t%d\n", j+1, neighbor[j].idx, data[neighbor[j].idx].p[0],  data[neighbor[j].idx].p[1], neighbor[j].dist,  data[neighbor[j].idx].label);
 
     uart_printf("\n\nCLASSIFICATION of x[%d]:\n", k);
     uart_printf("X \tY \tLabel\n");
-    uart_printf("%d \t%d \t%d\n", x[k].x, x[k].y, x[k].label);
+    uart_printf("%d \t%d \t%d\n", x[k].p[0], x[k].p[1], x[k].label);
     
     uart_printf("\nVotes took %d cycles\n", (unsigned int)t_vote);
 #endif
@@ -248,7 +248,7 @@ int main() {
   uart_printf("\n");
 
   for(int i = 0; i < M; i++){
-    uart_printf("X:%d\t\tY:%d\t\tLabel:%d\n", x[i].x, x[i].y, x[i].label);
+    uart_printf("X:%d\t\tY:%d\t\tLabel:%d\n", x[i].p[0], x[i].p[1], x[i].label);
 
   }
 }
