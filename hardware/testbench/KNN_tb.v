@@ -10,10 +10,10 @@ module knn_tb;
    `RESET(rst, 7, 10)
    
    `SIGNAL(DATA_IN, 32)
-   `SIGNAL_OUT(DATA0_OUT, 32)
-   `SIGNAL_OUT(DATA1_OUT, 32)
-   `SIGNAL_OUT(DATA2_OUT, 32)
-   `SIGNAL_OUT(DATA3_OUT, 32)
+   `SIGNAL_OUT(DATA0_OUT, 8)
+   `SIGNAL_OUT(DATA1_OUT, 8)
+   `SIGNAL_OUT(DATA2_OUT, 8)
+   `SIGNAL_OUT(DATA3_OUT, 8)
    `SIGNAL(ready, 1)
 
    integer i;
@@ -24,6 +24,7 @@ module knn_tb;
       $dumpvars();
 `endif
       ready=0;
+      DATA_IN=0;
       @(posedge rst);
       @(negedge rst);
 
@@ -33,9 +34,13 @@ module knn_tb;
         else
           ready=0;
          if (ready==1)
-          DATA_IN=$urandom%10000;
+          #1 DATA_IN=100-i;
+
+      
+
          @(posedge clk) #1
-         $display("%d : DATA_IN: %d --- DATA0_OUT : %d , DATA1_OUT : %d , DATA2_OUT : %d , DATA3_OUT : %d\n",ready, DATA_IN, DATA0_OUT, DATA1_OUT, DATA2_OUT, DATA3_OUT);
+         if (ready==1)
+         $display("DATA0_OUT : %d , DATA1_OUT : %d , DATA2_OUT : %d , DATA3_OUT : %d\n",DATA0_OUT, DATA1_OUT, DATA2_OUT, DATA3_OUT);
       end
 
       @(posedge clk) #100
@@ -58,7 +63,7 @@ module knn_tb;
       (
         .rst(rst),
         .clk(clk),
-        //.ready(ready),
+        .ready(ready),
         .DATA_IN(DATA_IN),
         .DATA0_OUT(DATA0_OUT),
         .DATA1_OUT(DATA1_OUT),

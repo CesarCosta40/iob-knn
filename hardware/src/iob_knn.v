@@ -27,34 +27,25 @@ module iob_knn
    `COMB write = | wstrb;
    
 
-   `SIGNAL(DATA_X1, DATA_W/2)
-   `SIGNAL(DATA_X2, DATA_W/2)
-   `SIGNAL(DATA_Y1, DATA_W/2)
-   `SIGNAL(DATA_Y2, DATA_W/2)
-
-   `COMB begin
-    DATA_Y1=DATA_1[DATA_W-1:DATA_W/2];
-    DATA_Y2=DATA_2[DATA_W-1:DATA_W/2];
-    DATA_X1=DATA_1[(DATA_W/2)-1:0];
-    DATA_X2=DATA_2[(DATA_W/2)-1:0];
-   end
-
 
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
    `SIGNAL_OUT(KNN_VALUE, 2*DATA_W)
-   dist_calc d0
+   sorter sorter0
    (
-    .DATA_X1(DATA_X1),
-    .DATA_X2(DATA_X2),
-    .DATA_Y1(DATA_Y1),
-    .DATA_Y2(DATA_Y2),
-    .DATA_OUT(DATA_OUT)
+     .rst(rst_int),
+     .clk(clk),
+     .ready(valid),
+     .done(DONE),
+     .DATA_IN(DATA_IN),
+     .DATA0_OUT(DATA0_OUT),
+     .DATA1_OUT(DATA1_OUT),
+     .DATA2_OUT(DATA2_OUT),
+     .DATA3_OUT(DATA3_OUT)
    );
 
-     
-
+    
 
    //ready signal
    `SIGNAL(ready_int, 1)
