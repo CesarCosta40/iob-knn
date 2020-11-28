@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 `include "iob_lib.vh"
 
-module dist_calc
+module sorter
   #(
     parameter W=32
     )
@@ -36,10 +36,10 @@ module dist_calc
    `SIGNAL2OUT(DATA3_OUT, DATA3_OUT_INT) 
    
 
-   `REG_RE(clk, rst, 32'Hffff , c0, DATA0_OUT_INT , DATA_IN)
-   `REG_RE(clk, rst, 32'Hffff , c1, DATA1_OUT_INT , DATA1_IN_INT)  
-   `REG_RE(clk, rst, 32'Hffff , c2, DATA2_OUT_INT , DATA2_IN_INT)
-   `REG_RE(clk, rst, 32'Hffff , c3, DATA3_OUT_INT , DATA3_IN_INT)
+   `REG_RE(clk, rst, 32'Hffffffff , c0, DATA0_OUT_INT , DATA_IN)
+   `REG_RE(clk, rst, 32'Hffffffff , c1, DATA1_OUT_INT , DATA1_IN_INT)  
+   `REG_RE(clk, rst, 32'Hffffffff , c2, DATA2_OUT_INT , DATA2_IN_INT)
+   `REG_RE(clk, rst, 32'Hffffffff , c3, DATA3_OUT_INT , DATA3_IN_INT)
 
    `COMB begin
 
@@ -74,7 +74,6 @@ module dist_calc
 	if(DATA_IN < DATA3_OUT_INT) c3=1;
 	else c3=0;
 	
-
-   end
+  end
 
 endmodule

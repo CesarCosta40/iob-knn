@@ -8,17 +8,13 @@ module knn_tb;
 
    `CLOCK(clk, PER)
    `RESET(rst, 7, 10)
-   `SIGNAL(KNN_ENABLE, 1)
-   `SIGNAL(KNN_DATA_IN, 32)
-
-   `SIGNAL(DATA_X1, 32)
-   `SIGNAL(DATA_X2, 32)
-   `SIGNAL(DATA_Y1, 32)
-   `SIGNAL(DATA_Y2, 32)
-
-   `SIGNAL_OUT(KNN_DATA_OUT, 32)
-
-   `SIGNAL_OUT(DATA_OUT, 32)
+   
+   `SIGNAL(DATA_IN, 32)
+   `SIGNAL_OUT(DATA0_OUT, 32)
+   `SIGNAL_OUT(DATA1_OUT, 32)
+   `SIGNAL_OUT(DATA2_OUT, 32)
+   `SIGNAL_OUT(DATA3_OUT, 32)
+   `SIGNAL(ready, 1)
 
    integer i;
 
@@ -27,27 +23,19 @@ module knn_tb;
       $dumpfile("knn.vcd");
       $dumpvars();
 `endif
-      KNN_ENABLE = 0;
-      KNN_DATA_IN = 0;
-
+      ready=0;
       @(posedge rst);
       @(negedge rst);
-      @(posedge clk) #1 KNN_ENABLE = 1;
-      @(posedge clk) #10 KNN_DATA_IN = 69;
 
-      if( KNN_DATA_OUT == 69)
-        $display("Test passed");
-      else
-        $display("Test failed: expecting knn value 69 but got %d", KNN_DATA_OUT);
-
-
-      for (i=1; i<10; i=i+1) begin
+      for (i=1; i<100; i=i+1) begin
+         if(i%5==0)
+          ready=1;
+        else
+          ready=0;
+         if (ready==1)
+          DATA_IN=$urandom%10000;
          @(posedge clk) #1
-         DATA_X1=i;
-         DATA_X2=i*2;
-         DATA_Y1=i;
-         DATA_Y2=i*2;
-         $display("%d -> DATA_X1: %d , DATA_X2: %d , Dist: %d",i, DATA_X1, DATA_X2, DATA_OUT);
+         $display("%d : DATA_IN: %d --- DATA0_OUT : %d , DATA1_OUT : %d , DATA2_OUT : %d , DATA3_OUT : %d\n",ready, DATA_IN, DATA0_OUT, DATA1_OUT, DATA2_OUT, DATA3_OUT);
       end
 
       @(posedge clk) #100
@@ -56,7 +44,7 @@ module knn_tb;
    end
 
    //instantiate knn core
-   knn_core knn0
+   /*knn_core knn0
      (
       .KNN_ENABLE(KNN_ENABLE),
       .KNN_DATA_IN(KNN_DATA_IN),
@@ -64,8 +52,22 @@ module knn_tb;
       .clk(clk),
       .rst(rst)
       );
-
-   dist_calc d0
+   */
+    
+   sorter sorter0
+      (
+        .rst(rst),
+        .clk(clk),
+        //.ready(ready),
+        .DATA_IN(DATA_IN),
+        .DATA0_OUT(DATA0_OUT),
+        .DATA1_OUT(DATA1_OUT),
+        .DATA2_OUT(DATA2_OUT),
+        .DATA3_OUT(DATA3_OUT)
+      );
+      
+      
+      /* dist_calc d0
    (
     .DATA_X1(DATA_X1),
     .DATA_X2(DATA_X2),
@@ -73,6 +75,6 @@ module knn_tb;
     .DATA_Y2(DATA_Y2),
     .DATA_OUT(DATA_OUT)
    );
-
+  */
 
 endmodule
