@@ -60,7 +60,7 @@ module sorter
   `REG_RE(clk, rst, 8'H00 , ready&c2&(!DONE), idx2_out , idx2_cnt_int)
   `REG_RE(clk, rst, 8'H00 , ready&c3&(!DONE), idx3_out , idx3_cnt_int)
 
-  `COUNTER_RE(clk, rst, ready&(!DONE), idx_cnt)
+  `COUNTER_ARE(clk, rst, ready, idx_cnt)
 
 
   `COMB begin
