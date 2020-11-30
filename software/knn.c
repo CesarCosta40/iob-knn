@@ -43,9 +43,6 @@ int main() {
 
   //start knn here
 
-  //read current timer count, compute elapsed time
-  //elapsed  = timer_get_count();
-  //elapsedu = timer_time_us();
   //init timer and knn periph
   timer_init(TIMER_BASE);
   knn_init(KNN_BASE);
@@ -82,7 +79,7 @@ int main() {
     }
     get_neighbours(v_neighbor);
     //classify test point
-    get_teste_point_class(votes_acc);
+    get_teste_point_class(votes_acc, k);
   } //all test points classified
 
   //stop knn here
@@ -152,7 +149,7 @@ void init(void){
     #endif
 }
 
-void get_teste_point_class(int32_t *votes_acc){
+void get_teste_point_class(int32_t *votes_acc, int32_t k){
   //clear all votes
   int32_t votes[C] = {0};
   int32_t best_votation = 0;

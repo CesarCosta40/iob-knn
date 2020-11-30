@@ -25,7 +25,7 @@ module iob_knn
    //write signal
    `SIGNAL(write, 1)
    `COMB write = | wstrb;
-   
+
 
 
    //
@@ -37,15 +37,16 @@ module iob_knn
      .rst(rst_int),
      .clk(clk),
      .ready(valid),
-     .done(DONE),
-     .DATA_IN(DATA_IN),
-     .DATA0_OUT(DATA0_OUT),
-     .DATA1_OUT(DATA1_OUT),
-     .DATA2_OUT(DATA2_OUT),
-     .DATA3_OUT(DATA3_OUT)
+     .DONE(DONE),
+     .SEL(SEL),
+     .DATA_IN(DATA_X1),
+     .DATA_IN(DATA_Y1),
+     .DATA_IN(DATA_X2),
+     .DATA_IN(DATA_Y2),
+     .DATA_OUT(DATA_OUT),
    );
 
-    
+
 
    //ready signal
    `SIGNAL(ready_int, 1)

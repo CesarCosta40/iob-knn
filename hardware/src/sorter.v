@@ -9,7 +9,7 @@ module sorter
   `INPUT(rst,1),
   `INPUT(clk,1),
   `INPUT(ready,1),
-  `INPUT(done, 1),
+  `INPUT(DONE, 1),
   `INPUT(SEL, 2),
   input signed [(W/2)-1:0] DATA_X1,//`INPUT(DATA_X1,W/2),
   input signed [(W/2)-1:0] DATA_X2,//`INPUT(DATA_X2,W/2),
@@ -57,10 +57,10 @@ module sorter
   `REG_RE(clk, rst, 32'Hffffffff , ready&c2, DATA2_OUT_INT , DATA2_IN_INT)
   `REG_RE(clk, rst, 32'Hffffffff , ready&c3, DATA3_OUT_INT , DATA3_IN_INT)
 
-  `REG_RE(clk, rst, 8'H00 , ready&c0&(!done), idx0_out , idx_cnt)
-  `REG_RE(clk, rst, 8'H00 , ready&c1&(!done), idx1_out , idx1_cnt_int)
-  `REG_RE(clk, rst, 8'H00 , ready&c2&(!done), idx2_out , idx2_cnt_int)
-  `REG_RE(clk, rst, 8'H00 , ready&c3&(!done), idx3_out , idx3_cnt_int)
+  `REG_RE(clk, rst, 8'H00 , ready&c0&(!DONE), idx0_out , idx_cnt)
+  `REG_RE(clk, rst, 8'H00 , ready&c1&(!DONE), idx1_out , idx1_cnt_int)
+  `REG_RE(clk, rst, 8'H00 , ready&c2&(!DONE), idx2_out , idx2_cnt_int)
+  `REG_RE(clk, rst, 8'H00 , ready&c3&(!DONE), idx3_out , idx3_cnt_int)
 
   `COUNTER_ARE(clk, rst, ready, idx_cnt)
 

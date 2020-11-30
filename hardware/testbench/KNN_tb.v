@@ -4,82 +4,71 @@
 
 module knn_tb;
 
-   localparam PER=10;
+  localparam PER=10;
 
-   `CLOCK(clk, PER)
-   `RESET(rst, 7, 10)
-   
-   `SIGNAL(DATA_IN, 32)
-   `SIGNAL_OUT(DATA0_OUT, 8)
-   `SIGNAL_OUT(DATA1_OUT, 8)
-   `SIGNAL_OUT(DATA2_OUT, 8)
-   `SIGNAL_OUT(DATA3_OUT, 8)
-   `SIGNAL(ready, 1)
+  `CLOCK(clk, PER)
+  `RESET(rst, 7, 10)
 
-   integer i;
+  `SIGNAL(DATA_X1, 16)
+  `SIGNAL(DATA_Y1, 16)
+  `SIGNAL(DATA_X2, 16)
+  `SIGNAL(DATA_Y2, 16)
+  `SIGNAL_OUT(DATA_OUT, 8)
+  `SIGNAL(ready, 1)
 
-   initial begin
-`ifdef VCD
-      $dumpfile("knn.vcd");
-      $dumpvars();
-`endif
-      ready=0;
-      DATA_IN=0;
-      @(posedge rst);
-      @(negedge rst);
+  integer i;
+  integer k;
 
-      for (i=1; i<100; i=i+1) begin
-         if(i%5==0)
-          ready=1;
-        else
-          ready=0;
-         if (ready==1)
-          #1 DATA_IN=100-i;
+  initial begin
+    `ifdef VCD
+          $dumpfile("knn.vcd");
+          $dumpvars();
+    `endif
+    ready=0;
+    DATA_X1=0;
+    DATA_Y1=0;
+    @(posedge rst);
+    @(negedge rst);
 
-      
-
-         @(posedge clk) #1
-         if (ready==1)
-         $display("DATA0_OUT : %d , DATA1_OUT : %d , DATA2_OUT : %d , DATA3_OUT : %d\n",DATA0_OUT, DATA1_OUT, DATA2_OUT, DATA3_OUT);
+    for (i=1; i<100; i=i+1) begin
+      if(i%5==0)
+        ready=1;
+      else
+        ready=0;
+      if (ready==1)begin
+        #1 DATA_X2 = 100-i;
+        DATA_Y2 = 100-i;
       end
 
-      @(posedge clk) #100
 
-      $finish;
-   end
 
-   //instantiate knn core
-   /*knn_core knn0
-     (
-      .KNN_ENABLE(KNN_ENABLE),
-      .KNN_DATA_IN(KNN_DATA_IN),
-      .KNN_DATA_OUT(KNN_DATA_OUT),
-      .clk(clk),
-      .rst(rst)
-      );
-   */
-    
-   sorter sorter0
-      (
-        .rst(rst),
-        .clk(clk),
-        .ready(ready),
-        .DATA_IN(DATA_IN),
-        .DATA0_OUT(DATA0_OUT),
-        .DATA1_OUT(DATA1_OUT),
-        .DATA2_OUT(DATA2_OUT),
-        .DATA3_OUT(DATA3_OUT)
-      );
-      
-      
-      /* dist_calc d0
-   (
-    .DATA_X1(DATA_X1),
-    .DATA_X2(DATA_X2),
-    .DATA_Y1(DATA_Y1),
-    .DATA_Y2(DATA_Y2),
-    .DATA_OUT(DATA_OUT)
-   );
-  */
+      @(posedge clk) #1
+      if (ready==1)begin
+        for (k=0; k<4; k=k+1) begin
+          SEL = k;
+          $display("DATA_OUT : %d\n",DATA_OUT);
+        end
+      end
+    end
+
+    @(posedge clk) #100
+
+    $finish;
+  end
+
+  sorter sorter0
+  (
+     .rst(rst_int),
+     .clk(clk),
+     .ready(valid),
+     .DONE(DONE),
+     .SEL(SEL),
+     .DATA_IN(DATA_X1),
+     .DATA_IN(DATA_Y1),
+     .DATA_IN(DATA_X2),
+     .DATA_IN(DATA_Y2),
+     .DATA_OUT(DATA_OUT),
+  );
+
 
 endmodule

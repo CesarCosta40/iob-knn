@@ -28,7 +28,7 @@ void send_point(int16_t x_dataset_point, int16_t y_dataset_point){
 void get_neighbours(neighbor *v_neighbor) {
   IO_SET(base, DONE, 1);
   for(uint8_t i = 0; i<K; i++){
-    IO_SET(base, SET, i);
+    IO_SET(base, SEL, i);
     v_neighbor[i].idx=IO_GET(base, DATA_OUT);
   }
 }
