@@ -1,25 +1,43 @@
 #pragma once
+#include <stdint.h>
 
-//Structures
+//uncomment to use rand from C lib
+//#define cmwc_rand rand
 
+#ifdef DEBUG //type make DEBUG=1 to print debug info
+#define S 12  //random seed
+#define N 8  //data set size
+#define K 4   //number of neighbours (K)
+#define C 4   //number data classes
+#define M 2   //number samples to be classified
+#else
+#define S 1
+#define N 60
+#define K 10
+#define C 4
+#define M 20
+#endif
+
+#define INFINITE ~0
+
+//Data structures
 typedef struct datum{
-  short x;
-  short y;
+  int16_t x;
+  int16_t y;
   unsigned char label;
 }datum;
 
 typedef struct neighbor {
-  unsigned int idx; //index in dataset array
-  unsigned int dist; //distance to test point
+  uint32_t idx; //index in dataset array
+  uint32_t dist; //distance to test point
 } neighbor;
 
-
-//Functions
-void knn_reset();
-//void knn_set_point(short x1, short y1);
-void knn_init( int base_address);	
-//unsigned int knn_get_distance(short x2, short y2);
-//void knn_calculate_distances(int n, datum* x, datum* data, unsigned int* d); 
-void knn_send_distance(unsigned int d);
-void knn_get_neighbors(neighbor*);
-
+//Functions in main file
+void init(void);
+void get_teste_point_class(int32_t votes_acc);
+//Functions that comunicate with perifral
+void knn_reset(void);
+void knn_init(int32_t);
+void knn_set_point(int16_t, int16_t);
+void send_point(int16_t, int16_t)
+void get_neighbours(neighbor);
