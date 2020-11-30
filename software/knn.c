@@ -58,18 +58,14 @@ int main() {
         uart_printf("\n\nProcessing x[%d]:\n", k);
     #endif
 
+    knn_reset();
     knn_set_point(x[k].x, x[k].y);
     //knn_calculate_distances(N, &x[k], data, d);
-
-    //init all k neighbors infinite distance
-    for (int32_t j=0; j<K; j++)
-      v_neighbor[j].dist = INFINITE;
 
     #ifdef DEBUG
         uart_printf("Datum \tX \tY \tLabel \tDistanceClks \tInsertClks\n");
     #endif
 
-    knn_reset();
     for (int32_t i=0; i<N; i++) { //for all dataset points
       //compute distance to x[k]
       #ifdef DEBUG
