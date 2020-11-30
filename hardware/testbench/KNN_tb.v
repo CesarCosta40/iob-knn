@@ -55,8 +55,12 @@ module knn_tb;
         @(posedge clk);
       end
       $display("\n");
-      SEL = 0;
-      #1 DONE = 0;
+      DONE = 0;
+
+      begin
+        #1 rst=1;
+        #10 rst=0;
+      end
 
     end
     @(posedge clk) #1
