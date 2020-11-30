@@ -10,12 +10,12 @@ module sorter
   `INPUT(clk,1),
   `INPUT(ready,1),
   `INPUT(DONE, 1),
-  `INPUT(SEL, 2),
-  `INPUT(DATA_X1,W/2),
-  `INPUT(DATA_X2,W/2),
-  `INPUT(DATA_Y1,W/2),
-  `INPUT(DATA_Y2,W/2),
-  `OUTPUT(DATA_OUT,W/4)
+  input [1:0] SEL,
+  input signed [W/2-1:0] DATA_X1,
+  input signed [W/2-1:0] DATA_X2,
+  input signed [W/2-1:0] DATA_Y1,
+  input signed [W/2-1:0] DATA_Y2,
+  output [W/4-1:0] DATA_OUT
   );
 
   //distancia

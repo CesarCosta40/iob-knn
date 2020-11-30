@@ -9,12 +9,14 @@ module knn_tb;
   `CLOCK(clk, PER)
   `RESET(rst, 7, 10)
 
-  `SIGNAL(DATA_X1, 16)
-  `SIGNAL(DATA_Y1, 16)
-  `SIGNAL(DATA_X2, 16)
-  `SIGNAL(DATA_Y2, 16)
+  `SIGNAL_SIGNED(DATA_X1, 16)
+  `SIGNAL_SIGNED(DATA_Y1, 16)
+  `SIGNAL_SIGNED(DATA_X2, 16)
+  `SIGNAL_SIGNED(DATA_Y2, 16)
   `SIGNAL_OUT(DATA_OUT, 8)
   `SIGNAL(ready, 1)
+  `SIGNAL(DONE, 1)
+  `SIGNAL(SEL, 2)
 
   integer i;
   integer k;
@@ -24,9 +26,11 @@ module knn_tb;
           $dumpfile("knn.vcd");
           $dumpvars();
     `endif
-    ready=0;
-    DATA_X1=0;
-    DATA_Y1=0;
+    DONE = 0;
+    SEL = 0;
+    ready = 0;
+    DATA_X1 = 0;
+    DATA_Y1 = 0;
     @(posedge rst);
     @(negedge rst);
 
@@ -36,20 +40,18 @@ module knn_tb;
       else
         ready=0;
       if (ready==1)begin
-        #1 DATA_X2 = 100-i;
-        DATA_Y2 = 100-i;
+        DATA_X2 = $random%20;
+        DATA_Y2 = $random%20;
       end
-
-
-
-      @(posedge clk) #1
-      if (ready==1)begin
-        for (k=0; k<4; k=k+1) begin
-          SEL = k;
-          $display("DATA_OUT : %d\n",DATA_OUT);
-        end
-      end
+      @(posedge clk);
     end
+    DONE = 1;
+    for (k=0; k<4; k=k+1) begin
+      SEL = k;
+      #1 $display("Final REG %d -> DATA_OUT : %d\t", k, DATA_OUT);
+      @(posedge clk);
+    end
+    $display("\n");
 
     @(posedge clk) #100
 
@@ -58,9 +60,9 @@ module knn_tb;
 
   sorter sorter0
   (
-    .rst(rst_int),
+    .rst(rst),
     .clk(clk),
-    .ready(valid),
+    .ready(ready),
     .DONE(DONE),
     .SEL(SEL),
     .DATA_X1(DATA_X1),
