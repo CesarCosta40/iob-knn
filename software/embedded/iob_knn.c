@@ -31,4 +31,6 @@ void get_neighbours(neighbor *v_neighbor) {
     IO_SET(base, SEL, i);
     v_neighbor[i].idx=IO_GET(base, DATA_OUT);
   }
+  IO_SET(base, DONE, 0);
+  IO_SET(base, SEL, 0);
 }
