@@ -66,16 +66,19 @@ int main() {
       v_neighbor[j].dist = INFINITE;
 
     #ifdef DEBUG
-        uart_printf("Datum \tX \tY \tLabel \tDistance \tDistanceClks \tInsertClks\n");
+        uart_printf("Datum \tX \tY \tLabel \tDistanceClks \tInsertClks\n");
     #endif
 
     knn_reset();
     for (int32_t i=0; i<N; i++) { //for all dataset points
       //compute distance to x[k]
-      /*#ifdef DEBUG
+      #ifdef DEBUG
         timer_reset();
-      #endif*/
+      #endif
       send_point(data[i].x, data[i].y);
+      #ifdef DEBUG
+          uart_printf("Datum \t%d \t%d \t%d \t%d \t%d\n", (uint32_t)data[i].x, (uint32_t)data[i].y, (uint32_t)data[i].label, (uint32_t)t_distance[i], (uint32_t)t_insert[i]);
+      #endif
     }
     get_neighbours(v_neighbor);
     //classify test point

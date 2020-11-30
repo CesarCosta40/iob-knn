@@ -24,7 +24,7 @@
 typedef struct datum{
   int16_t x;
   int16_t y;
-  unsigned char label;
+  uint8_t label;
 }datum;
 
 typedef struct neighbor {
