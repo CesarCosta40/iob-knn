@@ -34,10 +34,10 @@ typedef struct neighbor {
 
 //Functions in main file
 void init(void);
-void get_teste_point_class(int32_t votes_acc);
+void get_teste_point_class(int32_t *votes_acc);
 //Functions that comunicate with perifral
 void knn_reset(void);
 void knn_init(int32_t);
 void knn_set_point(int16_t, int16_t);
 void send_point(int16_t, int16_t)
-void get_neighbours(neighbor);
+void get_neighbours(neighbor *);
