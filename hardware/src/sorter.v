@@ -11,14 +11,11 @@ module sorter
   `INPUT(ready,1),
   `INPUT(DONE, 1),
   `INPUT(SEL, 2),
-  input signed [(W/2)-1:0] DATA_X1,//`INPUT(DATA_X1,W/2),
-  input signed [(W/2)-1:0] DATA_X2,//`INPUT(DATA_X2,W/2),
-  input signed [(W/2)-1:0] DATA_Y1,//`INPUT(DATA_Y1,W/2),
-  input signed [(W/2)-1:0] DATA_Y2,//`INPUT(DATA_Y2,W/2),
-  `OUTPUT(DATA0_OUT,W/4),
-  `OUTPUT(DATA1_OUT,W/4),
-  `OUTPUT(DATA2_OUT,W/4),
-  `OUTPUT(DATA3_OUT,W/4)
+  `INPUT(DATA_X1,W/2),
+  `INPUT(DATA_X2,W/2),
+  `INPUT(DATA_Y1,W/2),
+  `INPUT(DATA_Y2,W/2),
+  `OUTPUT(DATA_OUT,W/4)
   );
 
   //distancia
@@ -35,6 +32,7 @@ module sorter
   `SIGNAL(DATA1_IN_INT, W)
   `SIGNAL(DATA2_IN_INT, W)
   `SIGNAL(DATA3_IN_INT, W)
+  `SIGNAL(idx_out, W/4)
   `SIGNAL(idx0_out, W/4)
   `SIGNAL(idx1_out, W/4)
   `SIGNAL(idx2_out, W/4)

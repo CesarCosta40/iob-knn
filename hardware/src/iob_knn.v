@@ -39,11 +39,11 @@ module iob_knn
      .ready(valid),
      .DONE(DONE),
      .SEL(SEL),
-     .DATA_IN(DATA_X1),
-     .DATA_IN(DATA_Y1),
-     .DATA_IN(DATA_X2),
-     .DATA_IN(DATA_Y2),
-     .DATA_OUT(DATA_OUT),
+     .DATA_X1(DATA_X1),
+     .DATA_Y1(DATA_Y1),
+     .DATA_X2(DATA_X2),
+     .DATA_Y2(DATA_Y2),
+     .DATA_OUT(DATA_OUT)
    );
 
 
