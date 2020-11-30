@@ -79,7 +79,6 @@ int main() {
       #endif
     }
     knn_get_neighbours(v_neighbor);
-    knn_reset();
     //classify test point
     get_teste_point_class(votes_acc, k);
   } //all test points classified
@@ -89,14 +88,8 @@ int main() {
   #ifdef DEBUG
     elapsed = timer_get_count();
     elapsedu = timer_time_us();
-    uart_printf("\nExecution time: %dus (%d cycles @%dMHz)\n\n", elapsedu, (uint32_t)elapsed, FREQ/1000000);
-    uart_printf("\nDistance cycles: %d\n\nInsert cycles: %d\n", (uint32_t)t_distance_total, (uint32_t)t_insert_total);
-  #endif
-
-  #ifndef DEBUG
-    elapsed = timer_get_count();
-    elapsedu = timer_time_us();
-    uart_printf("\nExecution time: %dus (%d cycles @%dMHz)\n\n", elapsedu, (uint32_t)elapsed, FREQ/1000000);
+    uart_printf("\nExecution time: %dus (%d cycles @%dMHz)\n", elapsedu, (uint32_t)elapsed, FREQ/1000000);
+    uart_printf("\nDistance cycles: %d\nInsert cycles: %d\n\n", (uint32_t)t_distance_total, (uint32_t)t_insert_total);
   #endif
 
 
@@ -116,8 +109,6 @@ int main() {
 void init(void){
     //init uart
     uart_init(UART_BASE, FREQ/BAUD);
-    //uart_printf("\nInit timer\n");
-    //uart_txwait();
 
     //generate random seed
     random_init(S);
@@ -130,29 +121,20 @@ void init(void){
       //init label
       data[i].label = (unsigned char) (cmwc_rand()%C);
     }
-    /*
-    #ifdef DEBUG
-      uart_printf("\n\n\nDATASET\n");
-      uart_printf("Idx \tX \tY \tLabel\n");
-      for (int32_t i=0; i<N; i++)
-        uart_printf("%d \t%d \t%d \t%d\n", i, data[i].x,  data[i].y, data[i].label);
-    #endif
-    */
-    
+
     //init test points
     for (int32_t k=0; k<M; k++) {
       x[k].x  = (int16_t) cmwc_rand();
       x[k].y  = (int16_t) cmwc_rand();
       //x[k].label will be calculated by the algorithm
     }
-    /*
     #ifdef DEBUG
       uart_printf("\n\nTEST POINTS\n");
       uart_printf("Idx \tX \tY\n");
       for (int32_t k=0; k<M; k++)
         uart_printf("%d \t%d \t%d\n", k, x[k].x, x[k].y);
     #endif
-    */
+
 }
 
 void get_teste_point_class(int32_t *votes_acc, int32_t k){

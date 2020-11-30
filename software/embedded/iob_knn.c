@@ -8,6 +8,7 @@ static int32_t base;
 void knn_reset(){
   IO_SET(base, KNN_RESET, 1);
   IO_SET(base, KNN_RESET, 0);
+  IO_SET(base, DONE, 0);
 }
 
 void knn_init(int32_t base_address){
@@ -29,8 +30,7 @@ void knn_get_neighbours(neighbor *v_neighbor) {
   IO_SET(base, DONE, 1);
   for(uint32_t i = 0; i<K; i++){
     IO_SET(base, SEL, i);
-    v_neighbor[i].idx=IO_GET(base, DATA_OUT)-1;
+    v_neighbor[i].idx=IO_GET(base, DATA_OUT);
   }
-  IO_SET(base, DONE, 0);
-  IO_SET(base, SEL, 0);
+  knn_reset();
 }

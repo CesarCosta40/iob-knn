@@ -1,5 +1,5 @@
 $date
-	Mon Nov 30 21:37:12 2020
+	Mon Nov 30 22:27:21 2020
 $end
 $version
 	Icarus Verilog
@@ -8,13 +8,13 @@ $timescale
 	1ps
 $end
 $scope module iob_knn $end
-$var wire 3 ! address [2:0] $end
+$var wire 4 ! address [3:0] $end
 $var wire 1 " clk $end
 $var wire 32 # rdata [31:0] $end
 $var wire 1 $ ready $end
 $var wire 1 % rst $end
 $var wire 1 & valid $end
-$var wire 32 ' wdata [31:0] $end
+$var wire 8 ' wdata [7:0] $end
 $var wire 4 ( wstrb [3:0] $end
 $var wire 8 ) DATA_OUT [7:0] $end
 $var reg 16 * DATA_X1 [15:0] $end
