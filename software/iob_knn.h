@@ -13,7 +13,7 @@
 #else
 #define S 1
 #define N 60
-#define K 10
+#define K 4
 #define C 4
 #define M 20
 #endif

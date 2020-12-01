@@ -26,8 +26,6 @@ module iob_knn
    `SIGNAL(write, 1)
    `COMB write = | wstrb;
 
-
-
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
@@ -36,7 +34,7 @@ module iob_knn
    (
      .rst(rst_int),
      .clk(clk),
-     .ready(valid),
+     .valid(valid),
      .DONE(DONE),
      .SEL(SEL),
      .DATA_X1(DATA_X1),

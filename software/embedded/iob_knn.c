@@ -6,9 +6,9 @@
 static int32_t base;
 
 void knn_reset(){
+  IO_SET(base, DONE, 1);
   IO_SET(base, KNN_RESET, 1);
   IO_SET(base, KNN_RESET, 0);
-  IO_SET(base, DONE, 0);
 }
 
 void knn_init(int32_t base_address){
@@ -19,6 +19,7 @@ void knn_init(int32_t base_address){
 void knn_set_test_point(int16_t x_test_point, int16_t y_test_point){
   IO_SET(base, DATA_X1, x_test_point);
   IO_SET(base, DATA_Y1, y_test_point);
+  IO_SET(base, DONE, 0);
 }
 
 void knn_send_dataset_point(int16_t x_dataset_point, int16_t y_dataset_point){

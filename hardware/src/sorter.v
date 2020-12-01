@@ -8,7 +8,7 @@ module sorter
   (
   `INPUT(rst,1),
   `INPUT(clk,1),
-  `INPUT(ready,1),
+  `INPUT(valid,1),
   `INPUT(DONE, 1),
   input [1:0] SEL,
   input signed [W/2-1:0] DATA_X1,
@@ -45,22 +45,27 @@ module sorter
   `SIGNAL(idx1_cnt_int, W/4)
   `SIGNAL(idx2_cnt_int, W/4)
   `SIGNAL(idx3_cnt_int, W/4)
-
+  `SIGNAL(valid_cnt, 2)
+  `SIGNAL(ready, 1)
 
   `SIGNAL2OUT(DATA_OUT, idx_out) //connect internal result to output
 
 
-  `REG_RE(clk, rst, 32'Hffffffff , ready&c0, DATA0_OUT_INT , DIST)
-  `REG_RE(clk, rst, 32'Hffffffff , ready&c1, DATA1_OUT_INT , DATA1_IN_INT)
-  `REG_RE(clk, rst, 32'Hffffffff , ready&c2, DATA2_OUT_INT , DATA2_IN_INT)
-  `REG_RE(clk, rst, 32'Hffffffff , ready&c3, DATA3_OUT_INT , DATA3_IN_INT)
+  `REG_ARE(clk, rst, 0, (valid&(!DONE))|ready, valid_cnt, ready==1? !1: valid_cnt+1)//Ready signal is once every two valids
+
+  `REG_ARE(clk, rst, 0, !DONE, ready, ready==1? !1: valid_cnt[1:1])
+
+  `REG_RE(clk, rst, 32'Hffffffff , ready&c0&(!DONE), DATA0_OUT_INT , DIST)
+  `REG_RE(clk, rst, 32'Hffffffff , ready&c1&(!DONE), DATA1_OUT_INT , DATA1_IN_INT)
+  `REG_RE(clk, rst, 32'Hffffffff , ready&c2&(!DONE), DATA2_OUT_INT , DATA2_IN_INT)
+  `REG_RE(clk, rst, 32'Hffffffff , ready&c3&(!DONE), DATA3_OUT_INT , DATA3_IN_INT)
 
   `REG_RE(clk, rst, 8'H00 , ready&c0&(!DONE), idx0_out , idx_cnt)
   `REG_RE(clk, rst, 8'H00 , ready&c1&(!DONE), idx1_out , idx1_cnt_int)
   `REG_RE(clk, rst, 8'H00 , ready&c2&(!DONE), idx2_out , idx2_cnt_int)
   `REG_RE(clk, rst, 8'H00 , ready&c3&(!DONE), idx3_out , idx3_cnt_int)
 
-  `COUNTER_ARE(clk, rst, ready, idx_cnt)
+  `COUNTER_ARE(clk, rst, ready&(!DONE), idx_cnt)
 
 
   `COMB begin

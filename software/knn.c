@@ -92,7 +92,10 @@ int main() {
     uart_printf("\nDistance cycles: %d\nInsert cycles: %d\n\n", (uint32_t)t_distance_total, (uint32_t)t_insert_total);
   #endif
 
-
+    elapsed = timer_get_count();
+    elapsedu = timer_time_us();
+    uart_printf("\nExecution time: %dus (%d cycles @%dMHz)\n", elapsedu, (uint32_t)elapsed, FREQ/1000000);
+  uart_printf("\n");
   //print classification distribution to check for statistical bias
   for (int32_t l=0; l<C; l++)
     uart_printf("%d ", votes_acc[l]);
