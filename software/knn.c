@@ -58,7 +58,8 @@ int main() {
         uart_printf("\n\nProcessing x[%d]:\n", k);
     #endif
 
-    knn_set_test_point(x[k].x, x[k].y);
+    int32_t a = *(int32_t*)(&x[k].x);
+    knn_set_test_point(a);
     //knn_calculate_distances(N, &x[k], data, d);
     //init all k neighbors infinite distance
     for (int j=0; j<K; j++)
@@ -73,7 +74,8 @@ int main() {
       #ifdef DEBUG
         timer_reset();
       #endif
-      knn_send_dataset_point(data[i].x, data[i].y);
+      int32_t a = *(int32_t*)(&data[i].x));
+      knn_send_dataset_point(a);
       #ifdef DEBUG
           uart_printf("Datum \t%d \t%d \t%d \t%d \t%d\n", (uint32_t)data[i].x, (uint32_t)data[i].y, (uint32_t)data[i].label, (uint32_t)t_distance[i], (uint32_t)t_insert[i]);
       #endif

@@ -38,6 +38,6 @@ void get_teste_point_class(int32_t *, int32_t);
 //Functions that comunicate with perifral
 void knn_reset(void);
 void knn_init(int32_t);
-void knn_set_test_point(int16_t, int16_t);
-void knn_send_dataset_point(int16_t, int16_t);
+void knn_set_test_point(int32_t);
+void knn_send_dataset_point(int32_t);
 void knn_get_neighbours(neighbor *);
