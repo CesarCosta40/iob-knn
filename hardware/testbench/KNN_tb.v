@@ -9,6 +9,8 @@ module knn_tb;
   `CLOCK(clk, PER)
   `RESET(rst, 7, 10)
 
+  `SIGNAL(DATA_1, 32)
+  `SIGNAL(DATA_2, 32)
   `SIGNAL_SIGNED(DATA_X1, 16)
   `SIGNAL_SIGNED(DATA_Y1, 16)
   `SIGNAL_SIGNED(DATA_X2, 16)
@@ -32,6 +34,7 @@ module knn_tb;
     ready = 0;
     DATA_X1 = 0;
     DATA_Y1 = 0;
+    assign DATA_1 = {DATA_X1, DATA_Y1};
 
     @(posedge rst);
     @(negedge rst);
@@ -45,6 +48,7 @@ module knn_tb;
         if (ready==1)begin
           DATA_X2 = $random%20;
           DATA_Y2 = $random%20;
+          assign DATA_2 = {DATA_X2, DATA_Y2};
         end
         @(posedge clk);
       end
@@ -76,10 +80,8 @@ module knn_tb;
     .ready(ready),
     .DONE(DONE),
     .SEL(SEL),
-    .DATA_X1(DATA_X1),
-    .DATA_Y1(DATA_Y1),
-    .DATA_X2(DATA_X2),
-    .DATA_Y2(DATA_Y2),
+    .DATA_1(DATA_1),
+    .DATA_2(DATA_2),
     .DATA_OUT(DATA_OUT)
   );
 endmodule

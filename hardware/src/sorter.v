@@ -11,13 +11,14 @@ module sorter
   `INPUT(ready,1),
   `INPUT(DONE, 1),
   input [1:0] SEL,
-  input signed [W/2-1:0] DATA_X1,
-  input signed [W/2-1:0] DATA_X2,
-  input signed [W/2-1:0] DATA_Y1,
-  input signed [W/2-1:0] DATA_Y2,
+  input [W-1:0] DATA_1,
+  input [W-1:0] DATA_2,
   output [W/4-1:0] DATA_OUT
   );
-
+  `SIGNAL_SIGNED(DATA_X1, W/2)
+  `SIGNAL_SIGNED(DATA_Y1, W/2)
+  `SIGNAL_SIGNED(DATA_X2, W/2)
+  `SIGNAL_SIGNED(DATA_Y2, W/2)
   //distancia
   `SIGNAL_SIGNED(sub1, W)
   `SIGNAL_SIGNED(sub2, W)
@@ -62,6 +63,14 @@ module sorter
 
   `COUNTER_ARE(clk, rst, ready, idx_cnt)
 
+
+
+  `COMB begin
+    DATA_X1=DATA_1[W-1:W/2];
+    DATA_Y1=DATA_1[W/2-1:0];
+    DATA_X2=DATA_2[W-1:W/2];
+    DATA_Y2=DATA_2[W/2-1:0];
+  end
 
   `COMB begin
     sub1 = DATA_X1 - DATA_X2;
