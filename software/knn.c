@@ -74,7 +74,7 @@ int main() {
       #ifdef DEBUG
         timer_reset();
       #endif
-      int32_t a = *(int32_t*)(&data[i].x));
+      int32_t a = *(int32_t*)(&data[i].x);
       knn_send_dataset_point(a);
       #ifdef DEBUG
           uart_printf("Datum \t%d \t%d \t%d \t%d \t%d\n", (uint32_t)data[i].x, (uint32_t)data[i].y, (uint32_t)data[i].label, (uint32_t)t_distance[i], (uint32_t)t_insert[i]);

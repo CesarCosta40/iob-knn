@@ -15,7 +15,7 @@ void knn_init(int32_t base_address){
   knn_reset();
 }
 
-void knn_set_test_point(int32_t test_point){
+void knn_set_test_point(uint32_t test_point){
   IO_SET(base, DATA_1, test_point);
 }
 
