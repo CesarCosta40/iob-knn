@@ -29,7 +29,6 @@ module iob_knn
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
-   `SIGNAL_OUT(KNN_VALUE, 2*DATA_W)
    sorter sorter0
    (
      .rst(rst_int),
@@ -37,14 +36,13 @@ module iob_knn
      .valid(valid),
      .DONE(DONE),
      .SEL(SEL),
-     .DATA_X1(DATA_X1),
-     .DATA_Y1(DATA_Y1),
-     .DATA_X2(DATA_X2),
-     .DATA_Y2(DATA_Y2),
-     .DATA_OUT(DATA_OUT)
+     .DATA_OUT(DATA_OUT),
+    .DATA_X1(DATA_X1),
+    .DATA_X2(DATA_X2),
+    .DATA_Y1(DATA_Y1),
+    .DATA_Y2(DATA_Y2)
    );
-
-
+  
 
    //ready signal
    `SIGNAL(ready_int, 1)

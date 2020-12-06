@@ -6,16 +6,16 @@
 #include "random.h" //random generator for bare metal
 
 
+#define HW_K 10
+
 //labeled dataset
 datum data[N], x[M];
 
 //neighbor info
-neighbor v_neighbor[K];
+uint32_t v_neighbor[K];
 
 
 #ifdef DEBUG
-unsigned long long t_distance[N];
-unsigned long long t_insert[N];
 unsigned long long t_distance_total;
 unsigned long long t_insert_total;
 unsigned long long t_vote;
@@ -53,44 +53,25 @@ int main() {
   #endif
 
   for (int32_t k=0; k<M; k++) { //for all test points
+    
+    #ifdef DEBUG
+      uart_printf("\n\nProcessing x[%d]:\n", k);
+      uart_printf("Datum \tX \tY \tLabel \n");
+    #endif
+ 
     //compute distances to dataset points
+    knn_get_neighbours(v_neighbor, data, x, k, HW_K);
     #ifdef DEBUG
-        uart_printf("\n\nProcessing x[%d]:\n", k);
-    #endif
-
-    knn_set_test_point(x[k].x, x[k].y);
-    //knn_calculate_distances(N, &x[k], data, d);
-    //init all k neighbors infinite distance
-    for (int j=0; j<K; j++)
-      v_neighbor[j].dist = INFINITE;
-
-    #ifdef DEBUG
-        uart_printf("Datum \tX \tY \tLabel \tDistanceClks \tInsertClks\n");
-    #endif
-
-    for (int32_t i=0; i<N; i++) { //for all dataset points
-      //compute distance to x[k]
-      #ifdef DEBUG
-        timer_reset();
-      #endif
-      knn_send_dataset_point(data[i].x, data[i].y);
-      #ifdef DEBUG
-          uart_printf("Datum \t%d \t%d \t%d \t%d \t%d\n", (uint32_t)data[i].x, (uint32_t)data[i].y, (uint32_t)data[i].label, (uint32_t)t_distance[i], (uint32_t)t_insert[i]);
-      #endif
+    for(int32_t i=0; i < N; i++){
+      uart_printf("Datum \t%d \t%d \t%d \n", (uint32_t)data[i].x, (uint32_t)data[i].y, (uint32_t)data[i].label);
     }
-    knn_get_neighbours(v_neighbor);
+    #endif
     //classify test point
     get_teste_point_class(votes_acc, k);
   } //all test points classified
 
   //stop knn here
   //read current timer count, compute elapsed time
-  #ifdef DEBUG
-    elapsed = timer_get_count();
-    elapsedu = timer_time_us();
-    uart_printf("\nExecution time: %dus (%d cycles @%dMHz)\n", elapsedu, (uint32_t)elapsed, FREQ/1000000);
-    uart_printf("\nDistance cycles: %d\nInsert cycles: %d\n\n", (uint32_t)t_distance_total, (uint32_t)t_insert_total);
-  #endif
 
     elapsed = timer_get_count();
     elapsedu = timer_time_us();
@@ -117,20 +98,31 @@ void init(void){
     random_init(S);
 
     //init dataset
-    for (int32_t i=0; i<N; i++) {
-      //init coordinates
-      data[i].x = (int16_t) cmwc_rand();
-      data[i].y = (int16_t) cmwc_rand();
-      //init label
-      data[i].label = (unsigned char) (cmwc_rand()%C);
-    }
+    for (int i=0; i<N; i++) {
 
-    //init test points
-    for (int32_t k=0; k<M; k++) {
-      x[k].x  = (int16_t) cmwc_rand();
-      x[k].y  = (int16_t) cmwc_rand();
-      //x[k].label will be calculated by the algorithm
-    }
+    //init coordinates
+    data[i].x = (short) cmwc_rand();
+    while(data[i].x<MIN_SHORT || data[i].x>MAX_SHORT)
+      data[i].x = (short) cmwc_rand();
+    
+    data[i].y=(short) cmwc_rand();
+    while(data[i].y<MIN_SHORT || data[i].y>MAX_SHORT)
+      data[i].y = (short) cmwc_rand();
+
+    //init label
+    data[i].label = (unsigned char) (cmwc_rand()%C);
+  }
+    for (int k=0; k<M; k++) {
+    x[k].x = (short) cmwc_rand();
+    while(x[k].x<MIN_SHORT || x[k].x>MAX_SHORT)
+      x[k].x = (short) cmwc_rand();
+    
+    x[k].y=(short) cmwc_rand();
+    while(x[k].y<MIN_SHORT || x[k].y>MAX_SHORT)
+      x[k].y = (short) cmwc_rand();
+
+    //x[k].label will be calculated by the algorithm
+  }
     #ifdef DEBUG
       uart_printf("\n\nTEST POINTS\n");
       uart_printf("Idx \tX \tY\n");
@@ -151,8 +143,8 @@ void get_teste_point_class(int32_t *votes_acc, int32_t k){
   #endif
   //make neighbours vote
   for (int32_t j=0; j<K; j++) { //for all neighbors
-    if ( (++votes[data[v_neighbor[j].idx].label]) > best_votation ) {
-      best_voted = data[v_neighbor[j].idx].label;
+    if ( (++votes[data[v_neighbor[j]].label]) > best_votation ) {
+      best_voted = data[v_neighbor[j]].label;
       best_votation = votes[best_voted];
     }
   }
@@ -164,9 +156,9 @@ void get_teste_point_class(int32_t *votes_acc, int32_t k){
   #ifdef DEBUG
     t_vote = timer_get_count();
     uart_printf("\n\nNEIGHBORS of x[%d]=(%d, %d):\n", k, x[k].x, x[k].y);
-    uart_printf("K \tIdx \tX \tY \tDist \t\tLabel\n");
+    uart_printf("K \tIdx \tX \tY \tLabel\n");
     for (int32_t j=0; j<K; j++)
-      uart_printf("%d \t%d \t%d \t%d \t%d \t%d\n", j+1, v_neighbor[j].idx, data[v_neighbor[j].idx].x,  data[v_neighbor[j].idx].y, v_neighbor[j].dist,  data[v_neighbor[j].idx].label);
+      uart_printf("%d \t%d \t%d \t%d \t%d \n", j+1, v_neighbor[j], data[v_neighbor[j]].x,  data[v_neighbor[j]].y,  data[v_neighbor[j]].label);
 
     uart_printf("\n\nCLASSIFICATION of x[%d]:\n", k);
     uart_printf("X \tY \tLabel\n");

@@ -16,7 +16,9 @@ module knn_tb;
   `SIGNAL_OUT(DATA_OUT, 8)
   `SIGNAL(ready, 1)
   `SIGNAL(DONE, 1)
-  `SIGNAL(SEL, 2)
+  `SIGNAL(SEL, 4)
+
+  `SIGNAL(y, 1)
 
   integer j;
   integer i;
@@ -38,18 +40,23 @@ module knn_tb;
 
     for (j=0; j<2; j=j+1) begin
       for (i=1; i<100; i=i+1) begin
-        if(i%5==0)
+        if(i%3==0)
           ready=1;
         else
           ready=0;
         if (ready==1)begin
-          DATA_X2 = $random%20;
-          DATA_Y2 = $random%20;
+          if(y==0) begin
+            DATA_X2 = i;
+            y=1; end
+            else begin
+            DATA_Y2 = i;
+            y=0;
+          end
         end
         @(posedge clk);
       end
       DONE = 1;
-      for (k=0; k<4; k=k+1) begin
+      for (k=0; k<10; k=k+1) begin
         SEL = k;
         #1 $display("Final REG %d -> DATA_OUT : %d\t", k, DATA_OUT);
         @(posedge clk);
@@ -73,7 +80,7 @@ module knn_tb;
   (
     .rst(rst),
     .clk(clk),
-    .ready(ready),
+    .valid(ready),
     .DONE(DONE),
     .SEL(SEL),
     .DATA_X1(DATA_X1),
