@@ -25,7 +25,7 @@ module iob_knn
    //write signal
    `SIGNAL(write, 1)
    `COMB write = | wstrb;
-  
+
    `SIGNAL(DATA_X1, 16)
    `SIGNAL(DATA_Y1, 16)
    `SIGNAL(DATA_X2, 16)
@@ -38,12 +38,12 @@ module iob_knn
     DATA_Y2=DATA_2[31:16];
     DATA_X2=DATA_2[15:0];
    end
-  
+
 
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
-   sorter sorter0
+   pipeline_sorter pipeline_sorter0
    (
      .rst(rst_int),
      .clk(clk),
@@ -56,7 +56,7 @@ module iob_knn
     .DATA_Y1(DATA_Y1),
     .DATA_Y2(DATA_Y2)
    );
-  
+
 
    //ready signal
    `SIGNAL(ready_int, 1)
