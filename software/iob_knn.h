@@ -4,18 +4,18 @@
 //uncomment to use rand from C lib
 //#define cmwc_rand rand
 
-#ifdef DEBUG //type make DEBUG=1 to print debug info
+#ifndef DEBUG //type make DEBUG=1 to print debug info
 #define S 12  //random seed
 #define N 12  //data set size
 #define K 10   //number of neighbours (K)
 #define C 4   //number data classes
 #define M 2   //number samples to be classified
 #else
-#define S 666
-#define N 60
+#define S 12
+#define N 100
 #define K 10
 #define C 4
-#define M 20
+#define M 50
 #endif
 
 #define INFINITE ~0

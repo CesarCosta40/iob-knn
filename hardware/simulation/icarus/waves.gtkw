@@ -1,0 +1,58 @@
+[*]
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Mon Dec  7 11:51:40 2020
+[*]
+[dumpfile] "/home/cesar/EComp/iob-soc-knn/submodules/KNN/hardware/simulation/icarus/knn.vcd"
+[dumpfile_mtime] "Mon Dec  7 11:51:20 2020"
+[dumpfile_size] 36660
+[savefile] "/home/cesar/EComp/iob-soc-knn/submodules/KNN/hardware/simulation/icarus/waves.gtkw"
+[timestart] 0
+[size] 1853 1025
+[pos] -1 -1
+*-15.000000 16800 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] knn_tb.
+[sst_width] 321
+[signals_width] 233
+[sst_expanded] 1
+[sst_vpaned_height] 301
+@24
+knn_tb.sorter0.DATA_OUT[7:0]
+@420
+knn_tb.sorter0.DATA_X1[15:0]
+knn_tb.sorter0.DATA_X2[15:0]
+knn_tb.sorter0.DATA_Y1[15:0]
+knn_tb.sorter0.DATA_Y2[15:0]
+@24
+knn_tb.sorter0.DIST[32:0]
+@28
+knn_tb.sorter0.clk
+knn_tb.sorter0.rst
+knn_tb.sorter0.ready
+@29
+knn_tb.sorter0.DONE
+@24
+knn_tb.sorter0.\DATA_OUT_INT[0][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[1][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[2][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[3][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[4][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[5][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[6][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[7][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[8][32:0]
+knn_tb.sorter0.\DATA_OUT_INT[9][32:0]
+@22
+knn_tb.sorter0.idx_cnt[7:0]
+@24
+knn_tb.sorter0.\idx_out_int[0][8:0]
+knn_tb.sorter0.\idx_out_int[1][8:0]
+knn_tb.sorter0.\idx_out_int[2][8:0]
+knn_tb.sorter0.\idx_out_int[3][8:0]
+knn_tb.sorter0.\idx_out_int[4][8:0]
+knn_tb.sorter0.\idx_out_int[5][8:0]
+knn_tb.sorter0.\idx_out_int[6][8:0]
+knn_tb.sorter0.\idx_out_int[7][8:0]
+knn_tb.sorter0.\idx_out_int[8][8:0]
+knn_tb.sorter0.\idx_out_int[9][8:0]
+[pattern_trace] 1
+[pattern_trace] 0

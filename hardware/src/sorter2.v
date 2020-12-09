@@ -80,20 +80,19 @@ module sorter
   	
     for(i=0; i<9 ; i=i+1) begin
   	
-  	if(DIST < DATA_OUT_INT[i]) begin
-  		c[i]=1;
-  		DATA_IN_INT[i+1] = DATA_OUT_INT[i];
-  		idx_cnt_int[i+1] = idx_out_int[i];
-  	end
-  	else begin
-  		c[i]=0;
-  		DATA_IN_INT[i+1] = DIST;
-  		idx_cnt_int[i+1] = idx_cnt;
-  	end
+     	if(DIST < DATA_OUT_INT[i]) begin
+  	  	c[i]=1;
+  	  	DATA_IN_INT[i+1] = DATA_OUT_INT[i];
+  	  	idx_cnt_int[i+1] = idx_out_int[i];
+  	  end
+  	  else begin
+  	  	c[i]=0;
+  	  	DATA_IN_INT[i+1] = DIST;
+  	  	idx_cnt_int[i+1] = idx_cnt;
+  	  end
   		
-    end 
-
-  	
+    en1d 
+ 	
     if(DIST < DATA_OUT_INT[9]) c[9]=1;
     else c[9]=0;
   	
