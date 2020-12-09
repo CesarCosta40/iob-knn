@@ -8,13 +8,16 @@
 
 #define HW_K 10
 
-//labeled dataset
-datum data[N], x[M];
 
 //neighbor info
 uint32_t v_neighbor[K];
 
+//labeled dataset
+int16_t data[N][2];
+uint16_t data_label[N];
 
+int16_t x[M][2];
+uint16_t x_label[M];
 #ifdef DEBUG
 unsigned long long t_distance_total;
 unsigned long long t_insert_total;
@@ -63,7 +66,7 @@ int main() {
     knn_get_neighbours(v_neighbor, data, x, k, HW_K);
     #ifdef DEBUG
     for(int32_t i=0; i < N; i++){
-      uart_printf("Datum \t%d \t%d \t%d \n", (uint32_t)data[i].x, (uint32_t)data[i].y, (uint32_t)data[i].label);
+      uart_printf("Datum \t%d \t%d \t%d \n", (uint32_t)data[i][0], (uint32_t)data[i][1], (uint32_t)data_label[i]);
     }
     #endif
     //classify test point
@@ -84,7 +87,7 @@ int main() {
   uart_printf("\n");
 
   for(int32_t i = 0; i < M; i++){
-    uart_printf("X:%d\t\tY:%d\t\tLabel:%d\n", x[i].x, x[i].y, x[i].label);
+    uart_printf("X:%d\t\tY:%d\t\tLabel:%d\n", x[i][0], x[i][1], x_label[i]);
 
   }
 }
@@ -101,25 +104,25 @@ void init(void){
     for (int i=0; i<N; i++) {
 
     //init coordinates
-    data[i].x = (short) cmwc_rand();
-    while(data[i].x<MIN_SHORT || data[i].x>MAX_SHORT)
-      data[i].x = (short) cmwc_rand();
+    data[i][0] = (short) cmwc_rand();
+    while(data[i][0]<MIN_SHORT || data[i][0]>MAX_SHORT)
+      data[i][0] = (short) cmwc_rand();
     
-    data[i].y=(short) cmwc_rand();
-    while(data[i].y<MIN_SHORT || data[i].y>MAX_SHORT)
-      data[i].y = (short) cmwc_rand();
+    data[i][1]=(short) cmwc_rand();
+    while(data[i][1]<MIN_SHORT || data[i][1]>MAX_SHORT)
+      data[i][1] = (short) cmwc_rand();
 
     //init label
-    data[i].label = (unsigned char) (cmwc_rand()%C);
+    data_label[i] = (unsigned char) (cmwc_rand()%C);
   }
     for (int k=0; k<M; k++) {
-    x[k].x = (short) cmwc_rand();
-    while(x[k].x<MIN_SHORT || x[k].x>MAX_SHORT)
-      x[k].x = (short) cmwc_rand();
+    x[k][0] = (short) cmwc_rand();
+    while(x[k][0]<MIN_SHORT || x[k][0]>MAX_SHORT)
+      x[k][0] = (short) cmwc_rand();
     
-    x[k].y=(short) cmwc_rand();
-    while(x[k].y<MIN_SHORT || x[k].y>MAX_SHORT)
-      x[k].y = (short) cmwc_rand();
+    x[k][1]=(short) cmwc_rand();
+    while(x[k][1]<MIN_SHORT || x[k][1]>MAX_SHORT)
+      x[k][1] = (short) cmwc_rand();
 
     //x[k].label will be calculated by the algorithm
   }
@@ -127,7 +130,7 @@ void init(void){
       uart_printf("\n\nTEST POINTS\n");
       uart_printf("Idx \tX \tY\n");
       for (int32_t k=0; k<M; k++)
-        uart_printf("%d \t%d \t%d\n", k, x[k].x, x[k].y);
+        uart_printf("%d \t%d \t%d\n", k, x[k][0], x[k][1]);
     #endif
 
 }
@@ -143,26 +146,26 @@ void get_teste_point_class(int32_t *votes_acc, int32_t k){
   #endif
   //make neighbours vote
   for (int32_t j=0; j<K; j++) { //for all neighbors
-    if ( (++votes[data[v_neighbor[j]].label]) > best_votation ) {
-      best_voted = data[v_neighbor[j]].label;
+    if ( (++votes[data_label[v_neighbor[j]]]) > best_votation ) {
+      best_voted = data_label[v_neighbor[j]];
       best_votation = votes[best_voted];
     }
   }
 
-  x[k].label = best_voted;
+  x_label[k] = best_voted;
 
   votes_acc[best_voted]++;
 
   #ifdef DEBUG
     t_vote = timer_get_count();
-    uart_printf("\n\nNEIGHBORS of x[%d]=(%d, %d):\n", k, x[k].x, x[k].y);
+    uart_printf("\n\nNEIGHBORS of x[%d]=(%d, %d):\n", k, x[k][0], x[k][1]);
     uart_printf("K \tIdx \tX \tY \tLabel\n");
     for (int32_t j=0; j<K; j++)
-      uart_printf("%d \t%d \t%d \t%d \t%d \n", j+1, v_neighbor[j], data[v_neighbor[j]].x,  data[v_neighbor[j]].y,  data[v_neighbor[j]].label);
+      uart_printf("%d \t%d \t%d \t%d \t%d \n", j+1, v_neighbor[j], data[v_neighbor[j]][0],  data[v_neighbor[j]][1],  data_label[v_neighbor[j]]);
 
     uart_printf("\n\nCLASSIFICATION of x[%d]:\n", k);
     uart_printf("X \tY \tLabel\n");
-    uart_printf("%d \t%d \t%d\n", x[k].x, x[k].y, x[k].label);
+    uart_printf("%d \t%d \t%d\n", x[k][0], x[k][1], x_label[k]);
 
     uart_printf("\nVotes took %d cycles\n", (uint32_t)t_vote);
   #endif

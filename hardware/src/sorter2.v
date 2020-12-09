@@ -38,16 +38,18 @@ module sorter
   
   `SIGNAL(idx_out, W/4)
   `SIGNAL(idx_cnt, W/4)
-  `SIGNAL(valid_cnt, 2)
+  //`SIGNAL(valid_cnt, 2)
   `SIGNAL(ready, 1)
 
   `SIGNAL2OUT(DATA_OUT, idx_out) //connect internal result to output
-
-
-  `REG_ARE(clk, rst, 0, (valid&(!DONE))|ready, valid_cnt, ready==1? !1: valid_cnt+1)//Ready signal is once every two valids
-
-  `REG_ARE(clk, rst, 0, !DONE, ready, ready==1? !1: valid_cnt[1:1])
   
+
+ // `REG_ARE(clk, rst, 0, (valid&(!DONE))|ready, valid_cnt, ready==1? !1: valid_cnt+1)//Ready signal is once every two valids
+
+  //`REG_ARE(clk, rst, 0, !DONE, ready, ready==1? !1: valid_cnt[1:1])
+  
+  `REG_ARE(clk, rst, 0, !DONE, ready, valid)
+
   `REG_RE(clk, rst, 32'Hffffffff , ready&c[0]&(!DONE), DATA_OUT_INT[0] , DIST)
   
   always @(posedge clk) begin
@@ -91,7 +93,7 @@ module sorter
   	  	idx_cnt_int[i+1] = idx_cnt;
   	  end
   		
-    en1d 
+    end 
  	
     if(DIST < DATA_OUT_INT[9]) c[9]=1;
     else c[9]=0;

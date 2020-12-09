@@ -18,7 +18,6 @@ module knn_tb;
   `SIGNAL(DONE, 1)
   `SIGNAL(SEL, 4)
 
-  `SIGNAL(y, 1)
 
   integer j;
   integer i;
@@ -28,15 +27,28 @@ module knn_tb;
     `ifdef VCD
           $dumpfile("knn.vcd");
           $dumpvars();
+          for(i = 0; i < 10; i++)begin
+            $dumpvars(0, sorter0.DATA_OUT_INT[i]);
+            $dumpvars(0, sorter0.idx_out_int[i]);
+          end
     `endif
-    DONE = 0;
+    DONE = 1;
     SEL = 0;
-    ready = 0;
     DATA_X1 = 0;
     DATA_Y1 = 0;
+    ready=0;
 
     @(posedge rst);
     @(negedge rst);
+    
+    @(posedge clk);
+    #5 ready=1;
+    #5 DONE=0;
+    #5 ready=0;
+
+    @(posedge clk);
+
+    //ready=0;
 
     for (j=0; j<2; j=j+1) begin
       for (i=1; i<100; i=i+1) begin
@@ -45,14 +57,9 @@ module knn_tb;
         else
           ready=0;
         if (ready==1)begin
-          if(y==0) begin
             DATA_X2 = i;
-            y=1; end
-            else begin
             DATA_Y2 = i;
-            y=0;
           end
-        end
         @(posedge clk);
       end
       DONE = 1;
@@ -81,7 +88,7 @@ module knn_tb;
     .rst(rst),
     .clk(clk),
     .valid(ready),
-    .DONE(DONE),
+    .DONE_aux(DONE),
     .SEL(SEL),
     .DATA_X1(DATA_X1),
     .DATA_Y1(DATA_Y1),

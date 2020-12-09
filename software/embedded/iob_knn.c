@@ -16,18 +16,28 @@ void knn_init(int32_t base_address){
   knn_reset();
 }
 
-void knn_set_test_point(int16_t x_test_point, int16_t y_test_point){
-  IO_SET(base, DATA_X1, x_test_point);
-  IO_SET(base, DATA_Y1, y_test_point);
+void knn_set_test_point(int16_t* test_point){
+  int* a;
+  a=(int*)test_point;
+  IO_SET(base, DATA_1, *a);
   IO_SET(base, DONE, 0);
 }
 
-void knn_send_dataset_point(int16_t x_dataset_point, int16_t y_dataset_point){
-  IO_SET(base, DATA_X2, x_dataset_point);
-  IO_SET(base, DATA_Y2, y_dataset_point);
+void knn_send_dataset_point(int16_t* dataset_point){
+  int* a;
+  a=(int*)dataset_point;
+  IO_SET(base, DATA_2, *a);
 }
 
-void knn_get_neighbours(uint32_t *v_neighbor, datum* data, datum* x, uint32_t p, uint32_t hw_k) {
+void knn_send_infinite(int16_t* x){
+  int32_t point;
+  point=(x[0]<0?32767:-32768)<<16;
+  point|=x[1]<0?32767:-32768;
+  
+  IO_SET(base, DATA_2, point);
+}
+
+void knn_get_neighbours(uint32_t *v_neighbor, int16_t data[N][2], int16_t x[M][2], uint32_t p, uint32_t hw_k) {
 
   if(hw_k<K){ 
     char checked[N];
@@ -37,14 +47,15 @@ void knn_get_neighbours(uint32_t *v_neighbor, datum* data, datum* x, uint32_t p,
 
     for(int32_t j=0; j<K; j+=hw_k){
 
-      knn_set_test_point(x[p].x, x[p].y);
+      knn_set_test_point(x[p]);
 
       for (int32_t n=0; n<N; n++) { //for all dataset points
         //compute distance to x[k]
         if(checked[n]==0)
-          knn_send_dataset_point(data[n].x, data[n].y);
-        else
-          knn_send_dataset_point(x[p].x<0?32767:-32768, x[p].y<0?32767:-32768);
+          knn_send_dataset_point(data[n]);
+        else{
+          knn_send_infinite(x[p]);
+        }
       }
       IO_SET(base, DONE, 1);
       for(; i<K&&i<j+hw_k; i++){
@@ -58,10 +69,10 @@ void knn_get_neighbours(uint32_t *v_neighbor, datum* data, datum* x, uint32_t p,
     }
   }
   else{
-    knn_set_test_point(x[p].x, x[p].y);
+    knn_set_test_point(x[p]);
 
     for(int j = 0; j < N; j++){
-      knn_send_dataset_point(data[j].x, data[j].y);
+      knn_send_dataset_point(data[j]);
     }
 
     IO_SET(base, DONE, 1);
