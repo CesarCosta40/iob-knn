@@ -33,11 +33,12 @@ typedef struct neighbor {
 } neighbor;
 
 //Functions in main file
-void init(void);
-void get_teste_point_class(int32_t *, int32_t);
+void init(datum *, datum *);
+void get_teste_point_class(datum *, datum *, neighbor *, int32_t *, int32_t);
 //Functions that comunicate with perifral
 void knn_reset(void);
 void knn_init(int32_t);
 void knn_set_test_point(uint32_t);
 void knn_send_dataset_point(uint32_t);
 void knn_get_neighbours(neighbor *);
+void knn_send_points(uint32_t, uint32_t);

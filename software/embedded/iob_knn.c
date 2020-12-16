@@ -23,6 +23,11 @@ void knn_send_dataset_point(uint32_t dataset_point){
   IO_SET(base, DATA_2, dataset_point);
 }
 
+void knn_send_points(uint32_t test_point, uint32_t dataset_point){
+  IO_SET(base, DATA_1, test_point);
+  IO_SET(base, DATA_2, dataset_point);
+}
+
 void knn_get_neighbours(neighbor *v_neighbor) {
   IO_SET(base, DONE, 1);
   for(uint32_t i = 0; i<K; i++){

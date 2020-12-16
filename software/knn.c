@@ -6,13 +6,6 @@
 #include "random.h" //random generator for bare metal
 
 
-//labeled dataset
-datum data[N], x[M];
-
-//neighbor info
-neighbor v_neighbor[K];
-
-
 #ifdef DEBUG
 unsigned long long t_distance[N];
 unsigned long long t_insert[N];
@@ -32,10 +25,16 @@ int main() {
   unsigned long long elapsed;
   uint32_t elapsedu;
 
-  init();
-
   //int32_t vote accumulator
   int32_t votes_acc[C] = {0};
+
+  //labeled dataset
+  datum data[N], x[M];
+
+  //neighbor info
+  neighbor v_neighbor[K];
+
+  init(data, x);
 
   //
   // PROCESS DATA
@@ -58,31 +57,31 @@ int main() {
         uart_printf("\n\nProcessing x[%d]:\n", k);
     #endif
 
-    int32_t a = *(int32_t*)(&x[k].x);
-    knn_set_test_point(a);
+    uint32_t a = *(uint32_t*)(&x[k]);
+    //knn_set_test_point(a);
     //knn_calculate_distances(N, &x[k], data, d);
     //init all k neighbors infinite distance
-    for (int j=0; j<K; j++)
-      v_neighbor[j].dist = INFINITE;
 
     #ifdef DEBUG
         uart_printf("Datum \tX \tY \tLabel \tDistanceClks \tInsertClks\n");
     #endif
 
-    for (int32_t i=0; i<N; i++) { //for all dataset points
+    for (uint8_t i=0; i<N; i++) { //for all dataset points
       //compute distance to x[k]
       #ifdef DEBUG
         timer_reset();
       #endif
-      int32_t a = *(int32_t*)(&data[i].x);
-      knn_send_dataset_point(a);
+      uint32_t b = *(uint32_t*)(&data[i]);
+      knn_send_points(a, b);
+      //knn_send_dataset_point(b);
       #ifdef DEBUG
           uart_printf("Datum \t%d \t%d \t%d \t%d \t%d\n", (uint32_t)data[i].x, (uint32_t)data[i].y, (uint32_t)data[i].label, (uint32_t)t_distance[i], (uint32_t)t_insert[i]);
       #endif
     }
+
     knn_get_neighbours(v_neighbor);
     //classify test point
-    get_teste_point_class(votes_acc, k);
+    get_teste_point_class(data, x, v_neighbor, votes_acc, k);
   } //all test points classified
 
   //stop knn here
@@ -108,7 +107,7 @@ int main() {
 }
 
 
-void init(void){
+void init(datum data[], datum x[]){
     //init uart
     uart_init(UART_BASE, FREQ/BAUD);
 
@@ -139,7 +138,7 @@ void init(void){
 
 }
 
-void get_teste_point_class(int32_t *votes_acc, int32_t k){
+void get_teste_point_class(datum data[], datum x[], neighbor v_neighbor[], int32_t *votes_acc, int32_t k){
   //clear all votes
   int32_t votes[C] = {0};
   int32_t best_votation = 0;
