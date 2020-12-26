@@ -3,8 +3,9 @@
 
 module pipeline_sorter
   #(
-    parameter W=32
-    )
+    parameter W=32,
+    parameter HW_K=10  
+  )
     (
      input signed [(W/2)-1:0] DATA_X1,//`INPUT(DATA_X1,W/2),
      input signed [(W/2)-1:0] DATA_X2,//`INPUT(DATA_X2,W/2),
@@ -14,7 +15,7 @@ module pipeline_sorter
      `INPUT(clk,1),
      `INPUT(valid,1),
      `INPUT(DONE, 1),
-     input [3:0] SEL,
+     input [15:0] SEL,
      output [W/4-1:0] DATA_OUT
      );
 

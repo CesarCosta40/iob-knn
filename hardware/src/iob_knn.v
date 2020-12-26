@@ -7,8 +7,9 @@ module iob_knn
   #(
     parameter ADDR_W = `KNN_ADDR_W, //NODOC Address width
     parameter DATA_W = `DATA_W, //NODOC Data word width
-    parameter WDATA_W = `KNN_WDATA_W //NODOC Data word width on writes
-    )
+    parameter WDATA_W = `KNN_WDATA_W, //NODOC Data word width on writes
+    parameter HW_K = `HW_K  
+  )
    (
 `include "cpu_nat_s_if.v"
 `include "gen_if.v"
@@ -43,7 +44,7 @@ module iob_knn
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
-   pipeline_sorter pipeline_sorter0
+   pipeline_sorter #(.HW_K(HW_K)) pipeline_sorter0
    (
      .rst(rst_int),
      .clk(clk),

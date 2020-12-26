@@ -8,6 +8,8 @@ ifeq ($D,1)
 DEFINE+=-DDEBUG
 endif
 
+DEFINE+=-DHW_K=$(HW_K)
+
 #include
 INCLUDE+=-I$(KNN_SW_DIR)
 

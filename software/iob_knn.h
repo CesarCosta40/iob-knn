@@ -7,12 +7,12 @@
 #ifdef DEBUG //type make DEBUG=1 to print debug info
 #define S 12  //random seed
 #define N 12  //data set size
-#define K 10   //number of neighbours (K)
+#define K 12   //number of neighbours (K)
 #define C 4   //number data classes
 #define M 2   //number samples to be classified
 #else
 #define S 12
-#define N 100
+#define N 200
 #define K 10
 #define C 4
 #define M 50

@@ -1,0 +1,1708 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Tue Dec  1 16:29:07 2020
+# Process ID: 8584
+# Current directory: /home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3
+# Command line: vivado -nojournal -log vivado.log -mode batch -source synth_system.tcl -tclargs  ../../../submodules/UART/submodules/INTERCON/hardware/include  ../../../submodules/UART/hardware/include  ../../../submodules/TIMER/hardware/include  ../../../submodules/KNN/submodules/LIB/hardware/include  ../../../submodules/KNN/submodules/INTERCON/hardware/include   ../../../submodules/KNN/hardware/include  ../../../submodules/KNN/submodules/LIB/hardware/include  ../../../submodules/KNN/submodules/INTERCON/hardware/include  . ../../../hardware/include DDR_ADDR_W=30 BOOTROM_ADDR_W=12 SRAM_ADDR_W=14 FIRM_ADDR_W=14 CACHE_ADDR_W=24 INIT_MEM N_SLAVES=3 E=31  P=31 B=30 BAUD=115200 FREQ=100000000 UART=0 TIMER=1 KNN=2  DATA_W=32 ../../../submodules/CPU/hardware/src/picorv32.v ../../../submodules/CPU/hardware/src/iob_picorv32.v ../../../submodules/CACHE/submodules/MEM/sp_rom/sp_rom.v ../../../submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v ../../../submodules/UART/submodules/INTERCON/hardware/src/merge.v ../../../submodules/UART/submodules/INTERCON/hardware/src/split.v ../../../submodules/UART/hardware/src/iob_uart.v ../../../submodules/TIMER/hardware/src/iob_timer.v ../../../submodules/TIMER/hardware/src/timer.v ../../../submodules/KNN/hardware/src/sorter.v ../../../submodules/KNN/hardware/src/iob_knn.v ../../../hardware/src/boot_ctr.v ../../../hardware/src/int_mem.v  ../../../hardware/src/sram.v  system.v ./verilog/top_system.v
+# Log file: /home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/vivado.log
+# Journal file: 
+#-----------------------------------------------------------
+source synth_system.tcl
+# set TOP top_system
+# set PART xc7a35tcpg236-1
+# set INCLUDE [lindex $argv 0]
+# set DEFINE [lindex $argv 1]
+# set VSRC [lindex $argv 2]
+# set USE_DDR [string last "USE_DDR" $DEFINE]
+# foreach file [split $VSRC \ ] {
+#     if {$file != ""} {
+#         read_verilog -sv $file
+#     }
+# }
+# set_property part $PART [current_project]
+# if { $USE_DDR < 0 } {
+#     read_verilog verilog/clock_wizard.v
+# } else {
+# 
+#     read_xdc ./ddr.xdc
+# 
+# 
+#     if { ![file isdirectory "./ip"]} {
+#         file mkdir ./ip
+#     }
+# 
+#     #async interconnect MIG<->Cache
+#     if { [file isdirectory "./ip/axi_interconnect_0"] } {
+#         read_ip ./ip/axi_interconnect_0/axi_interconnect_0.xci
+#         report_property [get_files ./ip/axi_interconnect_0/axi_interconnect_0.xci]
+#     } else {
+# 
+#         create_ip -name axi_interconnect -vendor xilinx.com -library ip -version 1.7 -module_name axi_interconnect_0 -dir ./ip -force
+# 
+#         set_property -dict \
+#             [list \
+#                  CONFIG.NUM_SLAVE_PORTS {1}\
+#                  CONFIG.AXI_ADDR_WIDTH {30}\
+#                  CONFIG.ACLK_PERIOD {5000} \
+#                  CONFIG.INTERCONNECT_DATA_WIDTH {32}\
+#                  CONFIG.M00_AXI_IS_ACLK_ASYNC {1}\
+#                  CONFIG.M00_AXI_WRITE_FIFO_DEPTH {32}\
+#                  CONFIG.M00_AXI_READ_FIFO_DEPTH {32}\
+#                  CONFIG.S00_AXI_IS_ACLK_ASYNC {1}\
+#                  CONFIG.S00_AXI_READ_FIFO_DEPTH {32}\
+#                  CONFIG.S00_AXI_WRITE_FIFO_DEPTH {32}] [get_ips axi_interconnect_0]
+# 
+#         generate_target all [get_files ./ip/axi_interconnect_0/axi_interconnect_0.xci]
+# 
+#         report_property [get_ips axi_interconnect_0]
+#         report_property [get_files ./ip/axi_interconnect_0/axi_interconnect_0.xci]
+#         exec sed -i s/100/5/g ip/axi_interconnect_0/axi_interconnect_0_ooc.xdc
+#         synth_ip [get_files ./ip/axi_interconnect_0/axi_interconnect_0.xci]
+# 
+#     }
+# 
+#     if { [file isdirectory "./ip/ddr4_0"] } {
+# 	read_ip ./ip/ddr4_0/ddr4_0.xci
+#         report_property [get_files ./ip/ddr4_0/ddr4_0.xci]
+#     } else {
+# 
+#         create_ip -name ddr4 -vendor xilinx.com -library ip -version 2.2 -module_name ddr4_0 -dir ./ip -force
+# 
+#         set_property -dict \
+#         [list \
+#              CONFIG.C0.DDR4_TimePeriod {1250} \
+#              CONFIG.C0.DDR4_InputClockPeriod {4000} \
+#              CONFIG.C0.DDR4_CLKOUT0_DIVIDE {5} \
+#              CONFIG.C0.DDR4_MemoryPart {EDY4016AABG-DR-F} \
+#              CONFIG.C0.DDR4_DataWidth {32} \
+#              CONFIG.C0.DDR4_AxiSelection {true} \
+#              CONFIG.C0.DDR4_CasLatency {11} \
+#              CONFIG.C0.DDR4_CasWriteLatency {11} \
+#              CONFIG.C0.DDR4_AxiDataWidth {32} \
+#              CONFIG.C0.DDR4_AxiAddressWidth {30} \
+#              CONFIG.ADDN_UI_CLKOUT1_FREQ_HZ {100} \
+#              CONFIG.C0.BANK_GROUP_WIDTH {1}] [get_ips ddr4_0]
+# 
+#         generate_target all [get_files ./ip/ddr4_0/ddr4_0.xci]
+# 
+#         report_property [get_ips ddr4_0]
+#         report_property [get_files ./ip/ddr4_0/ddr4_0.xci]
+# 
+#         synth_ip [get_files ./ip/ddr4_0/ddr4_0.xci]
+#     }
+# 
+# }
+# read_xdc ./synth_system.xdc
+# synth_design -include_dirs $INCLUDE -verilog_define $DEFINE -part $PART -top $TOP
+Command: synth_design -include_dirs {../../../submodules/UART/submodules/INTERCON/hardware/include  ../../../submodules/UART/hardware/include  ../../../submodules/TIMER/hardware/include  ../../../submodules/KNN/submodules/LIB/hardware/include  ../../../submodules/KNN/submodules/INTERCON/hardware/include   ../../../submodules/KNN/hardware/include  ../../../submodules/KNN/submodules/LIB/hardware/include  ../../../submodules/KNN/submodules/INTERCON/hardware/include  . ../../../hardware/include} -verilog_define {DDR_ADDR_W=30 BOOTROM_ADDR_W=12 SRAM_ADDR_W=14 FIRM_ADDR_W=14 CACHE_ADDR_W=24 INIT_MEM N_SLAVES=3 E=31  P=31 B=30 BAUD=115200 FREQ=100000000 UART=0 TIMER=1 KNN=2  DATA_W=32} -part xc7a35tcpg236-1 -top top_system
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Device 21-403] Loading part xc7a35tcpg236-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 8599
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 2120.461 ; gain = 0.000 ; free physical = 708 ; free virtual = 12000
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'top_system' [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/verilog/top_system.v:4]
+INFO: [Synth 8-6157] synthesizing module 'system' [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/system.v:13]
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter DATA_W bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'iob_picorv32' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:28]
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter DATA_W bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'picorv32' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:57]
+	Parameter ENABLE_COUNTERS bound to: 1'b1 
+	Parameter ENABLE_COUNTERS64 bound to: 1'b1 
+	Parameter ENABLE_REGS_16_31 bound to: 1'b1 
+	Parameter ENABLE_REGS_DUALPORT bound to: 1'b1 
+	Parameter LATCHED_MEM_RDATA bound to: 1'b0 
+	Parameter TWO_STAGE_SHIFT bound to: 1'b1 
+	Parameter BARREL_SHIFTER bound to: 1'b1 
+	Parameter TWO_CYCLE_COMPARE bound to: 1'b0 
+	Parameter TWO_CYCLE_ALU bound to: 1'b0 
+	Parameter COMPRESSED_ISA bound to: 1'b0 
+	Parameter CATCH_MISALIGN bound to: 1'b1 
+	Parameter CATCH_ILLINSN bound to: 1'b1 
+	Parameter ENABLE_PCPI bound to: 1'b0 
+	Parameter ENABLE_MUL bound to: 1'b0 
+	Parameter ENABLE_FAST_MUL bound to: 1'b1 
+	Parameter ENABLE_DIV bound to: 1'b1 
+	Parameter ENABLE_IRQ bound to: 1'b0 
+	Parameter ENABLE_IRQ_QREGS bound to: 1'b1 
+	Parameter ENABLE_IRQ_TIMER bound to: 1'b1 
+	Parameter ENABLE_TRACE bound to: 1'b0 
+	Parameter REGS_INIT_ZERO bound to: 1'b0 
+	Parameter MASKED_IRQ bound to: 0 - type: integer 
+	Parameter LATCHED_IRQ bound to: -1 - type: integer 
+	Parameter PROGADDR_RESET bound to: 0 - type: integer 
+	Parameter PROGADDR_IRQ bound to: 16 - type: integer 
+	Parameter STACKADDR bound to: -1 - type: integer 
+	Parameter irq_timer bound to: 0 - type: integer 
+	Parameter irq_ebreak bound to: 1 - type: integer 
+	Parameter irq_buserror bound to: 2 - type: integer 
+	Parameter irqregs_offset bound to: 32 - type: integer 
+	Parameter regfile_size bound to: 32 - type: integer 
+	Parameter regindex_bits bound to: 5 - type: integer 
+	Parameter WITH_PCPI bound to: 1'b1 
+	Parameter TRACE_BRANCH bound to: 36'b000100000000000000000000000000000000 
+	Parameter TRACE_ADDR bound to: 36'b001000000000000000000000000000000000 
+	Parameter TRACE_IRQ bound to: 36'b100000000000000000000000000000000000 
+	Parameter cpu_state_trap bound to: 8'b10000000 
+	Parameter cpu_state_fetch bound to: 8'b01000000 
+	Parameter cpu_state_ld_rs1 bound to: 8'b00100000 
+	Parameter cpu_state_ld_rs2 bound to: 8'b00010000 
+	Parameter cpu_state_exec bound to: 8'b00001000 
+	Parameter cpu_state_shift bound to: 8'b00000100 
+	Parameter cpu_state_stmem bound to: 8'b00000010 
+	Parameter cpu_state_ldmem bound to: 8'b00000001 
+INFO: [Synth 8-6157] synthesizing module 'picorv32_pcpi_fast_mul' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:2271]
+	Parameter EXTRA_MUL_FFS bound to: 0 - type: integer 
+	Parameter EXTRA_INSN_FFS bound to: 0 - type: integer 
+	Parameter MUL_CLKGATE bound to: 0 - type: integer 
+INFO: [Synth 8-155] case statement is not full and has no default [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:2308]
+INFO: [Synth 8-6155] done synthesizing module 'picorv32_pcpi_fast_mul' (1#1) [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:2271]
+INFO: [Synth 8-6157] synthesizing module 'picorv32_pcpi_div' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:2373]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:2398]
+INFO: [Synth 8-6155] done synthesizing module 'picorv32_pcpi_div' (2#1) [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:2373]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:386]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:1496]
+INFO: [Synth 8-6155] done synthesizing module 'picorv32' (3#1) [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:57]
+WARNING: [Synth 8-7071] port 'mem_la_read' of module 'picorv32' is unconnected for instance 'picorv32_core' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:87]
+WARNING: [Synth 8-7071] port 'mem_la_write' of module 'picorv32' is unconnected for instance 'picorv32_core' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:87]
+WARNING: [Synth 8-7071] port 'mem_la_addr' of module 'picorv32' is unconnected for instance 'picorv32_core' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:87]
+WARNING: [Synth 8-7071] port 'mem_la_wdata' of module 'picorv32' is unconnected for instance 'picorv32_core' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:87]
+WARNING: [Synth 8-7071] port 'mem_la_wstrb' of module 'picorv32' is unconnected for instance 'picorv32_core' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:87]
+WARNING: [Synth 8-7023] instance 'picorv32_core' of module 'picorv32' has 27 connections declared, but only 22 given [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:87]
+INFO: [Synth 8-6155] done synthesizing module 'iob_picorv32' (4#1) [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/iob_picorv32.v:28]
+INFO: [Synth 8-6157] synthesizing module 'split' [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter N_SLAVES bound to: 1 - type: integer 
+	Parameter P_SLAVES bound to: 67 - type: integer 
+	Parameter Nb bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'split' (5#1) [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+INFO: [Synth 8-6157] synthesizing module 'split__parameterized0' [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter N_SLAVES bound to: 2 - type: integer 
+	Parameter P_SLAVES bound to: 67 - type: integer 
+	Parameter Nb bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'split__parameterized0' (5#1) [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+INFO: [Synth 8-6157] synthesizing module 'split__parameterized1' [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter N_SLAVES bound to: 3 - type: integer 
+	Parameter P_SLAVES bound to: 66 - type: integer 
+	Parameter Nb bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'split__parameterized1' (5#1) [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+INFO: [Synth 8-6157] synthesizing module 'int_mem' [/home/cesar/EComp/iob-soc-knn/hardware/src/int_mem.v:5]
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter DATA_W bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'split__parameterized2' [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter N_SLAVES bound to: 2 - type: integer 
+	Parameter P_SLAVES bound to: 66 - type: integer 
+	Parameter Nb bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'split__parameterized2' (5#1) [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/split.v:4]
+INFO: [Synth 8-6157] synthesizing module 'boot_ctr' [/home/cesar/EComp/iob-soc-knn/hardware/src/boot_ctr.v:5]
+INFO: [Synth 8-6157] synthesizing module 'sp_rom' [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/sp_rom/sp_rom.v:3]
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter ADDR_W bound to: 10 - type: integer 
+	Parameter FILE bound to: boot.hex - type: string 
+	Parameter mem_init_file_int bound to: boot.hex - type: string 
+INFO: [Synth 8-3876] $readmem data file 'boot.hex' is read successfully [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/sp_rom/sp_rom.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'sp_rom' (6#1) [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/sp_rom/sp_rom.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'boot_ctr' (7#1) [/home/cesar/EComp/iob-soc-knn/hardware/src/boot_ctr.v:5]
+INFO: [Synth 8-6157] synthesizing module 'merge' [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/merge.v:5]
+	Parameter N_MASTERS bound to: 2 - type: integer 
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter ADDR_W bound to: 32 - type: integer 
+	Parameter Nb bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'merge' (8#1) [/home/cesar/EComp/iob-soc-knn/submodules/UART/submodules/INTERCON/hardware/src/merge.v:5]
+INFO: [Synth 8-6157] synthesizing module 'sram' [/home/cesar/EComp/iob-soc-knn/hardware/src/sram.v:4]
+	Parameter FILE bound to: firmware - type: string 
+	Parameter file_suffix bound to: 858927408 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'iob_tdp_ram' [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+	Parameter MEM_INIT_FILE bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011000000101110011010000110010101111000 
+	Parameter DATA_W bound to: 8 - type: integer 
+	Parameter ADDR_W bound to: 12 - type: integer 
+	Parameter mem_init_file_int bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011000000101110011010000110010101111000 
+INFO: [Synth 8-3876] $readmem data file 'firmware_0.hex' is read successfully [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:35]
+INFO: [Synth 8-6155] done synthesizing module 'iob_tdp_ram' (9#1) [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+INFO: [Synth 8-6157] synthesizing module 'iob_tdp_ram__parameterized0' [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+	Parameter MEM_INIT_FILE bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011000100101110011010000110010101111000 
+	Parameter DATA_W bound to: 8 - type: integer 
+	Parameter ADDR_W bound to: 12 - type: integer 
+	Parameter mem_init_file_int bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011000100101110011010000110010101111000 
+INFO: [Synth 8-3876] $readmem data file 'firmware_1.hex' is read successfully [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:35]
+INFO: [Synth 8-6155] done synthesizing module 'iob_tdp_ram__parameterized0' (9#1) [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+INFO: [Synth 8-6157] synthesizing module 'iob_tdp_ram__parameterized1' [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+	Parameter MEM_INIT_FILE bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011001000101110011010000110010101111000 
+	Parameter DATA_W bound to: 8 - type: integer 
+	Parameter ADDR_W bound to: 12 - type: integer 
+	Parameter mem_init_file_int bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011001000101110011010000110010101111000 
+INFO: [Synth 8-3876] $readmem data file 'firmware_2.hex' is read successfully [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:35]
+INFO: [Synth 8-6155] done synthesizing module 'iob_tdp_ram__parameterized1' (9#1) [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+INFO: [Synth 8-6157] synthesizing module 'iob_tdp_ram__parameterized2' [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+	Parameter MEM_INIT_FILE bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011001100101110011010000110010101111000 
+	Parameter DATA_W bound to: 8 - type: integer 
+	Parameter ADDR_W bound to: 12 - type: integer 
+	Parameter mem_init_file_int bound to: 112'b0110011001101001011100100110110101110111011000010111001001100101010111110011001100101110011010000110010101111000 
+INFO: [Synth 8-3876] $readmem data file 'firmware_3.hex' is read successfully [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:35]
+INFO: [Synth 8-6155] done synthesizing module 'iob_tdp_ram__parameterized2' (9#1) [/home/cesar/EComp/iob-soc-knn/submodules/CACHE/submodules/MEM/tdp_ram/iob_tdp_ram.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'sram' (10#1) [/home/cesar/EComp/iob-soc-knn/hardware/src/sram.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'int_mem' (11#1) [/home/cesar/EComp/iob-soc-knn/hardware/src/int_mem.v:5]
+INFO: [Synth 8-6157] synthesizing module 'iob_uart' [/home/cesar/EComp/iob-soc-knn/submodules/UART/hardware/src/iob_uart.v:4]
+	Parameter DATA_W bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'iob_uart' (12#1) [/home/cesar/EComp/iob-soc-knn/submodules/UART/hardware/src/iob_uart.v:4]
+INFO: [Synth 8-6157] synthesizing module 'iob_timer' [/home/cesar/EComp/iob-soc-knn/submodules/TIMER/hardware/src/iob_timer.v:6]
+	Parameter ADDR_W bound to: 3 - type: integer 
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter WDATA_W bound to: 1 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'timer_core' [/home/cesar/EComp/iob-soc-knn/submodules/TIMER/hardware/src/timer.v:5]
+	Parameter DATA_W bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'timer_core' (13#1) [/home/cesar/EComp/iob-soc-knn/submodules/TIMER/hardware/src/timer.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'iob_timer' (14#1) [/home/cesar/EComp/iob-soc-knn/submodules/TIMER/hardware/src/iob_timer.v:6]
+INFO: [Synth 8-6157] synthesizing module 'iob_knn' [/home/cesar/EComp/iob-soc-knn/submodules/KNN/hardware/src/iob_knn.v:6]
+	Parameter ADDR_W bound to: 3 - type: integer 
+	Parameter DATA_W bound to: 32 - type: integer 
+	Parameter WDATA_W bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'sorter' [/home/cesar/EComp/iob-soc-knn/submodules/KNN/hardware/src/sorter.v:4]
+	Parameter W bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'sorter' (15#1) [/home/cesar/EComp/iob-soc-knn/submodules/KNN/hardware/src/sorter.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'iob_knn' (16#1) [/home/cesar/EComp/iob-soc-knn/submodules/KNN/hardware/src/iob_knn.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'system' (17#1) [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/system.v:13]
+INFO: [Synth 8-6155] done synthesizing module 'top_system' (18#1) [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/verilog/top_system.v:4]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2120.461 ; gain = 0.000 ; free physical = 767 ; free virtual = 12068
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2120.461 ; gain = 0.000 ; free physical = 771 ; free virtual = 12073
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2120.461 ; gain = 0.000 ; free physical = 771 ; free virtual = 12073
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2120.461 ; gain = 0.000 ; free physical = 759 ; free virtual = 12061
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/synth_system.xdc]
+Finished Parsing XDC File [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/synth_system.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/synth_system.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/top_system_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/top_system_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2211.156 ; gain = 0.000 ; free physical = 645 ; free virtual = 11964
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2211.156 ; gain = 0.000 ; free physical = 645 ; free virtual = 11964
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 2211.156 ; gain = 90.695 ; free physical = 745 ; free virtual = 12067
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35tcpg236-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 2211.156 ; gain = 90.695 ; free physical = 745 ; free virtual = 12067
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 2211.156 ; gain = 90.695 ; free physical = 745 ; free virtual = 12067
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-327] inferring latch for variable 'mem_rdata_word_reg' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:390]
+WARNING: [Synth 8-327] inferring latch for variable 'mem_la_wdata_reg' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:388]
+WARNING: [Synth 8-327] inferring latch for variable 'mem_la_wstrb_reg' [/home/cesar/EComp/iob-soc-knn/submodules/CPU/hardware/src/picorv32.v:389]
+INFO: [Synth 8-3971] The signal "iob_tdp_ram:/ram_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "iob_tdp_ram__parameterized0:/ram_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "iob_tdp_ram__parameterized1:/ram_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "iob_tdp_ram__parameterized2:/ram_reg" was recognized as a true dual port RAM template.
+WARNING: [Synth 8-327] inferring latch for variable 'idx_out_reg' [/home/cesar/EComp/iob-soc-knn/submodules/KNN/hardware/src/sorter.v:51]
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 2211.156 ; gain = 90.695 ; free physical = 738 ; free virtual = 12062
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   63 Bit       Adders := 1     
+	   2 Input   32 Bit       Adders := 8     
+	   3 Input   32 Bit       Adders := 3     
+	   2 Input   16 Bit       Adders := 2     
+	   2 Input   12 Bit       Adders := 1     
+	   2 Input   10 Bit       Adders := 1     
+	   2 Input    8 Bit       Adders := 1     
+	   2 Input    5 Bit       Adders := 2     
+	   2 Input    4 Bit       Adders := 3     
+	   2 Input    2 Bit       Adders := 1     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
++---Registers : 
+	               64 Bit    Registers := 2     
+	               63 Bit    Registers := 1     
+	               36 Bit    Registers := 1     
+	               33 Bit    Registers := 2     
+	               32 Bit    Registers := 21    
+	               16 Bit    Registers := 7     
+	               12 Bit    Registers := 1     
+	               10 Bit    Registers := 2     
+	                8 Bit    Registers := 16    
+	                5 Bit    Registers := 6     
+	                4 Bit    Registers := 6     
+	                3 Bit    Registers := 2     
+	                2 Bit    Registers := 8     
+	                1 Bit    Registers := 110   
++---Multipliers : 
+	              33x33  Multipliers := 1     
+	              32x32  Multipliers := 2     
++---RAMs : 
+	              32K Bit	(4096 X 8 bit)          RAMs := 4     
+	             1024 Bit	(32 X 32 bit)          RAMs := 1     
++---ROMs : 
+	                    ROMs := 1     
++---Muxes : 
+	   2 Input   69 Bit        Muxes := 10    
+	   3 Input   69 Bit        Muxes := 1     
+	   2 Input   63 Bit        Muxes := 2     
+	   2 Input   33 Bit        Muxes := 11    
+	   4 Input   33 Bit        Muxes := 1     
+	   2 Input   32 Bit        Muxes := 47    
+	   7 Input   32 Bit        Muxes := 1     
+	   9 Input   32 Bit        Muxes := 2     
+	   3 Input   32 Bit        Muxes := 2     
+	   4 Input   32 Bit        Muxes := 2     
+	   2 Input   16 Bit        Muxes := 6     
+	   2 Input   10 Bit        Muxes := 1     
+	   2 Input    8 Bit        Muxes := 7     
+	   9 Input    8 Bit        Muxes := 1     
+	   4 Input    8 Bit        Muxes := 2     
+	   2 Input    5 Bit        Muxes := 1     
+	   9 Input    5 Bit        Muxes := 2     
+	   2 Input    4 Bit        Muxes := 3     
+	   4 Input    4 Bit        Muxes := 2     
+	   5 Input    4 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 2     
+	   6 Input    2 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 3     
+	   9 Input    2 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 62    
+	   4 Input    1 Bit        Muxes := 18    
+	   9 Input    1 Bit        Muxes := 25    
+	   6 Input    1 Bit        Muxes := 5     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+DSP Report: Generating DSP rd0, operation Mode is: A2*B2.
+DSP Report: register rs1_reg is absorbed into DSP rd0.
+DSP Report: register rd0 is absorbed into DSP rd0.
+DSP Report: operator rd0 is absorbed into DSP rd0.
+DSP Report: operator rd0 is absorbed into DSP rd0.
+DSP Report: Generating DSP rd_reg, operation Mode is: (PCIN>>17)+A2*B2.
+DSP Report: register rs2_reg is absorbed into DSP rd_reg.
+DSP Report: register rs1_reg is absorbed into DSP rd_reg.
+DSP Report: register rd_reg is absorbed into DSP rd_reg.
+DSP Report: operator rd0 is absorbed into DSP rd_reg.
+DSP Report: operator rd0 is absorbed into DSP rd_reg.
+DSP Report: Generating DSP rd0, operation Mode is: A2*B2.
+DSP Report: register rd0 is absorbed into DSP rd0.
+DSP Report: register rd0 is absorbed into DSP rd0.
+DSP Report: operator rd0 is absorbed into DSP rd0.
+DSP Report: operator rd0 is absorbed into DSP rd0.
+DSP Report: Generating DSP rd_reg, operation Mode is: (PCIN>>17)+A2*B2.
+DSP Report: register rs2_reg is absorbed into DSP rd_reg.
+DSP Report: register rd_reg is absorbed into DSP rd_reg.
+DSP Report: register rd_reg is absorbed into DSP rd_reg.
+DSP Report: operator rd0 is absorbed into DSP rd_reg.
+DSP Report: operator rd0 is absorbed into DSP rd_reg.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: Generating DSP sorter0/DATA0_OUT_INT1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+DSP Report: operator sorter0/DATA0_OUT_INT1 is absorbed into DSP sorter0/DATA0_OUT_INT1.
+INFO: [Synth 8-3971] The signal "top_system/system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "top_system/system/int_mem0/int_sram/gen_main_mem_byte[1].main_mem_byte/ram_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "top_system/system/int_mem0/int_sram/gen_main_mem_byte[2].main_mem_byte/ram_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "top_system/system/int_mem0/int_sram/gen_main_mem_byte[3].main_mem_byte/ram_reg" was recognized as a true dual port RAM template.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2211.156 ; gain = 90.695 ; free physical = 865 ; free virtual = 12051
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+ROM: Preliminary Mapping	Report
++------------+-----------------------------+---------------+----------------+
+|Module Name | RTL Object                  | Depth x Width | Implemented As | 
++------------+-----------------------------+---------------+----------------+
+|int_mem     | boot_ctr0/sp_rom0/rdata_reg | 1024x32       | Block RAM      | 
++------------+-----------------------------+---------------+----------------+
+
+
+Block RAM: Preliminary Mapping	Report (see note below)
++------------+---------------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name | RTL Object                                                          | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++------------+---------------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[1].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[2].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[3].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
++------------+---------------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
+
+Distributed RAM: Preliminary Mapping	Report (see note below)
++---------------------------+-------------+-----------+----------------------+--------------+
+|Module Name                | RTL Object  | Inference | Size (Depth x Width) | Primitives   | 
++---------------------------+-------------+-----------+----------------------+--------------+
+|\system/cpu/picorv32_core  | cpuregs_reg | Implied   | 32 x 32              | RAM32M x 12	 | 
++---------------------------+-------------+-----------+----------------------+--------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+
+DSP: Preliminary Mapping	Report (see note below)
++-----------------------+------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name            | DSP Mapping      | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-----------------------+------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|picorv32_pcpi_fast_mul | A2*B2            | 18     | 16     | -      | -      | 48     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|picorv32_pcpi_fast_mul | (PCIN>>17)+A2*B2 | 16     | 16     | -      | -      | 48     | 1    | 1    | -    | -    | -     | 0    | 1    | 
+|picorv32_pcpi_fast_mul | A2*B2            | 18     | 18     | -      | -      | 48     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|picorv32_pcpi_fast_mul | (PCIN>>17)+A2*B2 | 18     | 16     | -      | -      | 48     | 1    | 1    | -    | -    | -     | 0    | 1    | 
+|iob_knn                | A*B              | 18     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|iob_knn                | (PCIN>>17)+A*B   | 15     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|iob_knn                | A*B              | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|iob_knn                | (PCIN>>17)+A*B   | 18     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|iob_knn                | A*B              | 18     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|iob_knn                | (PCIN>>17)+A*B   | 15     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|iob_knn                | A*B              | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|iob_knn                | (PCIN>>17)+A*B   | 18     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++-----------------------+------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 2211.156 ; gain = 90.695 ; free physical = 667 ; free virtual = 11889
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:34 ; elapsed = 00:00:37 . Memory (MB): peak = 2256.758 ; gain = 136.297 ; free physical = 640 ; free virtual = 11865
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Final Mapping	Report
++------------+---------------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name | RTL Object                                                          | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++------------+---------------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[1].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[2].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
+|top_system  | system/int_mem0/int_sram/gen_main_mem_byte[3].main_mem_byte/ram_reg | 4 K x 8(NO_CHANGE)     | W | R | 4 K x 8(NO_CHANGE)     | W | R | Port A and B     | 0      | 1      | 
++------------+---------------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+
+Distributed RAM: Final Mapping	Report
++---------------------------+-------------+-----------+----------------------+--------------+
+|Module Name                | RTL Object  | Inference | Size (Depth x Width) | Primitives   | 
++---------------------------+-------------+-----------+----------------------+--------------+
+|\system/cpu/picorv32_core  | cpuregs_reg | Implied   | 32 x 32              | RAM32M x 12	 | 
++---------------------------+-------------+-----------+----------------------+--------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[1].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[1].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[2].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[2].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[3].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/int_sram/gen_main_mem_byte[3].main_mem_byte/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance system/int_mem0/boot_ctr0/sp_rom0/rdata_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:35 ; elapsed = 00:00:39 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 626 ; free virtual = 11851
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:38 ; elapsed = 00:00:41 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 617 ; free virtual = 11844
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:38 ; elapsed = 00:00:41 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 617 ; free virtual = 11844
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:38 ; elapsed = 00:00:42 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 613 ; free virtual = 11840
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:38 ; elapsed = 00:00:42 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 613 ; free virtual = 11840
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:38 ; elapsed = 00:00:42 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 612 ; free virtual = 11840
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:38 ; elapsed = 00:00:42 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 612 ; free virtual = 11840
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |BUFG     |     2|
+|2     |CARRY4   |   219|
+|3     |DSP48E1  |    10|
+|8     |LUT1     |   155|
+|9     |LUT2     |   332|
+|10    |LUT3     |   387|
+|11    |LUT4     |   437|
+|12    |LUT5     |   410|
+|13    |LUT6     |   714|
+|14    |RAM32M   |    12|
+|15    |RAMB36E1 |     5|
+|20    |FDCE     |   250|
+|21    |FDPE     |    30|
+|22    |FDRE     |   921|
+|23    |FDSE     |   135|
+|24    |LD       |    68|
+|25    |IBUF     |     3|
+|26    |OBUF     |     1|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:38 ; elapsed = 00:00:42 . Memory (MB): peak = 2272.773 ; gain = 152.312 ; free physical = 612 ; free virtual = 11840
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 4 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:37 ; elapsed = 00:00:40 . Memory (MB): peak = 2272.773 ; gain = 61.617 ; free physical = 674 ; free virtual = 11901
+Synthesis Optimization Complete : Time (s): cpu = 00:00:39 ; elapsed = 00:00:42 . Memory (MB): peak = 2272.781 ; gain = 152.312 ; free physical = 674 ; free virtual = 11901
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 2272.781 ; gain = 0.000 ; free physical = 747 ; free virtual = 11975
+INFO: [Netlist 29-17] Analyzing 314 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/synth_system.xdc]
+Finished Parsing XDC File [/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/synth_system.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2272.781 ; gain = 0.000 ; free physical = 700 ; free virtual = 11929
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 80 instances were transformed.
+  LD => LDCE: 68 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 12 instances
+
+INFO: [Common 17-83] Releasing license: Synthesis
+89 Infos, 10 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:48 ; elapsed = 00:00:49 . Memory (MB): peak = 2272.781 ; gain = 152.422 ; free physical = 884 ; free virtual = 12113
+# opt_design
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2316.664 ; gain = 43.883 ; free physical = 876 ; free virtual = 12107
+
+Starting Cache Timing Information Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Cache Timing Information Task | Checksum: cab3d607
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2464.484 ; gain = 147.820 ; free physical = 578 ; free virtual = 11826
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 13a6a7d05
+
+Time (s): cpu = 00:00:00.26 ; elapsed = 00:00:00.18 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 443 ; free virtual = 11692
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 2 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 171540485
+
+Time (s): cpu = 00:00:00.30 ; elapsed = 00:00:00.23 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 443 ; free virtual = 11692
+INFO: [Opt 31-389] Phase Constant propagation created 0 cells and removed 0 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 19db1f198
+
+Time (s): cpu = 00:00:00.41 ; elapsed = 00:00:00.34 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 443 ; free virtual = 11692
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 0 cells
+
+Phase 4 BUFG optimization
+Phase 4 BUFG optimization | Checksum: 19db1f198
+
+Time (s): cpu = 00:00:00.46 ; elapsed = 00:00:00.39 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 443 ; free virtual = 11692
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: 19db1f198
+
+Time (s): cpu = 00:00:00.50 ; elapsed = 00:00:00.43 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 443 ; free virtual = 11692
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: 19db1f198
+
+Time (s): cpu = 00:00:00.52 ; elapsed = 00:00:00.45 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 443 ; free virtual = 11692
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |               0  |               2  |                                              0  |
+|  Constant propagation         |               0  |               0  |                                              0  |
+|  Sweep                        |               0  |               0  |                                              0  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 442 ; free virtual = 11692
+Ending Logic Optimization Task | Checksum: 131e6b4ca
+
+Time (s): cpu = 00:00:00.61 ; elapsed = 00:00:00.55 . Memory (MB): peak = 2597.453 ; gain = 0.000 ; free physical = 442 ; free virtual = 11692
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+INFO: [Pwropt 34-9] Applying IDT optimizations ...
+INFO: [Pwropt 34-10] Applying ODC optimizations ...
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+
+
+Starting PowerOpt Patch Enables Task
+INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 5 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
+INFO: [Pwropt 34-201] Structural ODC has moved 0 WE to EN ports
+Number of BRAM Ports augmented: 1 newly gated: 0 Total Ports: 10
+Number of Flops added for Enable Generation: 2
+
+Ending PowerOpt Patch Enables Task | Checksum: 15fc6601c
+
+Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 429 ; free virtual = 11685
+Ending Power Optimization Task | Checksum: 15fc6601c
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.79 . Memory (MB): peak = 2815.309 ; gain = 217.855 ; free physical = 434 ; free virtual = 11690
+
+Starting Final Cleanup Task
+
+Starting Logic Optimization Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Logic Optimization Task | Checksum: b2f11355
+
+Time (s): cpu = 00:00:00.47 ; elapsed = 00:00:00.32 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 426 ; free virtual = 11683
+Ending Final Cleanup Task | Checksum: b2f11355
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 426 ; free virtual = 11683
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 426 ; free virtual = 11683
+Ending Netlist Obfuscation Task | Checksum: b2f11355
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 426 ; free virtual = 11683
+INFO: [Common 17-83] Releasing license: Implementation
+23 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2815.309 ; gain = 542.527 ; free physical = 426 ; free virtual = 11683
+# place_design
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 4 threads
+WARNING: [DRC CHECK-3] Report rule limit reached: REQP-1839 rule limit reached: 20 violations have been found.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[10] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[5]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[5]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[11] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[6]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[6]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[12] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[7]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[7]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[13] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[8]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[8]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[14] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[9]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[9]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[5] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[0]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[6] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[1]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[7] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[2]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[8] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[3]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[9] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[4]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ENARDEN (net: system/int_mem0/boot_ctr0/sp_rom0/rdata_reg_ENARDEN_cooolgate_en_sig_3) which is driven by a register (sys_rst_int_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ENARDEN (net: system/int_mem0/boot_ctr0/sp_rom0/rdata_reg_ENARDEN_cooolgate_en_sig_3) which is driven by a register (system/int_mem0/boot_ctr0/cpu_rst_req_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ENARDEN (net: system/int_mem0/boot_ctr0/sp_rom0/rdata_reg_ENARDEN_cooolgate_en_sig_3) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_valid_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[13] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg_1[19]) which is driven by a register (system/int_mem0/ibus_merge/sel_en_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[13] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg_1[19]) which is driven by a register (system/int_mem0/ibus_merge/sel_reg_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/boot_ctr0/boot_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/boot_ctr0/ram_w_addr_reg[11]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/boot_ctr0/sram_valid_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/ibus_merge/sel_en_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/ibus_merge/sel_reg_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors, 21 Warnings
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 419 ; free virtual = 11678
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 90198724
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 419 ; free virtual = 11678
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 419 ; free virtual = 11678
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 8ff72188
+
+Time (s): cpu = 00:00:00.78 ; elapsed = 00:00:00.47 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 401 ; free virtual = 11664
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 17e26399d
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 405 ; free virtual = 11670
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 17e26399d
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 405 ; free virtual = 11670
+Phase 1 Placer Initialization | Checksum: 17e26399d
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 405 ; free virtual = 11671
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+Phase 2.1 Floorplanning | Checksum: af3b4547
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 402 ; free virtual = 11668
+
+Phase 2.2 Global Placement Core
+
+Phase 2.2.1 Physical Synthesis In Placer
+INFO: [Physopt 32-1035] Found 0 LUTNM shape to break, 153 LUT instances to create LUTNM shape
+INFO: [Physopt 32-1044] Break lutnm for timing: one critical 0, two critical 0, total 0, new lutff created 0
+INFO: [Physopt 32-775] End 1 Pass. Optimized 67 nets or cells. Created 0 new cell, deleted 67 existing cells and moved 0 existing cell
+INFO: [Physopt 32-65] No nets found for high-fanout optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-1123] No candidate cells found for Shift Register to Pipeline optimization
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-677] No candidate cells for Shift Register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-526] No candidate cells for BRAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-949] No candidate nets found for HD net replication
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 388 ; free virtual = 11658
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization                                     |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  LUT Combining                                    |            0  |             67  |                    67  |           0  |           1  |  00:00:00  |
+|  Very High Fanout                                 |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  DSP Register                                     |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register to Pipeline                       |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register                                   |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  BRAM Register                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  URAM Register                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Dynamic/Static Region Interface Net Replication  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Total                                            |            0  |             67  |                    67  |           0  |           8  |  00:00:00  |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Phase 2.2.1 Physical Synthesis In Placer | Checksum: 10b79f5de
+
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:04 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 388 ; free virtual = 11658
+Phase 2.2 Global Placement Core | Checksum: e64e7a53
+
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:04 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 387 ; free virtual = 11658
+Phase 2 Global Placement | Checksum: e64e7a53
+
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:04 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 388 ; free virtual = 11659
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: e20737b8
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:04 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 387 ; free virtual = 11659
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 123919d2d
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 386 ; free virtual = 11657
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 16e1df563
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 386 ; free virtual = 11657
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 10e721447
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 387 ; free virtual = 11658
+
+Phase 3.5 Fast Optimization
+Phase 3.5 Fast Optimization | Checksum: 185ccd9d5
+
+Time (s): cpu = 00:00:09 ; elapsed = 00:00:05 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 385 ; free virtual = 11656
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 1ae73cd29
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 381 ; free virtual = 11654
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: e068507f
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 381 ; free virtual = 11654
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: 7ed471a3
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 381 ; free virtual = 11654
+
+Phase 3.9 Fast Optimization
+Phase 3.9 Fast Optimization | Checksum: 19fef3e60
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:07 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 402 ; free virtual = 11676
+Phase 3 Detail Placement | Checksum: 19fef3e60
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:07 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 402 ; free virtual = 11676
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 14e01e0c5
+
+Phase 4.1.1.1 BUFG Insertion
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-5.827 | TNS=-1513.022 |
+Phase 1 Physical Synthesis Initialization | Checksum: a2d7f432
+
+Time (s): cpu = 00:00:00.18 ; elapsed = 00:00:00.08 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 396 ; free virtual = 11670
+INFO: [Place 46-56] BUFG insertion identified 0 candidate nets. Inserted BUFG: 0, Replicated BUFG Driver: 0, Skipped due to Placement/Routing Conflicts: 0, Skipped due to Timing Degradation: 0, Skipped due to Illegal Netlist: 0.
+Ending Physical Synthesis Task | Checksum: f5c189b2
+
+Time (s): cpu = 00:00:00.19 ; elapsed = 00:00:00.09 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 397 ; free virtual = 11670
+Phase 4.1.1.1 BUFG Insertion | Checksum: 14e01e0c5
+
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:08 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 397 ; free virtual = 11671
+INFO: [Place 30-746] Post Placement Timing Summary WNS=-5.580. For the most accurate timing information please run report_timing.
+Phase 4.1.1 Post Placement Optimization | Checksum: 14d696995
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 391 ; free virtual = 11667
+Phase 4.1 Post Commit Optimization | Checksum: 14d696995
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 390 ; free virtual = 11667
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 14d696995
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 391 ; free virtual = 11668
+
+Phase 4.3 Placer Reporting
+Phase 4.3 Placer Reporting | Checksum: 14d696995
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 391 ; free virtual = 11668
+
+Phase 4.4 Final Placement Cleanup
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 391 ; free virtual = 11668
+Phase 4.4 Final Placement Cleanup | Checksum: 21bc7927d
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 391 ; free virtual = 11668
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 21bc7927d
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 391 ; free virtual = 11668
+Ending Placer Task | Checksum: 13d58a752
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 391 ; free virtual = 11668
+INFO: [Common 17-83] Releasing license: Implementation
+33 Infos, 21 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:16 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 395 ; free virtual = 11672
+# route_design
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+Running DRC as a precondition to command route_design
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: 6a11f9ad ConstDB: 0 ShapeSum: d346ada5 RouteDB: 0
+
+Phase 1 Build RT Design
+Phase 1 Build RT Design | Checksum: 4a263c47
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:09 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 287 ; free virtual = 11570
+Post Restoration Checksum: NetGraph: 6465132 NumContArr: 43dfeb15 Constraints: 0 Timing: 0
+
+Phase 2 Router Initialization
+
+Phase 2.1 Create Timer
+Phase 2.1 Create Timer | Checksum: 4a263c47
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:09 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 263 ; free virtual = 11547
+
+Phase 2.2 Fix Topology Constraints
+Phase 2.2 Fix Topology Constraints | Checksum: 4a263c47
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:09 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 246 ; free virtual = 11531
+
+Phase 2.3 Pre Route Cleanup
+Phase 2.3 Pre Route Cleanup | Checksum: 4a263c47
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:09 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 246 ; free virtual = 11531
+ Number of Nodes with overlaps = 0
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: 1e8f7db21
+
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:10 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 234 ; free virtual = 11520
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-5.706 | TNS=-1488.301| WHS=-0.161 | THS=-17.655|
+
+Phase 2 Router Initialization | Checksum: 215aad248
+
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:10 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 234 ; free virtual = 11520
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0.00318903 %
+  Global Horizontal Routing Utilization  = 0.00130141 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 3739
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 3737
+  Number of Partially Routed Nets     = 2
+  Number of Node Overlaps             = 2
+
+
+Phase 3 Initial Routing
+Phase 3 Initial Routing | Checksum: 10dc2d273
+
+Time (s): cpu = 00:00:14 ; elapsed = 00:00:11 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 234 ; free virtual = 11521
+INFO: [Route 35-580] Design has 29 pins with tight setup and hold constraints.
+
+The top 5 pins with tight setup and hold constraints:
+
++--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
+|       Launch Clock       |      Capture Clock       |                                                 Pin                                                      |
++--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
+|                      clk |                      clk |                                                                system/knn/sorter0/DATA2_OUT_INT_reg[21]/D|
+|                      clk |                      clk |                                                                 system/knn/sorter0/DATA2_OUT_INT_reg[2]/D|
+|                      clk |                      clk |                                                                      system/knn/sorter0/idx3_out_reg[1]/D|
+|                      clk |                      clk |                                                                system/knn/sorter0/DATA2_OUT_INT_reg[19]/D|
+|                      clk |                      clk |                                                                 system/knn/sorter0/DATA2_OUT_INT_reg[1]/D|
++--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
+
+File with complete list of pins: tight_setup_hold_pins.txt
+
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 457
+ Number of Nodes with overlaps = 27
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-6.049 | TNS=-1574.793| WHS=N/A    | THS=N/A    |
+
+Phase 4.1 Global Iteration 0 | Checksum: 186f7c033
+
+Time (s): cpu = 00:00:16 ; elapsed = 00:00:12 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 228 ; free virtual = 11516
+
+Phase 4.2 Global Iteration 1
+ Number of Nodes with overlaps = 71
+ Number of Nodes with overlaps = 9
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-5.939 | TNS=-1577.153| WHS=N/A    | THS=N/A    |
+
+Phase 4.2 Global Iteration 1 | Checksum: 1004d4ddf
+
+Time (s): cpu = 00:00:17 ; elapsed = 00:00:13 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 229 ; free virtual = 11517
+
+Phase 4.3 Global Iteration 2
+ Number of Nodes with overlaps = 73
+ Number of Nodes with overlaps = 15
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-5.971 | TNS=-1575.553| WHS=N/A    | THS=N/A    |
+
+Phase 4.3 Global Iteration 2 | Checksum: 1a052b772
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 226 ; free virtual = 11514
+Phase 4 Rip-up And Reroute | Checksum: 1a052b772
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 226 ; free virtual = 11514
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+
+Phase 5.1.1 Update Timing
+Phase 5.1.1 Update Timing | Checksum: 154d58102
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 226 ; free virtual = 11515
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-5.860 | TNS=-1553.365| WHS=N/A    | THS=N/A    |
+
+ Number of Nodes with overlaps = 0
+Phase 5.1 Delay CleanUp | Checksum: 1c97a3627
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 214 ; free virtual = 11508
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 1c97a3627
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 214 ; free virtual = 11508
+Phase 5 Delay and Skew Optimization | Checksum: 1c97a3627
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 214 ; free virtual = 11508
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 18a752d2e
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 214 ; free virtual = 11508
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-5.838 | TNS=-1541.417| WHS=0.039  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 1dfe90b11
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 214 ; free virtual = 11508
+Phase 6 Post Hold Fix | Checksum: 1dfe90b11
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 214 ; free virtual = 11508
+
+Phase 7 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 1.1974 %
+  Global Horizontal Routing Utilization  = 1.48191 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Congestion Report
+North Dir 1x1 Area, Max Cong = 45.045%, No Congested Regions.
+South Dir 1x1 Area, Max Cong = 56.7568%, No Congested Regions.
+East Dir 1x1 Area, Max Cong = 55.8824%, No Congested Regions.
+West Dir 1x1 Area, Max Cong = 38.2353%, No Congested Regions.
+
+------------------------------
+Reporting congestion hotspots
+------------------------------
+Direction: North
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: South
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: East
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: West
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+
+Phase 7 Route finalize | Checksum: 1b5153221
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 214 ; free virtual = 11508
+
+Phase 8 Verifying routed nets
+
+ Verification completed successfully
+Phase 8 Verifying routed nets | Checksum: 1b5153221
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 213 ; free virtual = 11507
+
+Phase 9 Depositing Routes
+Phase 9 Depositing Routes | Checksum: 1d4125a49
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 210 ; free virtual = 11504
+
+Phase 10 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=-5.838 | TNS=-1541.417| WHS=0.039  | THS=0.000  |
+
+WARNING: [Route 35-328] Router estimated timing not met.
+Resolution: For a complete and accurate timing signoff, report_timing_summary must be run after route_design. Alternatively, route_design can be run with the -timing_summary option to enable a complete timing signoff at the end of route_design.
+Phase 10 Post Router Timing | Checksum: 1d4125a49
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 210 ; free virtual = 11504
+INFO: [Route 35-16] Router Completed Successfully
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:14 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 232 ; free virtual = 11526
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Implementation
+15 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:00:20 ; elapsed = 00:00:15 . Memory (MB): peak = 2815.309 ; gain = 0.000 ; free physical = 232 ; free virtual = 11526
+INFO: [Common 17-600] The following parameters have non-default value.
+general.maxThreads
+# report_utilization
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1 (lin64) Build 2902540 Wed May 27 19:54:35 MDT 2020
+| Date         : Tue Dec  1 16:30:43 2020
+| Host         : cesar-All-Series running 64-bit Ubuntu 18.04.5 LTS
+| Command      : report_utilization
+| Design       : top_system
+| Device       : 7a35tcpg236-1
+| Design State : Routed
+------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Slice Logic
+1.1 Summary of Registers by Type
+2. Slice Logic Distribution
+3. Memory
+4. DSP
+5. IO and GT Specific
+6. Clocking
+7. Specific Feature
+8. Primitives
+9. Black Boxes
+10. Instantiated Netlists
+
+1. Slice Logic
+--------------
+
++----------------------------+------+-------+-----------+-------+
+|          Site Type         | Used | Fixed | Available | Util% |
++----------------------------+------+-------+-----------+-------+
+| Slice LUTs                 | 2101 |     0 |     20800 | 10.10 |
+|   LUT as Logic             | 2053 |     0 |     20800 |  9.87 |
+|   LUT as Memory            |   48 |     0 |      9600 |  0.50 |
+|     LUT as Distributed RAM |   48 |     0 |           |       |
+|     LUT as Shift Register  |    0 |     0 |           |       |
+| Slice Registers            | 1406 |     0 |     41600 |  3.38 |
+|   Register as Flip Flop    | 1338 |     0 |     41600 |  3.22 |
+|   Register as Latch        |   68 |     0 |     41600 |  0.16 |
+| F7 Muxes                   |    0 |     0 |     16300 |  0.00 |
+| F8 Muxes                   |    0 |     0 |      8150 |  0.00 |
++----------------------------+------+-------+-----------+-------+
+
+
+1.1 Summary of Registers by Type
+--------------------------------
+
++-------+--------------+-------------+--------------+
+| Total | Clock Enable | Synchronous | Asynchronous |
++-------+--------------+-------------+--------------+
+| 0     |            _ |           - |            - |
+| 0     |            _ |           - |          Set |
+| 0     |            _ |           - |        Reset |
+| 0     |            _ |         Set |            - |
+| 0     |            _ |       Reset |            - |
+| 0     |          Yes |           - |            - |
+| 30    |          Yes |           - |          Set |
+| 320   |          Yes |           - |        Reset |
+| 135   |          Yes |         Set |            - |
+| 921   |          Yes |       Reset |            - |
++-------+--------------+-------------+--------------+
+
+
+2. Slice Logic Distribution
+---------------------------
+
++--------------------------------------------+------+-------+-----------+-------+
+|                  Site Type                 | Used | Fixed | Available | Util% |
++--------------------------------------------+------+-------+-----------+-------+
+| Slice                                      |  727 |     0 |      8150 |  8.92 |
+|   SLICEL                                   |  495 |     0 |           |       |
+|   SLICEM                                   |  232 |     0 |           |       |
+| LUT as Logic                               | 2053 |     0 |     20800 |  9.87 |
+|   using O5 output only                     |    0 |       |           |       |
+|   using O6 output only                     | 1672 |       |           |       |
+|   using O5 and O6                          |  381 |       |           |       |
+| LUT as Memory                              |   48 |     0 |      9600 |  0.50 |
+|   LUT as Distributed RAM                   |   48 |     0 |           |       |
+|     using O5 output only                   |    0 |       |           |       |
+|     using O6 output only                   |    0 |       |           |       |
+|     using O5 and O6                        |   48 |       |           |       |
+|   LUT as Shift Register                    |    0 |     0 |           |       |
+| Slice Registers                            | 1406 |     0 |     41600 |  3.38 |
+|   Register driven from within the Slice    |  920 |       |           |       |
+|   Register driven from outside the Slice   |  486 |       |           |       |
+|     LUT in front of the register is unused |  205 |       |           |       |
+|     LUT in front of the register is used   |  281 |       |           |       |
+| Unique Control Sets                        |   52 |       |      8150 |  0.64 |
++--------------------------------------------+------+-------+-----------+-------+
+* * Note: Available Control Sets calculated as Slice * 1, Review the Control Sets Report for more information regarding control sets.
+
+
+3. Memory
+---------
+
++-------------------+------+-------+-----------+-------+
+|     Site Type     | Used | Fixed | Available | Util% |
++-------------------+------+-------+-----------+-------+
+| Block RAM Tile    |    5 |     0 |        50 | 10.00 |
+|   RAMB36/FIFO*    |    5 |     0 |        50 | 10.00 |
+|     RAMB36E1 only |    5 |       |           |       |
+|   RAMB18          |    0 |     0 |       100 |  0.00 |
++-------------------+------+-------+-----------+-------+
+* Note: Each Block RAM Tile only has one FIFO logic available and therefore can accommodate only one FIFO36E1 or one FIFO18E1. However, if a FIFO18E1 occupies a Block RAM Tile, that tile can still accommodate a RAMB18E1
+
+
+4. DSP
+------
+
++----------------+------+-------+-----------+-------+
+|    Site Type   | Used | Fixed | Available | Util% |
++----------------+------+-------+-----------+-------+
+| DSPs           |   10 |     0 |        90 | 11.11 |
+|   DSP48E1 only |   10 |       |           |       |
++----------------+------+-------+-----------+-------+
+
+
+5. IO and GT Specific
+---------------------
+
++-----------------------------+------+-------+-----------+-------+
+|          Site Type          | Used | Fixed | Available | Util% |
++-----------------------------+------+-------+-----------+-------+
+| Bonded IOB                  |    4 |     4 |       106 |  3.77 |
+|   IOB Master Pads           |    2 |       |           |       |
+|   IOB Slave Pads            |    2 |       |           |       |
+| Bonded IPADs                |    0 |     0 |        10 |  0.00 |
+| Bonded OPADs                |    0 |     0 |         4 |  0.00 |
+| PHY_CONTROL                 |    0 |     0 |         5 |  0.00 |
+| PHASER_REF                  |    0 |     0 |         5 |  0.00 |
+| OUT_FIFO                    |    0 |     0 |        20 |  0.00 |
+| IN_FIFO                     |    0 |     0 |        20 |  0.00 |
+| IDELAYCTRL                  |    0 |     0 |         5 |  0.00 |
+| IBUFDS                      |    0 |     0 |       104 |  0.00 |
+| GTPE2_CHANNEL               |    0 |     0 |         2 |  0.00 |
+| PHASER_OUT/PHASER_OUT_PHY   |    0 |     0 |        20 |  0.00 |
+| PHASER_IN/PHASER_IN_PHY     |    0 |     0 |        20 |  0.00 |
+| IDELAYE2/IDELAYE2_FINEDELAY |    0 |     0 |       250 |  0.00 |
+| IBUFDS_GTE2                 |    0 |     0 |         2 |  0.00 |
+| ILOGIC                      |    0 |     0 |       106 |  0.00 |
+| OLOGIC                      |    0 |     0 |       106 |  0.00 |
++-----------------------------+------+-------+-----------+-------+
+
+
+6. Clocking
+-----------
+
++------------+------+-------+-----------+-------+
+|  Site Type | Used | Fixed | Available | Util% |
++------------+------+-------+-----------+-------+
+| BUFGCTRL   |    2 |     0 |        32 |  6.25 |
+| BUFIO      |    0 |     0 |        20 |  0.00 |
+| MMCME2_ADV |    0 |     0 |         5 |  0.00 |
+| PLLE2_ADV  |    0 |     0 |         5 |  0.00 |
+| BUFMRCE    |    0 |     0 |        10 |  0.00 |
+| BUFHCE     |    0 |     0 |        72 |  0.00 |
+| BUFR       |    0 |     0 |        20 |  0.00 |
++------------+------+-------+-----------+-------+
+
+
+7. Specific Feature
+-------------------
+
++-------------+------+-------+-----------+-------+
+|  Site Type  | Used | Fixed | Available | Util% |
++-------------+------+-------+-----------+-------+
+| BSCANE2     |    0 |     0 |         4 |  0.00 |
+| CAPTUREE2   |    0 |     0 |         1 |  0.00 |
+| DNA_PORT    |    0 |     0 |         1 |  0.00 |
+| EFUSE_USR   |    0 |     0 |         1 |  0.00 |
+| FRAME_ECCE2 |    0 |     0 |         1 |  0.00 |
+| ICAPE2      |    0 |     0 |         2 |  0.00 |
+| PCIE_2_1    |    0 |     0 |         1 |  0.00 |
+| STARTUPE2   |    0 |     0 |         1 |  0.00 |
+| XADC        |    0 |     0 |         1 |  0.00 |
++-------------+------+-------+-----------+-------+
+
+
+8. Primitives
+-------------
+
++----------+------+---------------------+
+| Ref Name | Used | Functional Category |
++----------+------+---------------------+
+| FDRE     |  921 |        Flop & Latch |
+| LUT6     |  714 |                 LUT |
+| LUT4     |  437 |                 LUT |
+| LUT5     |  411 |                 LUT |
+| LUT3     |  387 |                 LUT |
+| LUT2     |  332 |                 LUT |
+| FDCE     |  252 |        Flop & Latch |
+| CARRY4   |  219 |          CarryLogic |
+| LUT1     |  153 |                 LUT |
+| FDSE     |  135 |        Flop & Latch |
+| RAMD32   |   72 |  Distributed Memory |
+| LDCE     |   68 |        Flop & Latch |
+| FDPE     |   30 |        Flop & Latch |
+| RAMS32   |   24 |  Distributed Memory |
+| DSP48E1  |   10 |    Block Arithmetic |
+| RAMB36E1 |    5 |        Block Memory |
+| IBUF     |    3 |                  IO |
+| BUFG     |    2 |               Clock |
+| OBUF     |    1 |                  IO |
++----------+------+---------------------+
+
+
+9. Black Boxes
+--------------
+
++----------+------+
+| Ref Name | Used |
++----------+------+
+
+
+10. Instantiated Netlists
+-------------------------
+
++----------+------+
+| Ref Name | Used |
++----------+------+
+
+
+# report_timing
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -max_paths 1 -nworst 1 -delay_type max -sort_by slack.
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1 (lin64) Build 2902540 Wed May 27 19:54:35 MDT 2020
+| Date         : Tue Dec  1 16:30:43 2020
+| Host         : cesar-All-Series running 64-bit Ubuntu 18.04.5 LTS
+| Command      : report_timing
+| Design       : top_system
+| Device       : 7a35t-cpg236
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (VIOLATED) :        -5.838ns  (required time - arrival time)
+  Source:                 system/knn/DATA_Y2_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            system/knn/sorter0/DATA1_OUT_INT_reg[9]/CE
+                            (rising edge-triggered cell FDSE clocked by clk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clk rise@10.000ns - clk rise@0.000ns)
+  Data Path Delay:        15.556ns  (logic 10.427ns (67.027%)  route 5.129ns (32.973%))
+  Logic Levels:           17  (CARRY4=10 DSP48E1=2 LUT2=3 LUT3=1 LUT4=1)
+  Clock Path Skew:        -0.041ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.776ns = ( 14.776 - 10.000 ) 
+    Source Clock Delay      (SCD):    5.077ns
+    Clock Pessimism Removal (CPR):    0.260ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    W5                                                0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    clk
+    W5                   IBUF (Prop_ibuf_I_O)         1.458     1.458 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           1.967     3.425    clk_IBUF
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.521 r  clk_IBUF_BUFG_inst/O
+                         net (fo=1447, routed)        1.556     5.077    system/knn/clk_IBUF_BUFG
+    SLICE_X9Y20          FDCE                                         r  system/knn/DATA_Y2_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X9Y20          FDCE (Prop_fdce_C_Q)         0.456     5.533 r  system/knn/DATA_Y2_reg[1]/Q
+                         net (fo=1, routed)           0.644     6.177    system/knn/sorter0/DATA0_OUT_INT1__1_1[1]
+    SLICE_X11Y20         LUT2 (Prop_lut2_I1_O)        0.124     6.301 r  system/knn/sorter0/DATA0_OUT_INT2_carry_i_3/O
+                         net (fo=1, routed)           0.000     6.301    system/knn/sorter0/DATA0_OUT_INT2_carry_i_3_n_0
+    SLICE_X11Y20         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550     6.851 r  system/knn/sorter0/DATA0_OUT_INT2_carry/CO[3]
+                         net (fo=1, routed)           0.000     6.851    system/knn/sorter0/DATA0_OUT_INT2_carry_n_0
+    SLICE_X11Y21         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     6.965 r  system/knn/sorter0/DATA0_OUT_INT2_carry__0/CO[3]
+                         net (fo=1, routed)           0.000     6.965    system/knn/sorter0/DATA0_OUT_INT2_carry__0_n_0
+    SLICE_X11Y22         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     7.079 r  system/knn/sorter0/DATA0_OUT_INT2_carry__1/CO[3]
+                         net (fo=1, routed)           0.000     7.079    system/knn/sorter0/DATA0_OUT_INT2_carry__1_n_0
+    SLICE_X11Y23         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     7.193 r  system/knn/sorter0/DATA0_OUT_INT2_carry__2/CO[3]
+                         net (fo=1, routed)           0.000     7.193    system/knn/sorter0/DATA0_OUT_INT2_carry__2_n_0
+    SLICE_X11Y24         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     7.415 r  system/knn/sorter0/DATA0_OUT_INT2_carry__3/O[0]
+                         net (fo=40, routed)          0.621     8.036    system/knn/sorter0/DATA0_OUT_INT2_carry__3_n_7
+    DSP48_X0Y9           DSP48E1 (Prop_dsp48e1_A[16]_PCOUT[47])
+                                                      4.211    12.247 r  system/knn/sorter0/DATA0_OUT_INT1__0/PCOUT[47]
+                         net (fo=1, routed)           0.056    12.303    system/knn/sorter0/DATA0_OUT_INT1__0_n_106
+    DSP48_X0Y10          DSP48E1 (Prop_dsp48e1_PCIN[47]_P[1])
+                                                      1.518    13.821 r  system/knn/sorter0/DATA0_OUT_INT1__1/P[1]
+                         net (fo=2, routed)           0.766    14.587    system/knn/sorter0/DATA0_OUT_INT1__1_n_104
+    SLICE_X11Y25         LUT2 (Prop_lut2_I0_O)        0.124    14.711 r  system/knn/sorter0/DATA0_OUT_INT1_carry_i_2/O
+                         net (fo=1, routed)           0.000    14.711    system/knn/sorter0/DATA0_OUT_INT1_carry_i_2_n_0
+    SLICE_X11Y25         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398    15.109 r  system/knn/sorter0/DATA0_OUT_INT1_carry/CO[3]
+                         net (fo=1, routed)           0.000    15.109    system/knn/sorter0/DATA0_OUT_INT1_carry_n_0
+    SLICE_X11Y26         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334    15.443 r  system/knn/sorter0/DATA0_OUT_INT1_carry__0/O[1]
+                         net (fo=1, routed)           0.783    16.227    system/knn/sorter0/DATA0_OUT_INT1_carry__0_n_6
+    SLICE_X10Y25         LUT2 (Prop_lut2_I1_O)        0.303    16.530 r  system/knn/sorter0/DATA0_OUT_INT0_carry__4_i_3/O
+                         net (fo=1, routed)           0.000    16.530    system/knn/sorter0/DATA0_OUT_INT0_carry__4_i_3_n_0
+    SLICE_X10Y25         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533    17.063 r  system/knn/sorter0/DATA0_OUT_INT0_carry__4/CO[3]
+                         net (fo=1, routed)           0.000    17.063    system/knn/sorter0/DATA0_OUT_INT0_carry__4_n_0
+    SLICE_X10Y26         CARRY4 (Prop_carry4_CI_O[3])
+                                                      0.331    17.394 r  system/knn/sorter0/DATA0_OUT_INT0_carry__5/O[3]
+                         net (fo=12, routed)          0.783    18.177    system/knn/sorter0/DIST[27]
+    SLICE_X13Y27         LUT4 (Prop_lut4_I1_O)        0.307    18.484 r  system/knn/sorter0/DATA1_OUT_INT2_carry__2_i_7/O
+                         net (fo=1, routed)           0.000    18.484    system/knn/sorter0/DATA1_OUT_INT2_carry__2_i_7_n_0
+    SLICE_X13Y27         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    19.034 r  system/knn/sorter0/DATA1_OUT_INT2_carry__2/CO[3]
+                         net (fo=41, routed)          0.716    19.749    system/knn/sorter0/c1
+    SLICE_X14Y26         LUT3 (Prop_lut3_I2_O)        0.124    19.873 r  system/knn/sorter0/DATA1_OUT_INT[31]_i_1/O
+                         net (fo=40, routed)          0.761    20.634    system/knn/sorter0/DATA1_OUT_INT0
+    SLICE_X15Y23         FDSE                                         r  system/knn/sorter0/DATA1_OUT_INT_reg[9]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)       10.000    10.000 r  
+    W5                                                0.000    10.000 r  clk (IN)
+                         net (fo=0)                   0.000    10.000    clk
+    W5                   IBUF (Prop_ibuf_I_O)         1.388    11.388 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           1.862    13.250    clk_IBUF
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091    13.341 r  clk_IBUF_BUFG_inst/O
+                         net (fo=1447, routed)        1.435    14.776    system/knn/sorter0/clk_IBUF_BUFG
+    SLICE_X15Y23         FDSE                                         r  system/knn/sorter0/DATA1_OUT_INT_reg[9]/C
+                         clock pessimism              0.260    15.036    
+                         clock uncertainty           -0.035    15.001    
+    SLICE_X15Y23         FDSE (Setup_fdse_C_CE)      -0.205    14.796    system/knn/sorter0/DATA1_OUT_INT_reg[9]
+  -------------------------------------------------------------------
+                         required time                         14.796    
+                         arrival time                         -20.634    
+  -------------------------------------------------------------------
+                         slack                                 -5.838    
+
+
+
+
+# write_bitstream -force synth_system.bit
+Command: write_bitstream -force synth_system.bit
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+Running DRC as a precondition to command write_bitstream
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2020.1/data/ip'.
+INFO: [DRC 23-27] Running DRC with 4 threads
+WARNING: [DRC CFGBVS-1] Missing CFGBVS and CONFIG_VOLTAGE Design Properties: Neither the CFGBVS nor CONFIG_VOLTAGE voltage property is set in the current_design.  Configuration bank voltage select (CFGBVS) must be set to VCCO or GND, and CONFIG_VOLTAGE must be set to the correct configuration voltage, in order to determine the I/O voltage support for the pins in bank 0.  It is suggested to specify these either using the 'Edit Device Properties' function in the GUI or directly in the XDC file using the following syntax:
+
+ set_property CFGBVS value1 [current_design]
+ #where value1 is either VCCO or GND
+
+ set_property CONFIG_VOLTAGE value2 [current_design]
+ #where value2 is the voltage provided to configuration bank 0
+
+Refer to the device configuration user guide for more information.
+WARNING: [DRC CHECK-3] Report rule limit reached: REQP-1839 rule limit reached: 20 violations have been found.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1 input system/knn/sorter0/DATA0_OUT_INT1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1 input system/knn/sorter0/DATA0_OUT_INT1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__0 input system/knn/sorter0/DATA0_OUT_INT1__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__0 input system/knn/sorter0/DATA0_OUT_INT1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__1 input system/knn/sorter0/DATA0_OUT_INT1__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__1 input system/knn/sorter0/DATA0_OUT_INT1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__2 input system/knn/sorter0/DATA0_OUT_INT1__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__2 input system/knn/sorter0/DATA0_OUT_INT1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__3 input system/knn/sorter0/DATA0_OUT_INT1__3/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__3 input system/knn/sorter0/DATA0_OUT_INT1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__4 input system/knn/sorter0/DATA0_OUT_INT1__4/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__4 input system/knn/sorter0/DATA0_OUT_INT1__4/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/cpu/picorv32_core/pcpi_mul/rd0 output system/cpu/picorv32_core/pcpi_mul/rd0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/cpu/picorv32_core/pcpi_mul/rd0__0 output system/cpu/picorv32_core/pcpi_mul/rd0__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1 output system/knn/sorter0/DATA0_OUT_INT1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__0 output system/knn/sorter0/DATA0_OUT_INT1__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__1 output system/knn/sorter0/DATA0_OUT_INT1__1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__2 output system/knn/sorter0/DATA0_OUT_INT1__2/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__3 output system/knn/sorter0/DATA0_OUT_INT1__3/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__4 output system/knn/sorter0/DATA0_OUT_INT1__4/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/cpu/picorv32_core/pcpi_mul/rd0 multiplier stage system/cpu/picorv32_core/pcpi_mul/rd0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/cpu/picorv32_core/pcpi_mul/rd0__0 multiplier stage system/cpu/picorv32_core/pcpi_mul/rd0__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/cpu/picorv32_core/pcpi_mul/rd_reg multiplier stage system/cpu/picorv32_core/pcpi_mul/rd_reg/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/cpu/picorv32_core/pcpi_mul/rd_reg__0 multiplier stage system/cpu/picorv32_core/pcpi_mul/rd_reg__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1 multiplier stage system/knn/sorter0/DATA0_OUT_INT1/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__0 multiplier stage system/knn/sorter0/DATA0_OUT_INT1__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__1 multiplier stage system/knn/sorter0/DATA0_OUT_INT1__1/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__2 multiplier stage system/knn/sorter0/DATA0_OUT_INT1__2/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__3 multiplier stage system/knn/sorter0/DATA0_OUT_INT1__3/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP system/knn/sorter0/DATA0_OUT_INT1__4 multiplier stage system/knn/sorter0/DATA0_OUT_INT1__4/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[10] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[5]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[5]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[11] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[6]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[6]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[12] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[7]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[7]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[13] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[8]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[8]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[14] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[9]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[9]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[5] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[0]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[6] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[1]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[7] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[2]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[8] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[3]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ADDRARDADDR[9] (net: system/int_mem0/boot_ctr0/sp_rom0/Q[4]) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_addr_reg_rep[4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ENARDEN (net: system/int_mem0/boot_ctr0/sp_rom0/rdata_reg_ENARDEN_cooolgate_en_sig_3) which is driven by a register (sys_rst_int_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ENARDEN (net: system/int_mem0/boot_ctr0/sp_rom0/rdata_reg_ENARDEN_cooolgate_en_sig_3) which is driven by a register (system/int_mem0/boot_ctr0/cpu_rst_req_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/boot_ctr0/sp_rom0/rdata_reg has an input control pin system/int_mem0/boot_ctr0/sp_rom0/rdata_reg/ENARDEN (net: system/int_mem0/boot_ctr0/sp_rom0/rdata_reg_ENARDEN_cooolgate_en_sig_3) which is driven by a register (system/int_mem0/boot_ctr0/rom_r_valid_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[13] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg_1[19]) which is driven by a register (system/int_mem0/ibus_merge/sel_en_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[13] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg_1[19]) which is driven by a register (system/int_mem0/ibus_merge/sel_reg_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/boot_ctr0/boot_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/boot_ctr0/ram_w_addr_reg[11]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/boot_ctr0/sram_valid_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/ibus_merge/sel_en_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+WARNING: [DRC REQP-1839] RAMB36 async control check: The RAMB36E1 system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg has an input control pin system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_reg/ADDRARDADDR[14] (net: system/int_mem0/int_sram/gen_main_mem_byte[0].main_mem_byte/ram_i_req[0]) which is driven by a register (system/int_mem0/ibus_merge/sel_reg_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+INFO: [Vivado 12-3199] DRC finished with 0 Errors, 52 Warnings
+INFO: [Vivado 12-3200] Please refer to the DRC report (report_drc) for more information.
+INFO: [Designutils 20-2272] Running write_bitstream with 4 threads.
+Loading data files...
+Loading site data...
+Loading route data...
+Processing options...
+Creating bitmap...
+Creating bitstream...
+Writing bitstream ./synth_system.bit...
+INFO: [Vivado 12-1842] Bitgen Completed Successfully.
+INFO: [Project 1-120] WebTalk data collection is mandatory when using a WebPACK part without a full Vivado license. To see the specific WebTalk data collected for your design, open the usage_statistics_webtalk.html or usage_statistics_webtalk.xml file in the implementation directory.
+INFO: [Common 17-186] '/home/cesar/EComp/iob-soc-knn/hardware/fpga/BASYS3/usage_statistics_webtalk.xml' has been successfully sent to Xilinx on Tue Dec  1 16:30:59 2020. For additional details about this file, please refer to the WebTalk help file at /opt/Xilinx/Vivado/2020.1/doc/webtalk_introduction.html.
+INFO: [Common 17-83] Releasing license: Implementation
+12 Infos, 52 Warnings, 0 Critical Warnings and 0 Errors encountered.
+write_bitstream completed successfully
+write_bitstream: Time (s): cpu = 00:00:11 ; elapsed = 00:00:15 . Memory (MB): peak = 3138.281 ; gain = 322.973 ; free physical = 439 ; free virtual = 11510
+# write_verilog -force synth_system.v
+INFO: [Common 17-206] Exiting Vivado at Tue Dec  1 16:30:59 2020...

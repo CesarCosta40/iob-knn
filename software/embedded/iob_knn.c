@@ -40,6 +40,7 @@ void knn_send_infinite(int16_t* x){
 void knn_get_neighbours(uint32_t *v_neighbor, int16_t data[N][2], int16_t x[M][2], uint32_t p, uint32_t hw_k) {
 
   if(hw_k<K){ 
+    uart_printf("Hardware K is less than problem K. Expect performance loss\n");
     char checked[N];
     int32_t i=0;
     for(int32_t n=0; n < N; n++)

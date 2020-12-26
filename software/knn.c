@@ -6,9 +6,6 @@
 #include "random.h" //random generator for bare metal
 
 
-#define HW_K 10
-
-
 //neighbor info
 uint32_t v_neighbor[K];
 
@@ -54,7 +51,7 @@ int main() {
     t_distance_total=0;
     t_insert_total=0;
   #endif
-
+  
   for (int32_t k=0; k<M; k++) { //for all test points
     
     #ifdef DEBUG
@@ -96,7 +93,8 @@ int main() {
 void init(void){
     //init uart
     uart_init(UART_BASE, FREQ/BAUD);
-
+    
+    uart_printf("HW_K: %d\n", HW_K);
     //generate random seed
     random_init(S);
 

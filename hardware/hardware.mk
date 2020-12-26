@@ -2,6 +2,8 @@ include $(KNN_DIR)/core.mk
 
 #define
 DEFINE+=$(defmacro) DATA_W=32
+DEFINE+=$(defmacro) HW_K=$(HW_K)
+
 
 #include
 INCLUDE+=$(incdir) $(KNN_HW_INC_DIR)
