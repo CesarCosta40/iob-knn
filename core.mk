@@ -15,6 +15,9 @@ $(foreach p, $(KNN_SUBMODULES), $(eval $p_DIR:=$(KNN_DIR)/submodules/$p))
 #Default number of comparators
 HW_K?=10
 
+#Default number of solver modules
+N_SOLVERS?=1
+
 REMOTE_ROOT_DIR ?= sandbox/iob-soc/submodules/KNN
 
 
@@ -58,8 +61,8 @@ endif
 #
 #DOCUMENT
 #
-DOC_TYPE:=pb
-#DOC_TYPE:=ug
+#DOC_TYPE:=pb
+DOC_TYPE:=ug
 INTEL ?=1
 XILINX ?=1
 

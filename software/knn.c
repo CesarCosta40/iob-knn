@@ -52,10 +52,10 @@ int main() {
     t_insert_total=0;
   #endif
   
-  for (int32_t k=0; k<M; k++) { //for all test points
+  for (int32_t k=0; k<M; k+=N_SOLVERS) { //for all test points
     
     #ifdef DEBUG
-      uart_printf("\n\nProcessing x[%d]:\n", k);
+      uart_printf("\n\nProcessing x[%d:%d]:\n", k, k+N_SOLVERS-1);
       uart_printf("Datum \tX \tY \tLabel \n");
     #endif
  
@@ -94,7 +94,6 @@ void init(void){
     //init uart
     uart_init(UART_BASE, FREQ/BAUD);
     
-    uart_printf("HW_K: %d\n", HW_K);
     //generate random seed
     random_init(S);
 
@@ -132,6 +131,7 @@ void init(void){
     #endif
 
 }
+
 
 void get_teste_point_class(int32_t *votes_acc, int32_t k){
   //clear all votes

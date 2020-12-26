@@ -7,3 +7,4 @@
 #define KNN_RESET 3
 #define DONE 4
 #define SEL 5
+#define SOLVER_SEL 6

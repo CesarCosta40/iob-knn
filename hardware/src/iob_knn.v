@@ -8,7 +8,8 @@ module iob_knn
     parameter ADDR_W = `KNN_ADDR_W, //NODOC Address width
     parameter DATA_W = `DATA_W, //NODOC Data word width
     parameter WDATA_W = `KNN_WDATA_W, //NODOC Data word width on writes
-    parameter HW_K = `HW_K  
+    parameter HW_K = `HW_K,  
+    parameter N_SOLVERS = `N_SOLVERS
   )
    (
 `include "cpu_nat_s_if.v"
@@ -32,6 +33,9 @@ module iob_knn
    `SIGNAL(DATA_X2, 16)
    `SIGNAL(DATA_Y2, 16)
 
+    reg [DATA_W/4-1:0] data_out_solvers [N_SOLVERS-1:0];
+    `SIGNAL(data_out_int, 8)
+
    `COMB begin
     DATA_Y1=DATA_1[31:16];
     DATA_X1=DATA_1[15:0];
@@ -44,7 +48,8 @@ module iob_knn
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
-   pipeline_sorter #(.HW_K(HW_K)) pipeline_sorter0
+   
+   pipeline_sorter #(.HW_K(HW_K)) pipeline_sorter0 
    (
      .rst(rst_int),
      .clk(clk),
@@ -57,8 +62,32 @@ module iob_knn
     .DATA_Y1(DATA_Y1),
     .DATA_Y2(DATA_Y2)
    );
+   
+
+  /*genvar i;
+  generate 
+    for(i = 0; i < N_SOLVERS; i=i+1) begin
+      pipeline_sorter #(.HW_K(HW_K)) pipeline_sorter0
+      (
+        .rst(rst_int),
+        .clk(clk),
+        .valid(valid),
+        .DONE(DONE),
+        .SEL(SEL),
+        .DATA_OUT(data_out_solvers[i]),
+        .DATA_X1(DATA_X1),
+        .DATA_X2(DATA_X2),
+        .DATA_Y1(DATA_Y1),
+        .DATA_Y2(DATA_Y2)
+      );
+    end
+  endgenerate
 
 
+
+   `COMB data_out_int=data_out_solvers[SOLVER_SEL];
+    `SIGNAL2OUT(DATA_OUT, data_out_int)
+*/
    //ready signal
    `SIGNAL(ready_int, 1)
    `REG_AR(clk, rst, 0, ready_int, valid)

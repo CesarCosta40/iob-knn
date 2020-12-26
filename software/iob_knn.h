@@ -12,8 +12,8 @@
 #define M 2   //number samples to be classified
 #else
 #define S 12
-#define N 200
-#define K 10
+#define N 100
+#define K 20
 #define C 4
 #define M 50
 #endif

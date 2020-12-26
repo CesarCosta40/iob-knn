@@ -9,6 +9,7 @@ DEFINE+=-DDEBUG
 endif
 
 DEFINE+=-DHW_K=$(HW_K)
+DEFINE+=-DN_SOLVERS=$(N_SOLVERS)
 
 #include
 INCLUDE+=-I$(KNN_SW_DIR)

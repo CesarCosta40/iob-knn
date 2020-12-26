@@ -54,7 +54,7 @@ module pipeline_sorter
    );
 
 
-   sorter sorter0
+   sorter #(.HW_K(HW_K)) sorter0
    (
      .rst(rst),
      .clk(clk),
