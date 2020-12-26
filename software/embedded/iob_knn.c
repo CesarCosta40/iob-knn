@@ -16,10 +16,13 @@ void knn_init(int32_t base_address){
   knn_reset();
 }
 
-void knn_set_test_point(int16_t* test_point){
+void knn_set_test_points(int16_t x[M][2], int32_t idx, int32_t n_solvers){
   int* a;
-  a=(int*)test_point;
-  IO_SET(base, DATA_1, *a);
+  for(int i = idx; i < idx+n_solvers && i<M; i++){ 
+    a=(int*)x[i];
+    IO_SET(base, SOLVER_SEL, i-idx);
+    IO_SET(base, DATA_1, *a);
+  }
   IO_SET(base, DONE, 0);
 }
 
@@ -37,8 +40,8 @@ void knn_send_infinite(int16_t* x){
   IO_SET(base, DATA_2, point);
 }
 
-void knn_get_neighbours(uint32_t *v_neighbor, int16_t data[N][2], int16_t x[M][2], uint32_t p, uint32_t hw_k) {
-
+void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], int16_t x[M][2], uint32_t p, uint32_t hw_k, int32_t n_solvers) {
+/*
   if(hw_k<K){ 
     uart_printf("Hardware K (%d) is less than problem K (%d). Expect performance loss\n", hw_k, K);
     char checked[N];
@@ -70,20 +73,23 @@ void knn_get_neighbours(uint32_t *v_neighbor, int16_t data[N][2], int16_t x[M][2
     }
   }
   else{
-    knn_set_test_point(x[p]);
+  */ 
+  knn_set_test_points(x, p, n_solvers);
 
     for(int j = 0; j < N; j++){
       knn_send_dataset_point(data[j]);
     }
 
     IO_SET(base, DONE, 1);
+  for(int j = 0;j < n_solvers && j+p*n_solvers < M; j++){  
+    IO_SET(base, SOLVER_SEL, j);
     for(int i = 0; i < K; i++){
       IO_SET(base, SEL, i);
-      v_neighbor[i]=IO_GET(base, DATA_OUT);
+      v_neighbor[j][i]=IO_GET(base, DATA_OUT);
     }
-
-    knn_reset();
   }
+    knn_reset();
+  
 }
 
 

@@ -6,7 +6,7 @@ module dist_calc
     parameter W=32
     )
   (
-   input signed [(W/2)-1:0] DATA_X1,//`INPUT(DATA_X1,W/2),
+    input signed [(W/2)-1:0] DATA_X1,//`INPUT(DATA_X1,W/2),
    input signed [(W/2)-1:0] DATA_X2,//`INPUT(DATA_X2,W/2),
    input signed [(W/2)-1:0] DATA_Y1,//`INPUT(DATA_Y1,W/2),
    input signed [(W/2)-1:0] DATA_Y2,//`INPUT(DATA_Y2,W/2),

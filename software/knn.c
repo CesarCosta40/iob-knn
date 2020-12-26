@@ -7,7 +7,7 @@
 
 
 //neighbor info
-uint32_t v_neighbor[K];
+uint32_t v_neighbor[N_SOLVERS][K];
 
 //labeled dataset
 int16_t data[N][2];
@@ -52,7 +52,7 @@ int main() {
     t_insert_total=0;
   #endif
   
-  for (int32_t k=0; k<M; k+=N_SOLVERS) { //for all test points
+  for (int32_t k=0; k<M; k+=N_SOLVERS){ //for all test points
     
     #ifdef DEBUG
       uart_printf("\n\nProcessing x[%d:%d]:\n", k, k+N_SOLVERS-1);
@@ -60,7 +60,7 @@ int main() {
     #endif
  
     //compute distances to dataset points
-    knn_get_neighbours(v_neighbor, data, x, k, HW_K);
+    knn_get_neighbours(v_neighbor, data, x, k, HW_K, N_SOLVERS);
     #ifdef DEBUG
     for(int32_t i=0; i < N; i++){
       uart_printf("Datum \t%d \t%d \t%d \n", (uint32_t)data[i][0], (uint32_t)data[i][1], (uint32_t)data_label[i]);
@@ -85,7 +85,6 @@ int main() {
 
   for(int32_t i = 0; i < M; i++){
     uart_printf("X:%d\t\tY:%d\t\tLabel:%d\n", x[i][0], x[i][1], x_label[i]);
-
   }
 }
 
@@ -134,37 +133,43 @@ void init(void){
 
 
 void get_teste_point_class(int32_t *votes_acc, int32_t k){
-  //clear all votes
-  int32_t votes[C] = {0};
-  int32_t best_votation = 0;
-  int32_t best_voted = 0;
-
-  #ifdef DEBUG
+   #ifdef DEBUG
       timer_reset();
   #endif
-  //make neighbours vote
-  for (int32_t j=0; j<K; j++) { //for all neighbors
-    if ( (++votes[data_label[v_neighbor[j]]]) > best_votation ) {
-      best_voted = data_label[v_neighbor[j]];
-      best_votation = votes[best_voted];
-    }
-  }
+  
+  for(int i = 0; i < N_SOLVERS && i+k<M; i++){   
+  
+    //clear all votes
+    int32_t votes[C] = {0};
+    int32_t best_votation = 0;
+    int32_t best_voted = 0;
 
-  x_label[k] = best_voted;
+   
+    //make neighbours vote
+    for (int32_t j=0; j<K; j++) { //for all neighbors
+      if ( (++votes[data_label[v_neighbor[i][j]]]) > best_votation ) {
+        best_voted = data_label[v_neighbor[i][j]];
+        best_votation = votes[best_voted];
+      }
+    }
+
+  x_label[k+i] = best_voted;
 
   votes_acc[best_voted]++;
-
-  #ifdef DEBUG
+  
+#ifdef DEBUG
     t_vote = timer_get_count();
-    uart_printf("\n\nNEIGHBORS of x[%d]=(%d, %d):\n", k, x[k][0], x[k][1]);
+    uart_printf("\n\nNEIGHBORS of x[%d]=(%d, %d):\n", k+i, x[k+i][0], x[k+i][1]);
     uart_printf("K \tIdx \tX \tY \tLabel\n");
     for (int32_t j=0; j<K; j++)
-      uart_printf("%d \t%d \t%d \t%d \t%d \n", j+1, v_neighbor[j], data[v_neighbor[j]][0],  data[v_neighbor[j]][1],  data_label[v_neighbor[j]]);
+      uart_printf("%d \t%d \t%d \t%d \t%d \n", j+1, v_neighbor[i][j], data[v_neighbor[i][j]][0],  data[v_neighbor[i][j]][1],  data_label[v_neighbor[i][j]]);
 
-    uart_printf("\n\nCLASSIFICATION of x[%d]:\n", k);
+    uart_printf("\n\nCLASSIFICATION of x[%d]:\n", k+i);
     uart_printf("X \tY \tLabel\n");
-    uart_printf("%d \t%d \t%d\n", x[k][0], x[k][1], x_label[k]);
+    uart_printf("%d \t%d \t%d\n", x[k+i][0], x[k+i][1], x_label[k+i]);
 
     uart_printf("\nVotes took %d cycles\n", (uint32_t)t_vote);
-  #endif
+  #endif  
+  }
+
 }

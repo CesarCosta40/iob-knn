@@ -28,17 +28,40 @@ module iob_knn
    `SIGNAL(write, 1)
    `COMB write = | wstrb;
 
-   `SIGNAL(DATA_X1, 16)
-   `SIGNAL(DATA_Y1, 16)
+   //`SIGNAL(DATA_X1, 16)
+   //`SIGNAL(DATA_Y1, 16)
+   
+   reg signed [DATA_W/2-1:0] DATA_X1 [N_SOLVERS-1:0];
+   reg signed [DATA_W/2-1:0] DATA_Y1 [N_SOLVERS-1:0];
+   
+   integer j;
+
+   always @(posedge clk, posedge rst_int) begin
+     for(j=0; j < N_SOLVERS; j=j+1) begin
+      if (rst_int) DATA_X1[j] <= 0; else if (SOLVER_SEL==j) DATA_X1[j] <= DATA_1[DATA_W/2-1:0];
+    end
+   end
+
+   always @(posedge clk, posedge rst_int) begin
+     for(j=0; j < N_SOLVERS; j=j+1) begin
+      if (rst_int) DATA_Y1[j] <= 0; else if (SOLVER_SEL==j) DATA_Y1[j] <= DATA_1[DATA_W-1:DATA_W/2];
+    end
+   end
+
+
    `SIGNAL(DATA_X2, 16)
    `SIGNAL(DATA_Y2, 16)
-
+  
     reg [DATA_W/4-1:0] data_out_solvers [N_SOLVERS-1:0];
     `SIGNAL(data_out_int, 8)
 
+
    `COMB begin
+
+    /*
     DATA_Y1=DATA_1[31:16];
     DATA_X1=DATA_1[15:0];
+    */
 
     DATA_Y2=DATA_2[31:16];
     DATA_X2=DATA_2[15:0];
@@ -48,7 +71,7 @@ module iob_knn
    //
    //BLOCK 64-bit time counter & Free-running 64-bit counter with enable and soft reset capabilities
    //
-   
+/*   
    pipeline_sorter #(.HW_K(HW_K)) pipeline_sorter0 
    (
      .rst(rst_int),
@@ -62,9 +85,9 @@ module iob_knn
     .DATA_Y1(DATA_Y1),
     .DATA_Y2(DATA_Y2)
    );
-   
+*/   
 
-  /*genvar i;
+  genvar i;
   generate 
     for(i = 0; i < N_SOLVERS; i=i+1) begin
       pipeline_sorter #(.HW_K(HW_K)) pipeline_sorter0
@@ -75,19 +98,18 @@ module iob_knn
         .DONE(DONE),
         .SEL(SEL),
         .DATA_OUT(data_out_solvers[i]),
-        .DATA_X1(DATA_X1),
+        .DATA_X1(DATA_X1[i]),
         .DATA_X2(DATA_X2),
-        .DATA_Y1(DATA_Y1),
+        .DATA_Y1(DATA_Y1[i]),
         .DATA_Y2(DATA_Y2)
       );
     end
   endgenerate
 
 
-
    `COMB data_out_int=data_out_solvers[SOLVER_SEL];
     `SIGNAL2OUT(DATA_OUT, data_out_int)
-*/
+
    //ready signal
    `SIGNAL(ready_int, 1)
    `REG_AR(clk, rst, 0, ready_int, valid)
