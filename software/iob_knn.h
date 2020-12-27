@@ -12,10 +12,10 @@
 #define M 3   //number samples to be classified
 #else
 #define S 12
-#define N 100
-#define K 10
+#define N 10
+#define K 5
 #define C 4
-#define M 50
+#define M 5
 #endif
 
 #define INFINITE ~0

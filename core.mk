@@ -16,7 +16,7 @@ $(foreach p, $(KNN_SUBMODULES), $(eval $p_DIR:=$(KNN_DIR)/submodules/$p))
 HW_K?=10
 
 #Default number of solver modules
-N_SOLVERS?=2
+N_SOLVERS?=38
 
 REMOTE_ROOT_DIR ?= sandbox/iob-soc/submodules/KNN
 
@@ -38,14 +38,14 @@ SIM_DIR ?=hardware/simulation/$(SIMULATOR)
 #FPGA
 #
 #FPGA_FAMILY ?=CYCLONEV-GT
-FPGA_FAMILY ?=XCKU
+FPGA_FAMILY ?=Artix-7
 FPGA_SERVER ?=localhost
-FPGA_SERVER ?=pudim-flan.iobundle.com
+#FPGA_SERVER ?=pudim-flan.iobundle.com
 FPGA_USER ?= $(USER)
 
-ifeq ($(FPGA_FAMILY),XCKU)
+ifeq ($(FPGA_FAMILY),Artix-7)
 	FPGA_COMP:=vivado
-	FPGA_PART:=xcku040-fbva676-1-c
+	FPGA_PART:=xc7a35tcpg236-1
 else
 	FPGA_COMP:=quartus
 	FPGA_PART:=5CGTFD9E5F35C7
