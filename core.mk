@@ -16,7 +16,7 @@ $(foreach p, $(KNN_SUBMODULES), $(eval $p_DIR:=$(KNN_DIR)/submodules/$p))
 HW_K?=10
 
 #Default number of solver modules
-N_SOLVERS?=1
+N_SOLVERS?=2
 
 REMOTE_ROOT_DIR ?= sandbox/iob-soc/submodules/KNN
 

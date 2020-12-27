@@ -79,9 +79,9 @@ void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], i
     for(int j = 0; j < N; j++){
       knn_send_dataset_point(data[j]);
     }
-
     IO_SET(base, DONE, 1);
-  for(int j = 0;j < n_solvers && j+p*n_solvers < M; j++){  
+
+  for(int j = 0;j < n_solvers && j+p < M; j++){  
     IO_SET(base, SOLVER_SEL, j);
     for(int i = 0; i < K; i++){
       IO_SET(base, SEL, i);
