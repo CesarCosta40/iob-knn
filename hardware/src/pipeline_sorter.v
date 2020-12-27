@@ -4,7 +4,7 @@
 module pipeline_sorter
   #(
     parameter W=32,
-    parameter HW_K=10  
+    parameter HW_K=10
   )
     (
      input signed [(W/2)-1:0] DATA_X1,//`INPUT(DATA_X1,W/2),
@@ -25,19 +25,23 @@ module pipeline_sorter
     `SIGNAL(valid_int1, 1)
     `SIGNAL(valid_int2, 1)
     `SIGNAL(valid_int3, 1)
+    `SIGNAL(valid_int4, 1)
     `SIGNAL(DONE_INT1, 1)
     `SIGNAL(DONE_INT2, 1)
     `SIGNAL(DONE_INT3, 1)
+    `SIGNAL(DONE_INT4, 1)
 
 
     //atrasos dos sinais valid  e DONE por causa do pipeline do dist_calc
     `REG_RE(clk, rst, 1'b0 , 1'b1, valid_int1 , valid)
     `REG_RE(clk, rst, 1'b0 , 1'b1, valid_int2 , valid_int1)
     `REG_RE(clk, rst, 1'b0 , 1'b1, valid_int3 , valid_int2)
+    `REG_RE(clk, rst, 1'b0 , 1'b1, valid_int4 , valid_int3)
 
     `REG_RE(clk, rst, 1'b1 , 1'b1, DONE_INT1 , DONE)
     `REG_RE(clk, rst, 1'b1 , 1'b1, DONE_INT2 , DONE_INT1)
     `REG_RE(clk, rst, 1'b1 , 1'b1, DONE_INT3 , DONE_INT2)
+    `REG_RE(clk, rst, 1'b1 , 1'b1, DONE_INT4 , DONE_INT3)
 
     `REG_RE(clk, rst, 32'H00000000 , 1'b1, DIST_IN_INT , DIST_INT)
 
@@ -50,6 +54,7 @@ module pipeline_sorter
      .DATA_Y2(DATA_Y2),
      .rst(rst),
      .clk(clk),
+     .valid(valid),
      .DATA_OUT(DIST_INT)
    );
 
@@ -58,8 +63,8 @@ module pipeline_sorter
    (
      .rst(rst),
      .clk(clk),
-     .valid(valid_int3),
-     .DONE(DONE_INT3),
+     .valid(valid_int4),
+     .DONE(DONE_INT4),
      .SEL(SEL),
      .DIST(DIST_IN_INT),
      .DATA_OUT(DATA_OUT)
