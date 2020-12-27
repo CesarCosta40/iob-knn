@@ -4,7 +4,7 @@ defmacro:=-D
 include ../simulation.mk
 
 #icarus verilog simulator
-VLOG:=iverilog -W all -g2005-sv
+VLOG:=iverilog -W all -Wno-sensitivity-entire-array -g2005-sv
 
 run: a.out
 	./$<

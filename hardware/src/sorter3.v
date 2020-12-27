@@ -13,14 +13,14 @@ module sorter
   `INPUT(DONE, 1),
   input [15:0] SEL,
   input signed [W:0] DIST,
-  output [W/4-1:0] DATA_OUT
+  output [W/2-1:0] DATA_OUT
   );
 
   //inserção
   reg [W:0] DATA_OUT_INT [0:HW_K-1];
   reg [W:0] DATA_IN_INT [1:HW_K-1];
-  reg [W/4:0] idx_out_int [0:HW_K-1];
-  reg [W/4:0] idx_cnt_int [1:HW_K-1];
+  reg [W/2-1:0] idx_out_int [0:HW_K-1];
+  reg [W/2-1:0] idx_cnt_int [1:HW_K-1];
   reg c [0:HW_K-1];
 
   integer i;
@@ -28,8 +28,8 @@ module sorter
   integer n;
   integer m;
 
-  `SIGNAL(idx_out, W/4)
-  `SIGNAL(idx_cnt, W/4)
+  `SIGNAL(idx_out, W/2)
+  `SIGNAL(idx_cnt, W/2)
   //`SIGNAL(valid_cnt, 2)
   `SIGNAL(ready, 1)
 

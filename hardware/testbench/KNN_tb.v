@@ -9,14 +9,13 @@ module knn_tb;
   `CLOCK(clk, PER)
   `RESET(rst, 7, 10)
 
-  `SIGNAL_SIGNED(DATA_X1, 16)
-  `SIGNAL_SIGNED(DATA_Y1, 16)
-  `SIGNAL_SIGNED(DATA_X2, 16)
-  `SIGNAL_SIGNED(DATA_Y2, 16)
-  `SIGNAL_OUT(DATA_OUT, 8)
+  `SIGNAL(DATA_1, 32)
+  `SIGNAL(DATA_2, 32)
+  `SIGNAL_OUT(DATA_OUT, 16)
   `SIGNAL(ready, 1)
   `SIGNAL(DONE, 1)
-  `SIGNAL(SEL, 4)
+  `SIGNAL(SEL, 16)
+  `SIGNAL(SOLVER_SEL, 16)
 
 
   integer j;
@@ -27,15 +26,10 @@ module knn_tb;
     `ifdef VCD
           $dumpfile("knn.vcd");
           $dumpvars();
-          for(i = 0; i < 10; i++)begin
-            $dumpvars(0, sorter0.DATA_OUT_INT[i]);
-            $dumpvars(0, sorter0.idx_out_int[i]);
-          end
     `endif
     DONE = 1;
     SEL = 0;
-    DATA_X1 = 0;
-    DATA_Y1 = 0;
+    DATA_1 = 0;
     ready=0;
 
     @(posedge rst);
@@ -57,8 +51,7 @@ module knn_tb;
         else
           ready=0;
         if (ready==1)begin
-            DATA_X2 = i;
-            DATA_Y2 = i;
+            DATA_2 = i;
           end
         @(posedge clk);
       end
@@ -82,18 +75,18 @@ module knn_tb;
     $finish;
 
   end
-
-  sorter sorter0
-  (
+ 
+  knn #(.HW_K(`HW_K),.N_SOLVERS(`N_SOLVERS),.DATA_W(`DATA_W)) knn0
+ (
     .rst(rst),
     .clk(clk),
     .valid(ready),
-    .DONE_aux(DONE),
+    .DONE(DONE),
     .SEL(SEL),
-    .DATA_X1(DATA_X1),
-    .DATA_Y1(DATA_Y1),
-    .DATA_X2(DATA_X2),
-    .DATA_Y2(DATA_Y2),
+    .SOLVER_SEL(SOLVER_SEL),
+    .DATA_1(DATA_1),
+    .DATA_2(DATA_2),
     .DATA_OUT(DATA_OUT)
   );
+
 endmodule

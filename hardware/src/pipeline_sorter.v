@@ -15,8 +15,8 @@ module pipeline_sorter
      `INPUT(clk,1),
      `INPUT(valid,1),
      `INPUT(DONE, 1),
-     input [15:0] SEL,
-     output [W/4-1:0] DATA_OUT
+     input [W/2-1:0] SEL,
+     output [W/2-1:0] DATA_OUT
      );
 
 

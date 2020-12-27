@@ -5,8 +5,8 @@ module knn
   #(
     parameter W=32,
     parameter HW_K=10,
-    parameter N_SOLVERS = `N_SOLVERS,
-    parameter DATA_W = `DATA_W //NODOC Data word width
+    parameter N_SOLVERS=2,
+    parameter DATA_W=32 //NODOC Data word width
   )
     (
      input signed [W-1:0] DATA_1,//`INPUT(DATA_1,W),
@@ -17,7 +17,7 @@ module knn
      `INPUT(valid,1),
      `INPUT(DONE, 1),
      input [15:0] SEL,
-     output [W/4-1:0] DATA_OUT
+     output [W/2-1:0] DATA_OUT
      );
 
 
@@ -26,8 +26,8 @@ module knn
     `SIGNAL(DATA_X2, 16)
     `SIGNAL(DATA_Y2, 16)
 
-     reg [DATA_W/4-1:0] data_out_solvers [N_SOLVERS-1:0];
-     `SIGNAL(data_out_int, 8)
+     reg [DATA_W/2-1:0] data_out_solvers [N_SOLVERS-1:0];
+     `SIGNAL(data_out_int, DATA_W/2)
 
 
      reg signed [DATA_W/2-1:0] DATA_X1 [N_SOLVERS-1:0];
