@@ -21,6 +21,9 @@ module knn_tb;
   integer j;
   integer i;
   integer k;
+  integer c;
+  integer m;
+  integer n;
 
   initial begin
     `ifdef VCD
@@ -29,12 +32,13 @@ module knn_tb;
     `endif
     DONE = 1;
     SEL = 0;
+    SOLVER_SEL = 0;
     DATA_1 = 0;
-    ready=0;
+    ready = 0;
 
     @(posedge rst);
     @(negedge rst);
-    
+
     @(posedge clk);
     #5 ready=1;
     #5 DONE=0;
@@ -43,39 +47,49 @@ module knn_tb;
     @(posedge clk);
 
     //ready=0;
+    for(c = 0; c < `N_SOLVERS; c=c+1) begin
+      @(posedge clk);
+      SOLVER_SEL = c;
+      DATA_1 = $random%32;
+    end
+
 
     for (j=0; j<2; j=j+1) begin
       for (i=1; i<100; i=i+1) begin
-        if(i%3==0)
+        if(i%3==0) begin
           ready=1;
-        else
+          DATA_2 = i;
+        end
+        else begin
           ready=0;
-        if (ready==1)begin
-            DATA_2 = i;
-          end
+        end
         @(posedge clk);
       end
-      DONE = 1;
-      for (k=0; k<10; k=k+1) begin
+    end
+
+    DONE = 1;
+    for(m = 0; m < `N_SOLVERS; m=m+1) begin
+      SOLVER_SEL = m;
+      for (k=0; k<`HW_K; k=k+1) begin
         SEL = k;
         #1 $display("Final REG %d -> DATA_OUT : %d\t", k, DATA_OUT);
         @(posedge clk);
       end
       $display("\n");
-      DONE = 0;
 
       begin
         #1 rst=1;
         #10 rst=0;
       end
-
     end
+    DONE = 0;
+
     @(posedge clk) #1
 
     $finish;
 
   end
- 
+
   knn #(.HW_K(`HW_K),.N_SOLVERS(`N_SOLVERS),.DATA_W(`DATA_W)) knn0
  (
     .rst(rst),
