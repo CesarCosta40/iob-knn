@@ -22,6 +22,8 @@ module knn_tb;
   integer i;
   integer k;
   integer c;
+  integer m;
+  integer n;
 
   initial begin
     `ifdef VCD
@@ -45,32 +47,29 @@ module knn_tb;
     @(posedge clk);
 
     //ready=0;
-    for(int c = 0; c < `N_SOLVERS; c=c+1) begin
+    for(c = 0; c < `N_SOLVERS; c=c+1) begin
+      @(posedge clk);
       SOLVER_SEL = c;
-      DATA_1 = $urandom;
+      DATA_1 = $random%32;
     end
-
 
 
     for (j=0; j<2; j=j+1) begin
       for (i=1; i<100; i=i+1) begin
-        if(i%3==0)
+        if(i%3==0) begin
           ready=1;
-        else
-          ready=0;
-        if (ready==1)begin
-          for(int c = 0; c < `N_SOLVERS; c=c+1) begin
-            SOLVER_SEL = c;
-            DATA_2 = i;
-          end
+          DATA_2 = i;
         end
-      @(posedge clk);
+        else begin
+          ready=0;
+        end
+        @(posedge clk);
       end
     end
 
     DONE = 1;
-    for(int c = 0; c < `N_SOLVERS; c=c+1) begin
-      SOLVER_SEL = c;
+    for(m = 0; m < `N_SOLVERS; m=m+1) begin
+      SOLVER_SEL = m;
       for (k=0; k<`HW_K; k=k+1) begin
         SEL = k;
         #1 $display("Final REG %d -> DATA_OUT : %d\t", k, DATA_OUT);
