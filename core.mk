@@ -2,6 +2,7 @@ CORE_NAME:=KNN
 IS_CORE:=1
 USE_NETLIST ?=0
 
+VERSION?=1
 #PATHS
 KNN_HW_DIR:=$(KNN_DIR)/hardware
 KNN_HW_INC_DIR:=$(KNN_HW_DIR)/include
@@ -16,7 +17,7 @@ $(foreach p, $(KNN_SUBMODULES), $(eval $p_DIR:=$(KNN_DIR)/submodules/$p))
 HW_K?=10
 
 #Default number of solver modules
-N_SOLVERS?=38
+N_SOLVERS?=32
 
 REMOTE_ROOT_DIR ?= sandbox/iob-soc/submodules/KNN
 
@@ -63,14 +64,14 @@ endif
 #
 #DOC_TYPE:=pb
 DOC_TYPE:=ug
-INTEL ?=1
+INTEL ?=0
 XILINX ?=1
 
 VLINE:="V$(VERSION)"
-version.txt:
+$(CORE_NAME)_version.txt:
 ifeq ($(VERSION),)
 	$(error "variable VERSION is not set")
 endif
-	echo $(VLINE) > $@
+	echo $(VLINE) > version.txt
 
-.PHONY: version.txt
+.PHONY: $(CORE_NAME)_version.txt
