@@ -50,7 +50,7 @@ module knn_tb;
     DONE = 1;
     for(int c = 0; c < n_solvers; c++) begin
       SOLVER_SEL = c;
-      DATA_1 = %urandom/32;
+      DATA_1 = $random%31;
     end
     DONE = 0;
 
