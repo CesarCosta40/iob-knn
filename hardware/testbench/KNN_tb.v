@@ -17,8 +17,6 @@ module knn_tb;
   `SIGNAL(SEL, 16)
   `SIGNAL(SOLVER_SEL, 16)
 
-
-  integer j;
   integer i;
   integer k;
   integer c;
@@ -34,6 +32,7 @@ module knn_tb;
     SEL = 0;
     SOLVER_SEL = 0;
     DATA_1 = 0;
+    DATA_2 = 0;
     ready = 0;
 
     @(posedge rst);
@@ -48,13 +47,12 @@ module knn_tb;
 
     //ready=0;
     for(c = 0; c < `N_SOLVERS; c=c+1) begin
-      @(posedge clk);
       SOLVER_SEL = c;
-      DATA_1 = $random%32;
+      DATA_1 = 200;
+      @(posedge clk);
     end
 
 
-    for (j=0; j<2; j=j+1) begin
       for (i=1; i<100; i=i+1) begin
         if(i%3==0) begin
           ready=1;
@@ -65,9 +63,9 @@ module knn_tb;
         end
         @(posedge clk);
       end
-    end
 
     DONE = 1;
+
     for(m = 0; m < `N_SOLVERS; m=m+1) begin
       SOLVER_SEL = m;
       for (k=0; k<`HW_K; k=k+1) begin
@@ -76,12 +74,8 @@ module knn_tb;
         @(posedge clk);
       end
       $display("\n");
-
-      begin
-        #1 rst=1;
-        #10 rst=0;
-      end
     end
+
     DONE = 0;
 
     @(posedge clk) #1
