@@ -1,0 +1,10 @@
+DATA\_1 & W & 0x00 & DATA\_W-1:0 & 0 & Test point input register \\ \hline
+\rowcolor{iob-blue}
+DATA\_2 & W & 0x04 & DATA\_W-1:0 & 0 & Dataset point input register \\ \hline
+DATA\_OUT & R & 0x08 & 15:0 & 0 & Index output register \\ \hline
+\rowcolor{iob-blue}
+DONE & W & 0x0c & 0:0 & 1 & Signal if all dataset points have been sent \\ \hline
+SOLVER\_SEL & W & 0x10 & 15:0 & 0 & Solver module select \\ \hline
+\rowcolor{iob-blue}
+SEL & W & 0x14 & 15:0 & 0 & Neighbor select \\ \hline
+KNN\_RESET & W & 0x18 & 0:0 & 0 & Soft reset \\ \hline
