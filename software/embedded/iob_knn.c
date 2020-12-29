@@ -36,60 +36,94 @@ void knn_send_infinite(int16_t* x){
   int32_t point;
   point=(x[0]<0?32767:-32768)<<16;
   point|=x[1]<0?32767:-32768;
-  
+
   IO_SET(base, DATA_2, point);
 }
 
 void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], int16_t x[M][2], uint32_t p, uint32_t hw_k, int32_t n_solvers) {
-/*
-  if(hw_k<K){ 
-    uart_printf("Hardware K (%d) is less than problem K (%d). Expect performance loss\n", hw_k, K);
-    char checked[N];
-    int32_t i=0;
-    for(int32_t n=0; n < N; n++)
-      checked[n]=0;
+  /*
+     if(hw_k<K){ 
+     char checked[N];
+     int32_t i=0;
+     for(int32_t n=0; n < N; n++)
+     checked[n]=0;
 
-    for(int32_t j=0; j<K; j+=hw_k){
+     for(int32_t j=0; j<K; j+=hw_k){
 
-      knn_set_test_point(x[p]);
+     knn_set_test_point(x[p]);
 
-      for (int32_t n=0; n<N; n++) { //for all dataset points
-        //compute distance to x[k]
-        if(checked[n]==0)
-          knn_send_dataset_point(data[n]);
-        else{
-          knn_send_infinite(x[p]);
-        }
-      }
-      IO_SET(base, DONE, 1);
-      for(; i<K&&i<j+hw_k; i++){
-        IO_SET(base, SEL, i%hw_k);
-        v_neighbor[i]=IO_GET(base, DATA_OUT);
-        checked[v_neighbor[i]]=1;
-      }
+     for (int32_t n=0; n<N; n++) { //for all dataset points
+  //compute distance to x[k]
+  if(checked[n]==0)
+  knn_send_dataset_point(data[n]);
+  else{
+  knn_send_infinite(x[p]);
+  }
+  }
+  IO_SET(base, DONE, 1);
+  for(; i<K&&i<j+hw_k; i++){
+  IO_SET(base, SEL, i%hw_k);
+  v_neighbor[i]=IO_GET(base, DATA_OUT);
+  checked[v_neighbor[i]]=1;
+  }
 
-      knn_reset();
+  knn_reset();
 
-    }
+  }
   }
   else{
-  */ 
-  knn_set_test_points(x, p, n_solvers);
+  */
+  if(hw_k<K){
+    IO_SET(base, SOLVER_SEL, 0);
+    for(int32_t m=0; m < n_solvers && m+p<M; m++){//Use only 1 solver when hw_k<K. To use all solvers 
+      //it would be necessary to send individual points to
+      //individual solvers, so it would be as fast as using a
+      //single solver
+
+      char checked[N]; //Saves if point n of problem m is already a nearest neighbor
+      int32_t i=0;
+      for(int32_t n=0; n < N; n++){
+        checked[n]=0;
+      }
+
+      for(int32_t j=0; j<K; j+=hw_k){//Repeat process ceil(K/hw_k) times
+        knn_set_test_points(x, p+m, 1);//Send test points
+
+        for(int32_t n=0; n<N; n++){
+          if(checked[n]==0){
+            knn_send_dataset_point(data[n]);
+          }else{
+            knn_send_infinite(x[p+m]);
+          }
+        }
+        IO_SET(base, DONE, 1);
+        for(;i<K&&i<j+hw_k;i++){
+          IO_SET(base, SEL, i%hw_k);
+          v_neighbor[m][i]=IO_GET(base, DATA_OUT);
+          checked[v_neighbor[m][i]]=1;
+        }
+        
+        knn_reset();
+      }
+    }
+  }else{
+
+    knn_set_test_points(x, p, n_solvers);
 
     for(int j = 0; j < N; j++){
       knn_send_dataset_point(data[j]);
     }
     IO_SET(base, DONE, 1);
 
-  for(int j = 0;j < n_solvers && j+p < M; j++){  
-    IO_SET(base, SOLVER_SEL, j);
-    for(int i = 0; i < K; i++){
-      IO_SET(base, SEL, i);
-      v_neighbor[j][i]=IO_GET(base, DATA_OUT);
+    for(int j = 0;j < n_solvers && j+p < M; j++){  
+      IO_SET(base, SOLVER_SEL, j);
+      for(int i = 0; i < K; i++){
+        IO_SET(base, SEL, i);
+        v_neighbor[j][i]=IO_GET(base, DATA_OUT);
+      }
     }
-  }
     knn_reset();
-  
+  }
 }
 
 

@@ -6,16 +6,16 @@
 
 #ifdef DEBUG //type make DEBUG=1 to print debug info
 #define S 12  //random seed
-#define N 12  //data set size
-#define K 10   //number of neighbours (K)
+#define N 6  //data set size
+#define K 4   //number of neighbours (K)
 #define C 4   //number data classes
 #define M 3   //number samples to be classified
 #else
-#define S 12
-#define N 1000
-#define K 10
+#define S 13
+#define N 23
+#define K 7
 #define C 4
-#define M 100
+#define M 30
 #endif
 
 #define INFINITE ~0
