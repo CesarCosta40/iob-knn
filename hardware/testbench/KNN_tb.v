@@ -6,6 +6,8 @@ module knn_tb;
 
   localparam PER=10;
 
+  localparam N_SOLVERS=4;
+
   `CLOCK(clk, PER)
   `RESET(rst, 7, 10)
 
@@ -40,25 +42,30 @@ module knn_tb;
 
     @(posedge clk);
     #5 ready=1;
-    #5 DONE=0;
     #5 ready=0;
 
     @(posedge clk);
 
     //ready=0;
-    for(c = 0; c < `N_SOLVERS; c=c+1) begin
+    for(c = 0; c < N_SOLVERS; c=c+1) begin
       SOLVER_SEL = c;
-      DATA_1 = 200;
+      DATA_1 =c*100<<16|c*100;
       @(posedge clk);
     end
+    
+    @(posedge clk);
+    DONE=0;
 
 
-      for (i=1; i<100; i=i+1) begin
-        if(i%3==0) begin
-          ready=1;
-          DATA_2 = i;
+      for (i=1; i<2000; i=i+1) begin
+        if(i%10==0) begin
+          DATA_2 = (i<<16)|i;
+          #5 ready=0;
         end
-        else begin
+        else if(i%10==9)begin
+          #5 ready=1;  
+        end
+         else begin
           ready=0;
         end
         @(posedge clk);
@@ -66,7 +73,7 @@ module knn_tb;
 
     DONE = 1;
 
-    for(m = 0; m < `N_SOLVERS; m=m+1) begin
+    for(m = 0; m < N_SOLVERS; m=m+1) begin
       SOLVER_SEL = m;
       for (k=0; k<`HW_K; k=k+1) begin
         SEL = k;
@@ -84,7 +91,7 @@ module knn_tb;
 
   end
 
-  knn #(.HW_K(`HW_K),.N_SOLVERS(`N_SOLVERS),.DATA_W(`DATA_W)) knn0
+  knn #(.HW_K(`HW_K),.N_SOLVERS(N_SOLVERS),.DATA_W(`DATA_W)) knn0
  (
     .rst(rst),
     .clk(clk),
