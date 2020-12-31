@@ -18,3 +18,13 @@ make [sim] N_SOLVERS=32 HW_K=10
 ```
 N_SOLVERS chooses the number of modules to solve many problems in parallel. 
 HW_K chooses the number of registers and comparators (should be equal to the number of neighbors for best performance).
+
+To clean the simulation directory:
+```
+make sim-clean
+```
+
+To visualise simulation waveforms:
+```
+make sim-waves
+```
