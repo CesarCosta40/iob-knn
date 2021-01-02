@@ -64,7 +64,7 @@ int main() {
 #endif
 
     //compute distances to dataset points
-    knn_get_neighbours(v_neighbor, data, x, HW_K, n_parallel, n_series);
+    knn_get_neighbours(v_neighbor, data, &x[k], HW_K, n_parallel, n_series);
     knn_reset();
 #ifdef DEBUG
     for(int32_t i=0; i < N; i++){
