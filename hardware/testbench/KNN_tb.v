@@ -6,7 +6,7 @@ module knn_tb;
 
   localparam PER=10;
 
-  localparam N_SOLVERS=4;
+  localparam N_SOLVERS=10;
 
   `CLOCK(clk, PER)
   `RESET(rst, 7, 10)
@@ -18,7 +18,7 @@ module knn_tb;
   `SIGNAL(DONE, 1)
   `SIGNAL(SEL, 16)
   `SIGNAL(SOLVER_SEL, 16)
-
+  `SIGNAL(SERIES_ENABLE, 1)
   integer i;
   integer k;
   integer c;
@@ -36,6 +36,7 @@ module knn_tb;
     DATA_1 = 0;
     DATA_2 = 0;
     ready = 0;
+    SERIES_ENABLE=0;
 
     @(posedge rst);
     @(negedge rst);
@@ -49,7 +50,8 @@ module knn_tb;
     //ready=0;
     for(c = 0; c < N_SOLVERS; c=c+1) begin
       SOLVER_SEL = c;
-      DATA_1 =c*100<<16|c*100;
+      DATA_1 =0;
+      SERIES_ENABLE=(c%3!=0);
       @(posedge clk);
     end
     
@@ -94,11 +96,13 @@ module knn_tb;
   knn #(.HW_K(`HW_K),.N_SOLVERS(N_SOLVERS),.DATA_W(`DATA_W)) knn0
  (
     .rst(rst),
+    .hard_rst(rst),
     .clk(clk),
     .valid(ready),
     .DONE(DONE),
     .SEL(SEL),
     .SOLVER_SEL(SOLVER_SEL),
+    .SERIES_ENABLE(SERIES_ENABLE),
     .DATA_1(DATA_1),
     .DATA_2(DATA_2),
     .DATA_OUT(DATA_OUT)

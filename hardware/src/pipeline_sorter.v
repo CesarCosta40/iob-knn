@@ -16,8 +16,15 @@ module pipeline_sorter
      `INPUT(valid,1),
      `INPUT(DONE, 1),
      input [W/2-1:0] SEL,
-     output [W/2-1:0] DATA_OUT
-     );
+     output [W/2-1:0] DATA_OUT,
+     input signed [W:0] DIST_EXT_IN,
+     output signed [W:0] DIST_EXT_OUT,
+     input [W/2-1:0] idx_cnt_ext_in,
+     output [W/2-1:0] idx_cnt_ext_out,
+     input [1:0] series_enable,
+     input [1:0] cn_in,
+     output [1:0] cn_out
+    );
 
 
     `SIGNAL(DIST_INT, W+1)
@@ -67,8 +74,14 @@ module pipeline_sorter
      .DONE(DONE_INT4),
      .SEL(SEL),
      .DIST(DIST_IN_INT),
-     .DATA_OUT(DATA_OUT)
-
+     .DATA_OUT(DATA_OUT),
+     .DIST_EXT_IN(DIST_EXT_IN),
+     .DIST_EXT_OUT(DIST_EXT_OUT),
+     .idx_cnt_ext_in(idx_cnt_ext_in),
+     .idx_cnt_ext_out(idx_cnt_ext_out),
+     .series_enable(series_enable),
+     .cn_in(cn_in),
+     .cn_out(cn_out)
    );
 
 

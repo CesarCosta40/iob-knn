@@ -7,4 +7,5 @@
 #define DONE 3
 #define SOLVER_SEL 4
 #define SEL 5
-#define KNN_RESET 6
+#define SERIES_ENABLE 6
+#define KNN_RESET 7
