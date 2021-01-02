@@ -16,16 +16,19 @@ void knn_init(int32_t base_address){
   knn_reset();
 }
 
-void knn_set_test_points(int16_t x[M][2], int32_t n_solvers, int32_t n_series){
+void knn_set_test_points(int16_t x[M][2], int32_t idx, int32_t n_solvers, int32_t n_series, int32_t n_parallel_prob){
   int* a;
-  for(int i = 0; i < n_solvers; i++){
+  for(int i = idx; i < idx+n_parallel_prob && i<M*n_parallel_prob; i++){
     a=(int*)x[i];
-    IO_SET(base, SOLVER_SEL, i);
-    IO_SET(base, DATA_1, *a);
-    if(i%n_series!=0)
-      IO_SET(base, SERIES_ENABLE, 1);
-    else
-      IO_SET(base, SERIES_ENABLE, 0);
+    for(int j = 0; j < n_series; j++){
+      //uart_printf("Sending point %d to solver %d with series %d\n", i, (i-idx)*n_series+j, j!=0);
+      IO_SET(base, SOLVER_SEL, (i-idx)*n_series+j);
+      IO_SET(base, DATA_1, *a);
+      if(j!=0)
+        IO_SET(base, SERIES_ENABLE, 1);
+      else
+        IO_SET(base, SERIES_ENABLE, 0);
+    }
   }
   IO_SET(base, DONE, 0);
 }
@@ -53,12 +56,56 @@ void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], i
     knn_send_dataset_point(data[j]);
   }
   IO_SET(base, DONE, 1);
+  for(;i<K&&i<j+hw_k;i++){
+  IO_SET(base, SEL, i%hw_k);
+  v_neighbor[m][i]=IO_GET(base, DATA_OUT);
+  checked[v_neighbor[m][i]]=1;
+  }
 
-  for(int j = 0; j < n_parallel*n_series; j++){
+  knn_reset();
+  }
+  }*/
+
+  //if(hw_k<K){
+  int32_t select = 0;
+  int32_t n_parallel_prob = n_solvers/n_series;
+
+  //uart_printf("n_solvers: %d; n_series: %d; n_parallel_prob: %d\n", n_solvers, n_series, n_parallel_prob);
+  knn_set_test_points(x, p, n_solvers, n_series, n_parallel_prob);
+
+
+  for(int j = 0; j < N; j++){
+    knn_send_dataset_point(data[j]);
+  }
+  IO_SET(base, DONE, 1);
+
+  for(int j = 0; j < n_solvers && j+p < M*n_parallel_prob; j++){
+    //uart_printf("Reading solver %d\n", j);
     IO_SET(base, SOLVER_SEL, j);
-    for(int i = 0 ; i < hw_k; i++){
+    for(int i = 0 ; i < hw_k && i+(j%n_series)*hw_k<K; i++){
+      //uart_printf("Selecting register %d\n", i);
       IO_SET(base, SEL, i);
       v_neighbor[j/n_series][i+(j%n_series)*hw_k]=IO_GET(base, DATA_OUT);
+      //uart_printf("Put %d in position %d of problem %d\n", v_neighbor[j/n_series][i+(j%n_series)*hw_k], i+(j%n_series)*hw_k, j/n_series);
     }
-  }
+   }
+
+  knn_reset();
+  /*else{
+    knn_set_test_points(x, p, n_solvers, 1);
+
+    for(int j = 0; j < N; j++){
+    knn_send_dataset_point(data[j]);
+    }
+    IO_SET(base, DONE, 1);
+
+    for(int j = 0;j < n_solvers && j+p < M; j++){
+    IO_SET(base, SOLVER_SEL, j);
+    for(int i = 0; i < K; i++){
+    IO_SET(base, SEL, i);
+    v_neighbor[j][i]=IO_GET(base, DATA_OUT);
+    }
+    }
+    knn_reset();
+    }*/
 }
