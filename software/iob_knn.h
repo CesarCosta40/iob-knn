@@ -32,4 +32,4 @@ void knn_init(int32_t);
 void knn_set_test_points(int16_t x[M][2], int32_t idx, int32_t n_solvers, int32_t n_series, int32_t n_parallel_prob);
 void knn_send_dataset_point(int16_t*);
 void knn_send_infinite(int16_t* x);
-void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], int16_t x[M][2], uint32_t hw_k, int32_t n_solvers, int32_t n_series);
+void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], int16_t x[M][2], uint32_t p, uint32_t hw_k, int32_t n_solvers, int32_t n_series);

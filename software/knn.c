@@ -37,7 +37,7 @@ int main() {
   //int32_t vote accumulator
   int32_t votes_acc[C] = {0};
   int32_t n_series = (K/HW_K)+(K%HW_K!=0);
-  int32_t n_parallel = N_SOLVERS/n_series;
+  int32_t n_parallel_prob = N_SOLVERS/n_series;
 
   //
   // PROCESS DATA
@@ -54,25 +54,22 @@ int main() {
   t_insert_total=0;
 #endif
 
-  for (int32_t k=0; k<M; k+=n_parallel){ //for all test points
-    if(k+n_parallel>M)
-      n_parallel = M-k;
+  for (int32_t k=0; k<M; k+=n_parallel_prob){ //for all test points
 
 #ifdef DEBUG
-    uart_printf("\n\nProcessing x[%d:%d]:\n", k, k+n_parallel-1);
+    uart_printf("\n\nProcessing x[%d:%d]:\n", k, k+n_parallel_prob-1);
     uart_printf("Datum \tX \tY \tLabel \n");
 #endif
 
     //compute distances to dataset points
-    knn_get_neighbours(v_neighbor, data, x, HW_K, n_parallel, n_series);
-    knn_reset();
+    knn_get_neighbours(v_neighbor, data, x, k, HW_K, N_SOLVERS, n_series);
 #ifdef DEBUG
     for(int32_t i=0; i < N; i++){
       uart_printf("Datum \t%d \t%d \t%d \n", (uint32_t)data[i][0], (uint32_t)data[i][1], (uint32_t)data_label[i]);
     }
 #endif
     //classify test point
-    get_teste_point_class(votes_acc, k, n_parallel);
+    get_teste_point_class(votes_acc, k, n_parallel_prob);
   } //all test points classified
 
   //stop knn here
@@ -138,9 +135,9 @@ void init(void){
 }
 
 
-void get_teste_point_class(int32_t *votes_acc, int32_t k, int32_t n_parallel){
+void get_teste_point_class(int32_t *votes_acc, int32_t k, int32_t n_parallel_prob){
 
-  for(int i = 0; i < n_parallel && i+k<M; i++){
+  for(int i = 0; i < n_parallel_prob && i+k<M; i++){
 
 #ifdef DEBUG
     timer_reset();
