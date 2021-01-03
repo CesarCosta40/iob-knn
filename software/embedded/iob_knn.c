@@ -19,7 +19,7 @@ void knn_init(int32_t base_address){
 void knn_set_test_points(int16_t x[M][2], int32_t n_solvers, int32_t n_series){
   int* a;
   for(int i = 0; i < n_solvers; i++){
-    a=(int*)x[i];
+    a=(int*)x[i/n_series];
     IO_SET(base, SOLVER_SEL, i);
     IO_SET(base, DATA_1, *a);
     if(i%n_series!=0)
