@@ -17,9 +17,9 @@ module sorter
   output signed [W:0] DIST_EXT_OUT,
   input [W/2-1:0] idx_cnt_ext_in,
   output [W/2-1:0] idx_cnt_ext_out,
-  input [1:0] series_enable,
-  input [1:0] cn_in,
-  output [1:0] cn_out,
+  input series_enable,
+  input cn_in,
+  output cn_out,
   output [W/2-1:0] DATA_OUT
 );
 

@@ -47,7 +47,7 @@ int main() {
 
   //init timer and knn periph
   timer_init(TIMER_BASE);
-  knn_init(KNN_BASE);
+  knn_init(KNN_BASE, n_parallel*n_series, n_series);
 
 #ifdef DEBUG
   t_distance_total=0;
@@ -60,15 +60,14 @@ int main() {
 
 #ifdef DEBUG
     uart_printf("\n\nProcessing x[%d:%d]:\n", k, k+n_parallel-1);
-    uart_printf("Datum \tX \tY \tLabel \n");
+ //   uart_printf("Datum \tX \tY \tLabel \n");
 #endif
 
     //compute distances to dataset points
     knn_get_neighbours(v_neighbor, data, &x[k], HW_K, n_parallel*n_series, n_series);
-    knn_reset();
 #ifdef DEBUG
     for(int32_t i=0; i < N; i++){
-      uart_printf("Datum \t%d \t%d \t%d \n", (uint32_t)data[i][0], (uint32_t)data[i][1], (uint32_t)data_label[i]);
+   //   uart_printf("Datum \t%d \t%d \t%d \n", (uint32_t)data[i][0], (uint32_t)data[i][1], (uint32_t)data_label[i]);
     }
 #endif
     //classify test point
@@ -127,14 +126,14 @@ void init(void){
       x[k][1] = (short) cmwc_rand();
 
     //x[k].label will be calculated by the algorithm
-  }
+  }/*
 #ifdef DEBUG
   uart_printf("\n\nTEST POINTS\n");
   uart_printf("Idx \tX \tY\n");
   for (int32_t k=0; k<M; k++)
     uart_printf("%d \t%d \t%d\n", k, x[k][0], x[k][1]);
 #endif
-
+*/
 }
 
 

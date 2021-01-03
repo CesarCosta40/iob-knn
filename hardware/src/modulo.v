@@ -17,7 +17,7 @@ module knn
      `INPUT(clk,1),
      `INPUT(valid,1),
      `INPUT(DONE, 1),
-     `INPUT(SERIES_ENABLE,1),
+     `INPUT(SERIES_ENABLE,2),
      input [15:0] SEL,
      output [W/2-1:0] DATA_OUT
      );
@@ -32,7 +32,7 @@ module knn
 
      reg signed [DATA_W/2-1:0] DATA_X1 [N_SOLVERS-1:0];
      reg signed [DATA_W/2-1:0] DATA_Y1 [N_SOLVERS-1:0];
-     reg signed [1:0] series_enable [N_SOLVERS-1:0];   
+     reg signed series_enable [N_SOLVERS-1:0];   
      integer j;
 
      always @(posedge clk, posedge rst) begin
@@ -49,7 +49,7 @@ module knn
     
      always @(posedge clk, posedge hard_rst) begin
        for(j=0; j < N_SOLVERS; j=j+1) begin
-        if (hard_rst) series_enable[j] <= 0; else if (SOLVER_SEL==j) series_enable[j] <= SERIES_ENABLE;
+        if (hard_rst) series_enable[j] <= 0; else if (SOLVER_SEL==j&&SERIES_ENABLE[1]) series_enable[j] <= SERIES_ENABLE[0];
       end
      end
     
@@ -62,7 +62,7 @@ module knn
 
     reg [W:0] DIST_EXT [N_SOLVERS:0];
     reg [W/2-1:0] idx_cnt_ext [N_SOLVERS:0];
-    reg [1:0] cn_ext [N_SOLVERS:0];
+    reg cn_ext [N_SOLVERS:0];
 /*
     `COMB DIST_EXT[0]=33'H00000000;
     `COMB idx_cnt_ext[0]=16'H0000;
