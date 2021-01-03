@@ -44,17 +44,16 @@ void knn_send_infinite(int16_t* x){
   IO_SET(base, DATA_2, point);
 }
 
-void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], int16_t x[M][2], uint32_t hw_k, int32_t n_parallel, int32_t n_series) {
-  int32_t select = 0;
+void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], int16_t x[M][2], uint32_t hw_k, int32_t n_solvers, int32_t n_series) {
 
-  knn_set_test_points(x, n_parallel*n_series, n_series);
+  knn_set_test_points(x, n_solvers, n_series);
 
   for(int j = 0; j < N; j++){
     knn_send_dataset_point(data[j]);
   }
   IO_SET(base, DONE, 1);
 
-  for(int j = 0; j < n_parallel*n_series; j++){
+  for(int j = 0; j < n_solvers; j++){
     IO_SET(base, SOLVER_SEL, j);
     for(int i = 0 ; i < hw_k; i++){
       IO_SET(base, SEL, i);
