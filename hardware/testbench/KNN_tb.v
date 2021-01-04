@@ -18,7 +18,7 @@ module knn_tb;
   `SIGNAL(DONE, 1)
   `SIGNAL(SEL, 16)
   `SIGNAL(SOLVER_SEL, 16)
-  `SIGNAL(SERIES_ENABLE, 1)
+  `SIGNAL(SERIES_ENABLE, 2)
   integer i;
   integer k;
   integer c;
@@ -51,10 +51,12 @@ module knn_tb;
     for(c = 0; c < N_SOLVERS; c=c+1) begin
       SOLVER_SEL = c;
       DATA_1 =0;
-      SERIES_ENABLE=(c%3!=0);
+      SERIES_ENABLE=1<<1|(c%3!=0);
       @(posedge clk);
     end
     
+    SERIES_ENABLE=0;
+
     @(posedge clk);
     DONE=0;
 

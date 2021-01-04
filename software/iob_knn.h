@@ -6,16 +6,16 @@
 
 #ifdef DEBUG //type make DEBUG=1 to print debug info
 #define S 12  //random seed
-#define N 6  //data set size
-#define K 6   //number of neighbours (K)
+#define N 10  //data set size
+#define K 8   //number of neighbours (K)
 #define C 4   //number data classes
-#define M 3   //number samples to be classified
+#define M 1   //number samples to be classified
 #else
-#define S 13
-#define N 23
-#define K 7
+#define S 12
+#define N 1000
+#define K 10
 #define C 4
-#define M 30
+#define M 100
 #endif
 
 #define INFINITE ~0
@@ -31,4 +31,5 @@ void knn_reset(void);
 void knn_init(int32_t, int32_t, int32_t);
 void knn_set_test_points(int16_t x[M][2], int32_t n_solvers, int32_t n_series);
 void knn_send_dataset_point(int16_t*);
+void knn_send_infinite(int16_t* x);
 void knn_get_neighbours(uint32_t v_neighbor[N_SOLVERS][K], int16_t data[N][2], int16_t x[M][2], uint32_t hw_k, int32_t n_solvers, int32_t n_series);

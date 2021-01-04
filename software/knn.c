@@ -7,7 +7,7 @@
 
 
 //neighbor info
-uint32_t v_neighbor[N_SOLVERS/((K/HW_K)+(K%HW_K!=0))][K];
+uint32_t v_neighbor[N_SOLVERS/((K/HW_K)+(K%HW_K!=0))+(N_SOLVERS/((K/HW_K)+(K%HW_K!=0))==0)][K];
 
 //labeled dataset
 int16_t data[N][2];
@@ -31,14 +31,21 @@ int main() {
 
   unsigned long long elapsed;
   uint32_t elapsedu;
+ 
+  //init uart
+  uart_init(UART_BASE, FREQ/BAUD);
+
+  if(HW_K*N_SOLVERS<K){
+    uart_printf("Hardware not big enough to solve this problem efficiently. Consider increasing HW_K or N_SOLVERS.\n");
+  }
 
   init();
 
   //int32_t vote accumulator
   int32_t votes_acc[C] = {0};
   int32_t n_series = (K/HW_K)+(K%HW_K!=0);
-  int32_t n_parallel = N_SOLVERS/n_series;
-
+  int32_t n_parallel = N_SOLVERS/n_series+(N_SOLVERS/n_series==0);
+  
   //
   // PROCESS DATA
   //
@@ -53,8 +60,8 @@ int main() {
   t_distance_total=0;
   t_insert_total=0;
 #endif
-
-  for (int32_t k=0; k<M; k+=n_parallel){ //for all test points
+  
+   for (int32_t k=0; k<M; k+=n_parallel){ //for all test points
     if(k+n_parallel>M)
       n_parallel = M-k;
 
@@ -95,10 +102,7 @@ int main() {
 
 
 void init(void){
-  //init uart
-  uart_init(UART_BASE, FREQ/BAUD);
-
-  //generate random seed
+   //generate random seed
   random_init(S);
 
   //init dataset
